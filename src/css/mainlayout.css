@@ -37,9 +37,11 @@ a {
     /* 가로 중앙정렬 */
 }
 
-.test {
-    
+
+.gittest {
+    border: 1px solid black;
 }
+
 
 .mainlayout-b {
     flex-basis: 0;  /* 아이템의 기본 크기 설정 */
