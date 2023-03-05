@@ -37,6 +37,10 @@ a {
     /* 가로 중앙정렬 */
 }
 
+.test {
+    
+}
+
 .mainlayout-b {
     flex-basis: 0;  /* 아이템의 기본 크기 설정 */
     flex-grow: 2.5;
