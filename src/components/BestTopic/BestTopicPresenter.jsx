@@ -1,3 +1,5 @@
+// 고투헬팀 스켈레톤이라 일단 들고왔었는데.. 아마 안 쓸듯
+
 import React from 'react'
 import '../../css/besttopic.css'
 

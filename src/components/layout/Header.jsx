@@ -38,7 +38,7 @@ function Header() {
             {create && 
                 <CreateTemplate setCreate={setCreate}>
                     {/* CreateTemplate 컴포넌트 내부에서 X클릭 시(closeCreate),
-                    setCreate을 props로 전달한다.*/}
+                    setCreate을 props로 전달한다.(false 된다)*/}
                     <CreateHead />
                     <CreateList />
                 </CreateTemplate>
@@ -46,7 +46,7 @@ function Header() {
         </div>
         <div className='a-mypage'>
             Mypage
-            {/* 얘도 아마 모달인듯? */}
+            {/* 얘도 아마 모달일듯..? */}
         </div>
     </div>
     )
