@@ -26,7 +26,7 @@ const CreateTemplateBlock = styled.div`
   border-radius: 16px; /* 테두리 둥글게 */
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); /* rgba: 투명도 설정 */
 
-  left: 30%;
+  left: 35%;
   
   display: flex;
   flex-direction: column; /* 위에서 아래 방향(컬럼 방향) 설정 */

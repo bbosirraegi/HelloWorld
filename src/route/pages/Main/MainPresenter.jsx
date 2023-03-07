@@ -1,8 +1,12 @@
 import React from 'react'
+import MainHeadline from './components/MainHeadline'
 
 const MainPresenter = () => {
   return (
-    <div>MainPresenter</div>
+    <div>
+      <MainHeadline />
+      <div>MainPresenter</div>
+    </div>
   )
 }
 

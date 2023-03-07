@@ -5,7 +5,7 @@ import {AiFillHome,AiOutlinePlusCircle} from 'react-icons/ai';
 import {MdInsertComment,MdNotifications} from 'react-icons/md';
 import CreateList from '../create/CreateList';
 import CreateTemplate from '../create/CreateTemplate';
-import CreateHead from '../create/CreateHead';
+// import CreateHead from '../create/CreateHead';
 
 function Header() {
 
@@ -34,13 +34,13 @@ function Header() {
                 <AiOutlinePlusCircle/>
                 글쓰기
             </div>
-            {/* 모달창 만들기 (todolist 참고) */}
+            {/* 모달창 만들기 */}
             {create && 
                 <CreateTemplate setCreate={setCreate}>
                     {/* CreateTemplate 컴포넌트 내부에서 X클릭 시(closeCreate),
                     setCreate을 props로 전달한다.(false 된다)*/}
-                    <CreateHead />
-                    <CreateList />
+                    {/* <CreateHead /> */}
+                    <CreateList setCreate={setCreate} />
                 </CreateTemplate>
             }
         </div>
