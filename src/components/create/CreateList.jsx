@@ -47,6 +47,10 @@ const CreateButton = styled.button`
 
 function CreateList({setCreate}) {
 
+  //제출 버튼 클릭하면 input 박스에 적힌 내용이 Main(b 영역)에 들어가도록 구현하고 싶음
+  //일단 onClick부터 설정해보고 있음 (아직 미완성)
+  //todolist 참고하여 만들고 있기 때문에 Context를 만들던지, Context 없이 진행할지... 선택해야함
+  //setCreate props는 layout/Header.jsx 에서 받아옵니당
   const onClick = (e) => {
     //제출 버튼 onClick 이벤트 발생했을 때 dispatch
     dispatch({
@@ -62,6 +66,7 @@ function CreateList({setCreate}) {
 
   return (
     <>
+    {/* onClick 하면 input 박스에 적힌 내용이 main에 도출되도록 이벤트 주고 싶은데 좀 쉽게 전달하고 싶어서 Head와 List를 합쳤다 */}
     <CreateHeadBlock>
         <h2>글쓰기</h2>
         <CreateButton>제출</CreateButton>
