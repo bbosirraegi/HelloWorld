@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 글쓰기 리스트 (헤드 뺀 나머지) 블록 스타일링
@@ -47,6 +47,8 @@ const CreateButton = styled.button`
 
 function CreateList({setCreate}) {
 
+  const [value, setValue] = useState(''); //기본값 공백
+
   //제출 버튼 클릭하면 input 박스에 적힌 내용이 Main(b 영역)에 들어가도록 구현하고 싶음
   //일단 onClick부터 설정해보고 있음 (아직 미완성)
   //todolist 참고하여 만들고 있기 때문에 Context를 만들던지, Context 없이 진행할지... 선택해야함
@@ -61,6 +63,7 @@ function CreateList({setCreate}) {
       }
     })
     setCreate(false); //닫아줘야하므로
+    setValue(''); //공백처리
     nextId.current += 1; //id 값 +1
   };
 
@@ -69,7 +72,7 @@ function CreateList({setCreate}) {
     {/* onClick 하면 input 박스에 적힌 내용이 main에 도출되도록 이벤트 주고 싶은데 좀 쉽게 전달하고 싶어서 Head와 List를 합쳤다 */}
     <CreateHeadBlock>
         <h2>글쓰기</h2>
-        <CreateButton>제출</CreateButton>
+        <CreateButton >제출</CreateButton>
     </CreateHeadBlock>
     <CreateListBlock>
       <input className='search-box' type="text" name="title" placeholder="제목" />

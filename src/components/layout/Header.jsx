@@ -5,13 +5,19 @@ import {AiFillHome,AiOutlinePlusCircle} from 'react-icons/ai';
 import {MdInsertComment,MdNotifications} from 'react-icons/md';
 import CreateList from '../create/CreateList';
 import CreateTemplate from '../create/CreateTemplate';
+import MypagemTemplate from '../mypage-m/MypagemTemplate';
+import MypagemList from '../mypage-m/MypagemList';
 // import CreateHead from '../create/CreateHead';
 
 function Header() {
 
-    const [create, setCreate] = useState(false); // 상태관리, 기본값 false
+    const [create, setCreate] = useState(false); // 모달관리, 기본값 false
     const onCreate = () => setCreate(!create); // create 기존값 반전
-    // 글쓰기 클릭하면 즐겨찾기 창 켜지게 (true)
+    // 글쓰기 클릭하면 글쓰기 창 켜지게 (true)
+
+    const [mypage, setMypage] = useState(false); //모달관리, 기본값 false
+    const onMypage = () => setMypage(!mypage); //mypage 기존값 반전
+    // 마이페이지 클릭하면 마이페이지 창 켜지게 (true)
 
     return (
     <div className='a-container'>
@@ -44,10 +50,15 @@ function Header() {
                 </CreateTemplate>
             }
         </div>
-        <div className='a-mypage'>
+        {mypage &&
+            <MypagemTemplate setMypage={setMypage}>
+                <MypagemList />
+            </MypagemTemplate>
+        }
+        <div onClick={onMypage} className='a-mypage'>
             Mypage
-            {/* 얘도 아마 모달일듯..? */}
-        </div>
+            {/* 얘도 모달임 */}
+        </div>        
     </div>
     )
 }

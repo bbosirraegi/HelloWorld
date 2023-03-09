@@ -1,5 +1,3 @@
-// 중앙에 정렬된 흰색 박스를 보여주기
-
 import React from 'react';
 import styled from 'styled-components';
 import { AiOutlineClose } from 'react-icons/ai';
@@ -43,6 +41,7 @@ const Close = styled.div`
 `;
 
 // props로 children 받아와서 향후 재사용 가능성을 열어둔다.
+// setCreate props는 Header에서 받아온다
 function CreateTemplate({ children, setCreate }) {
   const closeCreate = () => setCreate(false); 
   //setCreate 을 false로 바꿔주면서 창 닫히게
