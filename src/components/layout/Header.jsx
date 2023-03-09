@@ -20,46 +20,46 @@ function Header() {
     // 마이페이지 클릭하면 마이페이지 창 켜지게 (true)
 
     return (
-    <div className='a-container'>
-        <Link to="/" className='a-header'>HelloWorld</Link>
-        <div className='a-navi'>
-            {/* NAVI */}
-            <Link to="/" className="a-navi-link">
-                <AiFillHome/>
-                홈
-            </Link>
-            <Link to="/topic" className="a-navi-link">
-                <MdInsertComment/>
-                토픽
-            </Link>
-            <Link to="/notification" className="a-navi-link">
-                <MdNotifications/>
-                알림
-            </Link>
-            <div onClick={onCreate} className='a-navi-create'>
-                <AiOutlinePlusCircle/>
-                글쓰기
+        <div className='a-container'>
+            <Link to="/" className='a-header'>HelloWorld</Link>
+            <div className='a-navi'>
+                {/* NAVI */}
+                <Link to="/" className="a-navi-link">
+                    <AiFillHome/>
+                    홈
+                </Link>
+                <Link to="/topic" className="a-navi-link">
+                    <MdInsertComment/>
+                    토픽
+                </Link>
+                <Link to="/notification" className="a-navi-link">
+                    <MdNotifications/>
+                    알림
+                </Link>
+                <div onClick={onCreate} className='a-navi-create'>
+                    <AiOutlinePlusCircle/>
+                    글쓰기
+                </div>
+                {/* 모달창 만들기 */}
+                {create && 
+                    <CreateTemplate setCreate={setCreate}>
+                        {/* CreateTemplate 컴포넌트 내부에서 X클릭 시(closeCreate),
+                        setCreate을 props로 전달한다.(false 된다)*/}
+                        {/* <CreateHead /> */}
+                        <CreateList setCreate={setCreate} />
+                    </CreateTemplate>
+                }
             </div>
-            {/* 모달창 만들기 */}
-            {create && 
-                <CreateTemplate setCreate={setCreate}>
-                    {/* CreateTemplate 컴포넌트 내부에서 X클릭 시(closeCreate),
-                    setCreate을 props로 전달한다.(false 된다)*/}
-                    {/* <CreateHead /> */}
-                    <CreateList setCreate={setCreate} />
-                </CreateTemplate>
+            {mypage &&
+                <MypagemTemplate setMypage={setMypage}>
+                    <MypagemList />
+                </MypagemTemplate>
             }
+            <div onClick={onMypage} className='a-mypage'>
+                Mypage
+                {/* 얘도 모달임 */}
+            </div>        
         </div>
-        {mypage &&
-            <MypagemTemplate setMypage={setMypage}>
-                <MypagemList />
-            </MypagemTemplate>
-        }
-        <div onClick={onMypage} className='a-mypage'>
-            Mypage
-            {/* 얘도 모달임 */}
-        </div>        
-    </div>
     )
 }
 

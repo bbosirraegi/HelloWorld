@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import '../../css/mypagem.css'
+
 
 // 마이페이지 모달 리스트 부분에서는 마이페이지와 공지사항 로그아웃 갈 수 있음
 // 각 링크에 대한 스타일링 되어있지 않기 때문에 보여지지 않음
@@ -7,7 +9,8 @@ import { Link } from 'react-router-dom';
 // <Route path="/mypage/notice" element={<Notice />} /> 이런식으로 되어야하나?,,,
 function MypagemList() {
   return (
-    <div className='a-container'>
+    // className 바꿔줄까 싶음. css 다시 설정해야할듯?
+    <div className='mypagem-container'>
       <Link to="/mypage/posts" className="a-navi-link"> 
         마이페이지
       </Link>
