@@ -1,12 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
-import { AiOutlineClose } from 'react-icons/ai';
+import React from "react";
+import styled from "styled-components";
+import { AiOutlineClose } from "react-icons/ai";
 
 // 글쓰기 창 전체블록 스타일링
 const CreateTemplateBlock = styled.div`
   width: 500px;
   height: 500px;
   // 글쓰기 창의 크기 설정을 px로 할지 %로 할지.. 고민
+  // -> 모달창은 calc() or px 단위 사용하기!
   // width: 40%;
   // height: 70%;
 
@@ -19,13 +20,14 @@ const CreateTemplateBlock = styled.div`
   // 자세한 설명 : https://creamilk88.tistory.com/197
   position: absolute;
   // position: fixed;
+  // 모달창은 fixed 사용해주기(?)
 
   background: white;
   border-radius: 16px; /* 테두리 둥글게 */
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); /* rgba: 투명도 설정 */
 
   left: 35%;
-  
+
   display: flex;
   flex-direction: column; /* 위에서 아래 방향(컬럼 방향) 설정 */
 `;
@@ -35,7 +37,7 @@ const Close = styled.div`
   margin-right: auto;
   margin-left: 20px;
   margin-top: 15px;
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 `;
@@ -43,13 +45,13 @@ const Close = styled.div`
 // props로 children 받아와서 향후 재사용 가능성을 열어둔다.
 // setCreate props는 Header에서 받아온다
 function CreateTemplate({ children, setCreate }) {
-  const closeCreate = () => setCreate(false); 
+  const closeCreate = () => setCreate(false);
   //setCreate 을 false로 바꿔주면서 창 닫히게
-  
+
   return (
     <CreateTemplateBlock>
       <Close onClick={closeCreate}>
-        <AiOutlineClose/>
+        <AiOutlineClose />
       </Close>
       {children}
     </CreateTemplateBlock>

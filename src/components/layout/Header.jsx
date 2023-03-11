@@ -1,66 +1,69 @@
-import React, {useState} from 'react'
-import '../../css/mainlayout.css'
-import { Link } from 'react-router-dom';
-import {AiFillHome,AiOutlinePlusCircle} from 'react-icons/ai';
-import {MdInsertComment,MdNotifications} from 'react-icons/md';
-import CreateList from '../create/CreateList';
-import CreateTemplate from '../create/CreateTemplate';
-import MypagemTemplate from '../mypage-m/MypagemTemplate';
-import MypagemList from '../mypage-m/MypagemList';
+import React, { useState } from "react";
+import "../../css/mainlayout.css";
+import { Link } from "react-router-dom";
+import { AiFillHome, AiOutlinePlusCircle } from "react-icons/ai";
+import { MdInsertComment, MdNotifications } from "react-icons/md";
+import CreateList from "../create/CreateList";
+import CreateTemplate from "../create/CreateTemplate";
+import MypagemTemplate from "../mypage-m/MypagemTemplate";
+import MypagemList from "../mypage-m/MypagemList";
 // import CreateHead from '../create/CreateHead';
 
 function Header() {
+  const [create, setCreate] = useState(false); // 모달관리, 기본값 false
+  const onCreate = () => setCreate(!create); // create 기존값 반전
+  // 글쓰기 클릭하면 글쓰기 창 켜지게 (true)
 
-    const [create, setCreate] = useState(false); // 모달관리, 기본값 false
-    const onCreate = () => setCreate(!create); // create 기존값 반전
-    // 글쓰기 클릭하면 글쓰기 창 켜지게 (true)
+  const [mypage, setMypage] = useState(false); //모달관리, 기본값 false
+  const onMypage = () => setMypage(!mypage); //mypage 기존값 반전
+  // 마이페이지 클릭하면 마이페이지 창 켜지게 (true)
 
-    const [mypage, setMypage] = useState(false); //모달관리, 기본값 false
-    const onMypage = () => setMypage(!mypage); //mypage 기존값 반전
-    // 마이페이지 클릭하면 마이페이지 창 켜지게 (true)
-
-    return (
-    <div className='a-container'>
-        <Link to="/" className='a-header'>HelloWorld</Link>
-        <div className='a-navi'>
-            {/* NAVI */}
-            <Link to="/" className="a-navi-link">
-                <AiFillHome/>
-                홈
-            </Link>
-            <Link to="/topic" className="a-navi-link">
-                <MdInsertComment/>
-                토픽
-            </Link>
-            <Link to="/notification" className="a-navi-link">
-                <MdNotifications/>
-                알림
-            </Link>
-            <div onClick={onCreate} className='a-navi-create'>
-                <AiOutlinePlusCircle/>
-                글쓰기
-            </div>
-            {/* 모달창 만들기 */}
-            {create && 
-                <CreateTemplate setCreate={setCreate}>
-                    {/* CreateTemplate 컴포넌트 내부에서 X클릭 시(closeCreate),
-                    setCreate을 props로 전달한다.(false 된다)*/}
-                    {/* <CreateHead /> */}
-                    <CreateList setCreate={setCreate} />
-                </CreateTemplate>
-            }
+  return (
+    <div className="a-container">
+      <Link to="/" className="a-header">
+        HelloWorld
+      </Link>
+      <div className="a-navi">
+        {/* NAVI */}
+        <Link to="/" className="a-navi-link">
+          <AiFillHome />홈
+        </Link>
+        <Link to="/topic" className="a-navi-link">
+          <MdInsertComment />
+          토픽
+        </Link>
+        <Link to="/notification" className="a-navi-link">
+          <MdNotifications />
+          알림
+        </Link>
+        <div onClick={onCreate} className="a-navi-create">
+          <AiOutlinePlusCircle />
+          글쓰기
         </div>
-        {mypage &&
-            <MypagemTemplate setMypage={setMypage}>
-                <MypagemList />
-            </MypagemTemplate>
-        }
-        <div onClick={onMypage} className='a-mypage'>
-            Mypage
-            {/* 얘도 모달임 */}
-        </div>        
+        {/* 모달창 만들기 */}
+        {create && (
+          <CreateTemplate setCreate={setCreate}>
+            {/* CreateTemplate 컴포넌트 내부에서 X클릭 시(closeCreate),
+                    setCreate을 props로 전달한다.(false 된다)*/}
+            {/* <CreateHead /> */}
+            <CreateList setCreate={setCreate} />
+          </CreateTemplate>
+        )}
+      </div>
+      {mypage && (
+        <MypagemTemplate setMypage={setMypage}>
+          <MypagemList />
+        </MypagemTemplate>
+      )}
+      <div onClick={onMypage} className="a-mypage">
+        Mypage
+        {/* 얘도 모달임 */}
+        {/* 글자 대신 avatar를 넣어 보면 어떨까..!
+            기본 - 이미지 / 로그인 시 이미지가 있을 땐, 해당 이미지로 대체
+        */}
+      </div>
     </div>
-    )
+  );
 }
 
-export default Header
+export default Header;
