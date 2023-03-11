@@ -56,12 +56,10 @@ function Header() {
           <MypagemList />
         </MypagemTemplate>
       )}
-      <div className="a-mypage">
-        <div onClick={onMypage}>
+        <div onClick={onMypage} className="a-mypage">
             Mypage
             {/* 얘도 모달임 */}
         </div>
-      </div>
     </div>
   );
 }
