@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 function MypagemList() {
   return (
     <div className="a-container">
-      <Link to="/mypage/mypage" className="a-navi-link">
+      <Link to="/mypage/posts" className="a-navi-link">
         마이페이지
       </Link>
       <Link to="/mypage/posts" className="a-navi-link">

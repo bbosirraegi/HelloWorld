@@ -58,9 +58,6 @@ function Header() {
       <div onClick={onMypage} className="a-mypage">
         Mypage
         {/* 얘도 모달임 */}
-        {/* 글자 대신 avatar를 넣어 보면 어떨까..!
-            기본 - 이미지 / 로그인 시 이미지가 있을 땐, 해당 이미지로 대체
-        */}
       </div>
     </div>
   );
