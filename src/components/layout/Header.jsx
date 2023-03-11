@@ -20,9 +20,11 @@ function Header() {
 
   return (
     <div className="a-container">
-      <Link to="/" className="a-header">
-        HelloWorld
-      </Link>
+      <div>
+        <Link to="/" className="a-header">
+            HelloWorld
+        </Link>
+      </div>
       <div className="a-navi">
         {/* NAVI */}
         <Link to="/" className="a-navi-link">

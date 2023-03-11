@@ -8,6 +8,7 @@ body {
 
 a {
     text-decoration: none;
+    /* 밑줄없애기 */
     color: black;
 }
 /* Link router 는 a 태그가 기본 스타일이다 */
