@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "../../css/mainlayout.css";
 import { Link } from "react-router-dom";
 import { AiFillHome, AiOutlinePlusCircle } from "react-icons/ai";
 import { MdInsertComment, MdNotifications } from "react-icons/md";
@@ -57,9 +56,11 @@ function Header() {
           <MypagemList />
         </MypagemTemplate>
       )}
-      <div onClick={onMypage} className="a-mypage">
-        Mypage
-        {/* 얘도 모달임 */}
+      <div className="a-mypage">
+        <div onClick={onMypage}>
+            Mypage
+            {/* 얘도 모달임 */}
+        </div>
       </div>
     </div>
   );

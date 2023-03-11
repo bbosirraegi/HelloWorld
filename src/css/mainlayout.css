@@ -68,7 +68,7 @@ a {
 /* margin과 padding 중에 뭘 쓰는 게 좋을지 잘 몰겠음 */
 .a-header {
     padding-top: 15px;
-    margin-left: 40%;
+    /* margin-left: 40%; */
     font-size: 25px;
     display: flex;
     /* flex-grow: 0.5; */
@@ -101,7 +101,7 @@ a {
 
 /* 마이페이지 부분(link) */
 .a-mypage {
-    margin-left: 50%;
+    /* margin-left: 50%; */
     display: flex;
     flex-grow: 1;
     font-size: 18px;
