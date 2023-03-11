@@ -4,7 +4,7 @@ import styled from 'styled-components'
 //마이페이지-모달 줄여서 Mypagem
 const MypagemTemplateBlock = styled.div`
     width: 300px;
-    height: 350px;
+    height: 300px;
     //모달창은 px 로 설정!
 
     /* 최상단 위치 */

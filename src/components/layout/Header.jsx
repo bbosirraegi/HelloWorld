@@ -37,6 +37,10 @@ function Header() {
           <MdNotifications />
           알림
         </Link>
+        <Link to="/posts" className="a-navi-link">
+          <MdNotifications />
+          공지사항
+        </Link>
         <div onClick={onCreate} className="a-navi-create">
           <AiOutlinePlusCircle />
           글쓰기
