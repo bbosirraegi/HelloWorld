@@ -6,10 +6,7 @@ import { AiOutlineClose } from "react-icons/ai";
 const CreateTemplateBlock = styled.div`
   width: 500px;
   height: 500px;
-  // 글쓰기 창의 크기 설정을 px로 할지 %로 할지.. 고민
-  // -> 모달창은 calc() or px 단위 사용하기!
-  // width: 40%;
-  // height: 70%;
+  // 모달창의 크기 설정은 calc() or px 단위 사용하기!
 
   /* 최상단 위치 */
   z-index: 999;
@@ -18,8 +15,8 @@ const CreateTemplateBlock = styled.div`
   // 부모 포지션 설정 없이 자식 포지션 absolute 설정해주면 viewprot가 기준된다.
   // fixed = 부모포지션 없는 absolute (둘 다 뷰포트 기준)
   // 자세한 설명 : https://creamilk88.tistory.com/197
-  position: absolute;
-  // position: fixed;
+  // position: absolute;
+  position: fixed;
   // 모달창은 fixed 사용해주기(?)
 
   background: white;

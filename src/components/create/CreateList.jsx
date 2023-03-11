@@ -12,7 +12,7 @@ const CreateListBlock = styled.div`
   /* background: gray; //사이즈 조정이 잘 되고 있는지 확인하기 위한 임시 스타일 */
 `;
 
-// 글쓰기 헤드 부분 (x와 글쓰기 글자) 블록 스타일링
+// 글쓰기 헤드 부분 (제출 버튼과 글쓰기 글자) 블록 스타일링
 // scss문법을 쓰고 싶어서... 일단 놔뒀는데 나중에 css 로 옮겨줄 것
 const CreateHeadBlock = styled.div`
     display: flex;
@@ -69,7 +69,7 @@ function CreateList({setCreate}) {
 
   return (
     <>
-    {/* onClick 하면 input 박스에 적힌 내용이 main에 도출되도록 이벤트 주고 싶은데 좀 쉽게 전달하고 싶어서 Head와 List를 합쳤다 */}
+    {/* onClick 하면 input 박스에 적힌 내용이 main에 도출되도록 이벤트 주고 싶은데 좀 쉽게 전달하고 싶어서(?) Head와 List를 합쳤다 */}
     <CreateHeadBlock>
         <h2>글쓰기</h2>
         <CreateButton >제출</CreateButton>

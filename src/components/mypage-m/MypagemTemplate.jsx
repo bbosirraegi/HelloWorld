@@ -5,15 +5,15 @@ import styled from 'styled-components'
 const MypagemTemplateBlock = styled.div`
     width: 300px;
     height: 350px;
-    //마이페이지 창의 크기 설정을 px로 할지 %로 할지 고민
+    //모달창은 px 로 설정!
 
     /* 최상단 위치 */
     /* z-index: 999; */
 
     // 모달창 만들기 위해 자식 포지션 absolute or fixed
-    // CreateTemplate.jsx에 추가 설명 있음
-    position: absolute;
-    // position: fixed;
+    // 1단 모달은 fixed로 설정
+    // position: absolute;
+    position: fixed;
 
     background: white;
     border-radius: 16px; /* 테두리 둥글게 */
