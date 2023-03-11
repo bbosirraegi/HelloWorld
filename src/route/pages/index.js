@@ -5,4 +5,4 @@ export { default as Topic } from "./Topic";
 export { default as Mypage } from "./Mypage_modal/Mypage";
 export { default as SignIn } from "./Mypage_modal/Signin";
 export { default as SignOut } from "./Mypage_modal/Signout";
-export { default as Posts } from "./Mypage_modal/Posts";
+export { default as Posts } from "./Posts";

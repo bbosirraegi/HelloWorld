@@ -11,9 +11,6 @@ function MypagemList() {
       <Link to="/mypage/mypage" className="a-navi-link">
         마이페이지
       </Link>
-      <Link to="/mypage/posts" className="a-navi-link">
-        공지사항
-      </Link>
       <Link to="/mypage/signin" className="a-navi-link">
         로그인
       </Link>
