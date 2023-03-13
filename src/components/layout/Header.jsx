@@ -19,10 +19,8 @@ function Header() {
 
   return (
     <div className="a-container">
-      <div>
-        <Link to="/" className="a-header">
-            HelloWorld
-        </Link>
+      <div className="a-header">
+        <Link to="/">HelloWorld</Link>
       </div>
       <div className="a-navi">
         {/* NAVI */}
@@ -60,10 +58,10 @@ function Header() {
           <MypagemList />
         </MypagemTemplate>
       )}
-        <div onClick={onMypage} className="a-mypage">
-            Mypage
-            {/* 얘도 모달임 */}
-        </div>
+      <div onClick={onMypage} className="a-mypage">
+        Mypage
+        {/* 얘도 모달임 */}
+      </div>
     </div>
   );
 }
