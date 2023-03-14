@@ -1,8 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { FiArrowLeft } from "react-icons/fi";
 /* 페이지명을 띄울 수 있는 방법 물어보기... */
 
 const ContentsHeader = () => {
-  return <div className="contents_header">페이지명</div>;
+  const location = useLocation();
+  const navigate = useNavigate();
+  let toggle = true;
+  const pathName = location.pathname;
+  let name = "";
+  if (pathName === "/") {
+    name = "커뮤니티";
+    toggle = false;
+  } else if (pathName.includes("topic")) {
+    name = "토픽";
+    toggle = true;
+  } else if (pathName === "/notification") {
+    name = "알림";
+    toggle = true;
+  } else if (pathName === "/posts") {
+    name = "공지사항";
+    toggle = true;
+  } else if (pathName.includes("mypage")) {
+    name = "마이페이지";
+    toggle = true;
+  }
+  return (
+    <div className="contents_header">
+      {toggle && <FiArrowLeft onClick={() => navigate(-1)} />}
+      {name}
+    </div>
+  );
 };
 
 export default ContentsHeader;
