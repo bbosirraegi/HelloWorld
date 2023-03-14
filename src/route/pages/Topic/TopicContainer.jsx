@@ -1,13 +1,10 @@
 // 컨테이너는 프리젠터를 임포트한다. 컨테이너에서 프리젠터로 프롭스 보내기 때문
 
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
 import TopicPresenter from "./TopicPresenter";
 
 const TopicContainer = () => {
   /* Router */
-
   /* State */
   /* context로 전달해줄 것...! */
   const initialTopic = [
@@ -24,7 +21,25 @@ const TopicContainer = () => {
         "vietnam/v_food_6.jpg",
         "vietnam/v_food_7.jpg",
       ],
-      comments: [],
+      comments: [
+        {
+          userInfo: {},
+          date: { year: 2023, month: 3, day: 14, hour: 21, minute: 2 },
+          comment: "다시 가고 싶다ㅠㅠ",
+          imgUrl: "/image/vietnam/v_food_6.jpg",
+          comments: [
+            {
+              userInfo: {},
+              date: { year: 2023, month: 3, day: 14, hour: 21, minute: 7 },
+              comment: "저두요ㅠㅠ",
+              imgUrl: "/image/vietnam/v_food_7.jpg",
+              comments: [],
+              heart: 3,
+            },
+          ],
+          heart: 3,
+        },
+      ],
       isMarked: true,
     },
     {
@@ -65,10 +80,7 @@ const TopicContainer = () => {
         "osaka/4.jpg",
         "osaka/5.jpg",
       ],
-      comments: [
-        "얼마전에 갔었는데, 마리오월드는 인기가 너무 많아서 오픈런을 했는데도 못들어갔어요😥",
-        "작년에 갔었는데, 또 가고 싶네요~~",
-      ],
+      comments: [],
       isMarked: false,
     },
   ];

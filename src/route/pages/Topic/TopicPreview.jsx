@@ -64,19 +64,19 @@ const TopicPreview = ({ topic }) => {
   /* preview image는 각 토픽의 첫번째 이미지로 지정 */
   const previewImage = `/image/${topic.images[0]}`;
   /* 의견 수 */
-  const feedbacks = topic.coments.length;
+  const feedbacks = topic.comments.length;
   /* 북마크 토글 */
   const [isMarked, setIsMarked] = useState(topic.isMarked);
-  const onClick = () => setIsMarked(!isMarked);
+  const onClick = (e) => {
+    e.stopPropagation();
+    setIsMarked(!isMarked);
+  };
 
   /* 토픽 미리보기 클릭 시 화면이동 */
   const navigate = useNavigate();
-  const onTemplateClick = (id) => {
-    navigate(`/topics/id/${id}`);
-  };
 
   return (
-    <PreviewTemplateBlock onClick={() => navigate("/")}>
+    <PreviewTemplateBlock onClick={() => navigate(`${topic.id}`)}>
       <PreviewImageBlock imageUrl={previewImage} />
       <PreviewContentBlock>
         <ContentTitleBlock>{title}</ContentTitleBlock>

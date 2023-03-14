@@ -1,0 +1,26 @@
+1. 토픽 댓글 형식
+comments: [
+      {
+        userInfo: {},
+        date: { year: 2023, month: 3, day: 14, hour: 21, minute: 2 },
+        comment: "다시 가고 싶다ㅠㅠ",
+        imgUrl: "/image/vietnam/v_food_6.jpg",
+        reply: [
+          {
+            userInfo: {},
+            date: { year: 2023, month: 3, day: 14, hour: 21, minute: 7 },
+            comment: "저두요ㅠㅠ",
+            imgUrl: "/image/vietnam/v_food_7.jpg",
+            heart: 1,
+          },
+        ],
+        heart: 3,
+      },
+    ],
+
+    userInfo - 사용자 정보(닉네임, 프로필 사진)
+    date - 댓글 작성 시간(년,월,일,시,분)
+    comment - 댓글 내용
+    imgUrl - 댓글에 포함된 img 주소
+    reply - 대댓글 ... nested 됨...대댓글까지만 허용!
+    heart - 좋아요 개수
