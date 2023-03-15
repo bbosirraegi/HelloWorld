@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import React from "react";
+import { Outlet } from "react-router-dom";
 import "../../css/mainlayout.css";
 import BestTopics from "./BestTopic";
 import ContentsHeader from "./ContentsLayout/ContentsHeader";
