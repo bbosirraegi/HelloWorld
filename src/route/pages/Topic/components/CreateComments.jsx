@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import Avatar from "./Avatar";
 import { IoImageOutline } from "react-icons/io5";
 import { RiSendPlane2Fill } from "react-icons/ri";
 
@@ -10,17 +11,6 @@ const CommentsTemplate = styled.div`
   margin-bottom: 5px;
   padding: 10px;
   align-items: center;
-`;
-
-/* Avatar 이미지 & 크기 고정하기 */
-const Avatar = styled.div`
-  height: 40px;
-  aspect-ratio: 1/1;
-  margin-right: 10px;
-  border-radius: 50%;
-  background: url(${(props) => props.imgUrl});
-  background-repeat: no-repeat;
-  background-size: cover;
 `;
 
 /* 이미지 첨부하고, 댓글 추가하는 form style */
@@ -109,7 +99,9 @@ const CreateComments = () => {
   /* render */
   return (
     <CommentsTemplate>
-      <Avatar imgUrl={"/image/user.png"} />
+      <div style={{ marginRight: "10px" }}>
+        <Avatar imgUrl={"/image/temp_profile.jpg"} size="40px" />
+      </div>
       <Form onSubmit={createComment}>
         <AttatchImage htmlFor="profileImg">
           <IoImageOutline />

@@ -4,6 +4,7 @@ import TopicContentsTemplate from "./TopicContentsTemplate";
 import TopicUnitPart from "./TopicUnitPart";
 import FeedBack from "../components/FeedBack";
 import CreateComments from "../components/CreateComments";
+import TopicCommentTemplate from "../TopicComment";
 
 const TopicDetailTemplate = styled.div`
   width: 100%;
@@ -32,7 +33,9 @@ const FeedbackPart = styled.div`
 const TopicDetail = ({ topic }) => {
   const images = topic.images;
   const comments = topic.comments;
-  const bookmark = 10; /* 임시지정 */
+  /* 임시지정 */
+  const bookmark = 10;
+
   return (
     <TopicDetailTemplate>
       <ImageTemplate>
@@ -51,6 +54,7 @@ const TopicDetail = ({ topic }) => {
         </FeedbackPart>
         <CreateComments />
       </TopicContentsTemplate>
+      <TopicCommentTemplate comments={comments} />
     </TopicDetailTemplate>
   );
 };
@@ -69,20 +73,27 @@ TopicDetail.defaultProps = {
     ],
     comments: [
       {
-        userInfo: {},
-        date: { year: 2023, month: 3, day: 14, hour: 21, minute: 2 },
+        commentId: 0,
+        responseTo: "root",
+        userInfo: {
+          nickname: "두근두근한 치즈피자",
+          profile: "/image/temp.jpg",
+        },
+        date: "2023년 3월 15일 수 22:32",
         comment: "다시 가고 싶다ㅠㅠ",
         imgUrl: "/image/vietnam/v_food_6.jpg",
-        comments: [
-          {
-            userInfo: {},
-            date: { year: 2023, month: 3, day: 14, hour: 21, minute: 7 },
-            comment: "저두요ㅠㅠ",
-            imgUrl: "/image/vietnam/v_food_7.jpg",
-            comments: [],
-            heart: 3,
-          },
-        ],
+        heart: 3,
+      },
+      {
+        commentId: 1,
+        responseTo: 0,
+        userInfo: {
+          nickname: "이불 속에 파묻힌 햄스터",
+          profile: "/image/hamster.jpg",
+        },
+        date: "2023년 3월 15일 수 22:35",
+        comment: "저두요ㅠㅠ",
+        imgUrl: "/image/vietnam/v_food_7.jpg",
         heart: 3,
       },
     ],

@@ -23,20 +23,27 @@ const TopicContainer = () => {
       ],
       comments: [
         {
-          userInfo: {},
+          commentId: 0,
+          responseTo: "root",
+          userInfo: {
+            nickname: "두근두근한 치즈피자",
+            profile: "/image/temp.jpg",
+          },
           date: { year: 2023, month: 3, day: 14, hour: 21, minute: 2 },
           comment: "다시 가고 싶다ㅠㅠ",
           imgUrl: "/image/vietnam/v_food_6.jpg",
-          comments: [
-            {
-              userInfo: {},
-              date: { year: 2023, month: 3, day: 14, hour: 21, minute: 7 },
-              comment: "저두요ㅠㅠ",
-              imgUrl: "/image/vietnam/v_food_7.jpg",
-              comments: [],
-              heart: 3,
-            },
-          ],
+          heart: 3,
+        },
+        {
+          commentId: 1,
+          responseTo: "두근두근한 치즈피자",
+          userInfo: {
+            nickname: "이불 속에 파묻힌 햄스터",
+            profile: "/image/hamster.jpg",
+          },
+          date: { year: 2023, month: 3, day: 14, hour: 21, minute: 7 },
+          comment: "저두요ㅠㅠ",
+          imgUrl: "/image/vietnam/v_food_7.jpg",
           heart: 3,
         },
       ],
