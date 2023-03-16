@@ -27,11 +27,11 @@ function BestTopics() {
             <p>베스트 게시글</p>
             <div className='topic-content-box'>
                 {/* 배열 보여주기 */}
-                {topics.map(topic => (
-                    <>
+                {topics.map((topic, index) => (
+                    <div key={index}>
                         <div className='topic-content'>{topic.title}</div>
                         <div>{topic.content}</div>
-                    </>
+                    </div>
                 ))}
             </div>
         </div>
