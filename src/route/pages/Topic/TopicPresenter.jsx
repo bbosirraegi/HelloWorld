@@ -6,7 +6,6 @@ import TopicPreview from "./TopicPreview";
 
 const TopicDisplayBlock = styled.div`
   width: 100wh;
-  height: 100vh;
   padding-top: 3%;
   display: flex;
   flex-direction: column;
@@ -50,6 +49,7 @@ const TopicPresenter = ({ topics }) => {
       <TopicPreview topic={topics[2]} />
       {/* <CreateTemplate /> */}
       {/* 토픽 추천하기*/}
+      {/* <CreateTemplate /> */}
       <TopicCreateBlock>
         <div>여행자들과 함께 공유하고 싶은 새로운 토픽이 있으신가요?</div>
         <RecommentBtn color="#2e86de">토픽 추천</RecommentBtn>

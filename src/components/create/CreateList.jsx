@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { useCommunityDispatch, useCommunityNextId } from './../../Context';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { useCommunityDispatch, useCommunityNextId } from "./../../Context";
 
 // 글쓰기 리스트 (헤드 뺀 나머지) 블록 스타일링
 const CreateListBlock = styled.div`
@@ -16,26 +16,25 @@ const CreateListBlock = styled.div`
 // 글쓰기 헤드 부분 (제출 버튼과 글쓰기 글자) 블록 스타일링
 // scss문법을 쓰고 싶어서... 일단 놔뒀는데 나중에 css 로 옮겨줄 것
 const CreateHeadBlock = styled.div`
-    display: flex;
-    // padding-top: 12px;
-    padding-bottom: 14px;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 1px solid #e9ecef;
-    position: relative;
+  display: flex;
+  // padding-top: 12px;
+  padding-bottom: 14px;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #e9ecef;
+  position: relative;
 
-    // scss 문법
-    h2 {
-        margin: 0; 
-        font-size: 17px;
-        color: #343a40;
-    }
-    
+  // scss 문법
+  h2 {
+    margin: 0;
+    font-size: 17px;
+    color: #343a40;
+  }
 `;
 
 const CreateButton = styled.button`
-    position: absolute;
-    margin-left: 80%;
+  position: absolute;
+  margin-left: 80%;
 `;
 
 // 부모요소를 position: relative;
@@ -45,48 +44,59 @@ const CreateButton = styled.button`
 // absolute : 부모(조상) 요소를 기준으로 배치
 // 자세한 설명 : https://creamilk88.tistory.com/197
 
-
-function CreateList({setCreate}) {
-
-  const [title, setTitle] = useState(''); //기본값 공백
-  const [content, setContent] = useState(''); //기본값 공백
+function CreateList({ setCreate }) {
+  const [title, setTitle] = useState(""); //기본값 공백
+  const [content, setContent] = useState(""); //기본값 공백
 
   //제출 버튼 클릭하면 input 박스에 적힌 내용이 Main(b 영역)에 들어가도록 구현하고 싶음
   //일단 onClick부터 설정해보고 있음 (아직 미완성)
   //todolist 참고하여 만들고 있기 때문에 Context를 만들던지, Context 없이 진행할지... 선택해야함
   //setCreate props는 layout/Header.jsx 에서 받아옵니당
   const onClick = (e) => {
-    e.preventDefault(); //동작 중단. 
-    // 창 새로고침이나 링크 이동이 preventDefault를 통해 동작 중단됨
-
     //제출 버튼 onClick 이벤트 발생했을 때 dispatch
     dispatch({
-      type: 'CREATE',
+      type: "CREATE",
       community: {
         id: nextId.current,
         title: title,
-        content: content
-      }
+        content: content,
+      },
     });
-    setTitle(''); //공백처리
-    setContent(''); //공백처리
+    setTitle(""); //공백처리
+    setContent(""); //공백처리
     setCreate(false); //닫아줘야하므로
     nextId.current += 1; //id 값 +1
   };
 
   const dispatch = useCommunityDispatch();
   const nextId = useCommunityNextId();
-
+  const onChangeTitle = (e) => setTitle(e.target.value);
+  const onChangeContent = (e) => setContent(e.target.value);
   return (
     <>
       {/* onClick 하면 input 박스에 적힌 내용이 main에 도출되도록 이벤트 주고 싶은데 좀 쉽게 전달하고 싶어서(?) Head와 List를 합쳤다 */}
       <CreateHeadBlock>
-          <h2>글쓰기</h2>
-          <CreateButton onClick={onClick}>제출</CreateButton>
+        <h2>글쓰기</h2>
+        <CreateButton onClick={onClick}>제출</CreateButton>
       </CreateHeadBlock>
       <CreateListBlock>
-        <input title={title} className='search-box' type="text" name="title" placeholder="제목" />
-        <input content={content} type="text" name="content" placeholder="어떤 여행을 하고 오셨나요?" />
+        <input
+          title={title}
+          className="search-box"
+          type="text"
+          name="title"
+          placeholder="제목"
+          value={title}
+          onChange={onChangeTitle}
+        />
+        <input
+          content={content}
+          type="text"
+          name="content"
+          placeholder="어떤 여행을 하고 오셨나요?"
+          value={content}
+          onChange={onChangeContent}
+        />
       </CreateListBlock>
     </>
   );

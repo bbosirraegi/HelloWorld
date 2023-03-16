@@ -37,9 +37,10 @@ a {
 
 .a-container {
   display: flex;
+  /* border 밖으로 넘치지 않게 해주는 속성 */
   box-sizing: border-box;
   flex-direction: column;
-  width: 60%;
+  /* width: 60%; */
   text-align: left;
 }
 
@@ -87,7 +88,7 @@ a {
 
 .mainlayout-b {
   flex-basis: 0; /* 아이템의 기본 크기 설정 */
-  flex-grow: 2.5;
+  flex-grow: 1.5;
   display: flex;
   flex-direction: column;
 }
@@ -113,10 +114,11 @@ a {
 /**/
 .mainlayout-c {
   flex-basis: 0; /* 아이템의 기본 크기 설정 */
-  flex-grow: 1.2;
+  flex-grow: 1;
   border-left: 1px solid lightgray;
   display: flex;
+  padding-left: 40px;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   /* align-items, justify-content 는 display:flex 와 세트! */
 }

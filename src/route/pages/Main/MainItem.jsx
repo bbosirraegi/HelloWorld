@@ -1,7 +1,6 @@
-import React from 'react'
-import styled from 'styled-components';
-import { useCommunityDispatch } from './../../../Context';
-
+import React from "react";
+import styled from "styled-components";
+import { useCommunityDispatch } from "./../../../Context";
 
 const CommunityItem = styled.div`
   display: flex;
@@ -21,14 +20,14 @@ const CommunityItem = styled.div`
 `;
 
 function MainItem({ title, content }) {
-    // const dispatch = useCommunityDispatch();
-
-    return (
-        <CommunityItem>
-            <div>{title}</div>
-            <div>{content}</div>
-        </CommunityItem>
-    )
+  // const dispatch = useCommunityDispatch();
+  console.log(title, content);
+  return (
+    <CommunityItem>
+      <div>{title}</div>
+      <div>{content}</div>
+    </CommunityItem>
+  );
 }
 
-export default MainItem
+export default MainItem;

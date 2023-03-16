@@ -21,6 +21,7 @@ const TopicContainer = () => {
         "vietnam/v_food_6.jpg",
         "vietnam/v_food_7.jpg",
       ],
+      /* comment에 comment속성 추가해주기 */
       comments: [
         {
           commentId: 0,

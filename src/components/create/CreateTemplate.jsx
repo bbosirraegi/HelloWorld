@@ -18,11 +18,13 @@ const CreateTemplateBlock = styled.div`
   // position: absolute;
   position: fixed;
   // 모달창은 fixed 사용해주기(?)
+  // top: 10;
 
   background: white;
   border-radius: 16px; /* 테두리 둥글게 */
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3); /* rgba: 투명도 설정 */
 
+  top: 10%;
   left: 35%;
 
   display: flex;

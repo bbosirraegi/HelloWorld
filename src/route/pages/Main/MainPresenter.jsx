@@ -1,8 +1,8 @@
-import React from 'react'
-import MainHeadline from './components/MainHeadline'
-import styled from 'styled-components';
-import MainItem from './MainItem';
-import { useCommunityState } from '../../../Context';
+import React from "react";
+import MainHeadline from "./components/MainHeadline";
+import styled from "styled-components";
+import MainItem from "./MainItem";
+import { useCommunityState } from "../../../Context";
 
 const CommunityBlock = styled.div`
   display: flex;
@@ -12,21 +12,19 @@ const CommunityBlock = styled.div`
   justify-content: center;
 `;
 
-
 function MainPresenter() {
-
   const communitys = useCommunityState();
-
+  console.log(communitys);
   return (
     <CommunityBlock>
-      {communitys.map(community => 
-        <MainItem  // community 값 보내주기
+      {communitys.map((community) => (
+        <MainItem // community 값 보내주기
           key={community.id} // key값 필수
           id={community.id}
           title={community.title}
           content={community.content}
         />
-      )}
+      ))}
     </CommunityBlock>
   );
 }
