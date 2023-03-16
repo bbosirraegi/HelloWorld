@@ -24,7 +24,7 @@ const TopicContainer = () => {
       comments: [
         {
           commentId: 0,
-          responseTo: "root",
+          responseTo: { user: "root", preNum: null },
           userInfo: {
             nickname: "두근두근한 치즈피자",
             profile: "/image/temp.jpg",
@@ -36,7 +36,7 @@ const TopicContainer = () => {
         },
         {
           commentId: 1,
-          responseTo: "두근두근한 치즈피자",
+          responseTo: { user: "두근두근한 치즈피자", preNum: 0 },
           userInfo: {
             nickname: "이불 속에 파묻힌 햄스터",
             profile: "/image/hamster.jpg",

@@ -15,7 +15,7 @@ const CommentsTemplate = styled.div`
 
 /* 이미지 첨부하고, 댓글 추가하는 form style */
 const Form = styled.form`
-  height: 40px;
+  height: 30px;
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -42,7 +42,7 @@ const AttatchImage = styled.label`
 
 /* 댓글 입력창 style */
 const CommentsInput = styled.input`
-  height: 28px;
+  height: 22px;
   display: flex;
   flex: 1;
   outline: none;
@@ -65,15 +65,18 @@ const SendButton = styled.div`
 `;
 
 /* 이미지 preview */
-const ImagePreview = styled.img`
+const ImagePreview = styled.div`
   width: 50px;
   height: 50px;
-  display: block;
   margin-left: 10px;
-  border-radius: 50%;
+  border-radius: 50px;
+  background: url(${(props) => props.imgUrl});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 `;
 
-const CreateComments = () => {
+const CreateComments = ({ placeholder = "" }) => {
   /* state */
   const [insertImage, setInsertImage] = useState(false);
   const [imgFile, setImgFile] = useState("");
@@ -118,7 +121,7 @@ const CreateComments = () => {
           type="text"
           name="comment"
           onClick={toggleInsertImage}
-          placeholder="여행자님의 의견을 듣고 싶어요!"
+          placeholder={placeholder}
         />
         <SendButton>
           <RiSendPlane2Fill />
@@ -126,7 +129,7 @@ const CreateComments = () => {
       </Form>
       {insertImage && (
         <ImagePreview
-          src={imgFile ? imgFile : "/image/previewImg.png"}
+          imgUrl={imgFile ? imgFile : "/image/previewImg.png"}
           alt="프리뷰 이미지"
         />
       )}

@@ -4,7 +4,7 @@ import TopicContentsTemplate from "./TopicContentsTemplate";
 import TopicUnitPart from "./TopicUnitPart";
 import FeedBack from "../components/FeedBack";
 import CreateComments from "../components/CreateComments";
-import TopicCommentTemplate from "../TopicComment";
+import TopicCommentTemplate from "../components/TopicComment/TopicCommentTemplate";
 
 const TopicDetailTemplate = styled.div`
   width: 100%;
@@ -20,6 +20,11 @@ const ImageTemplate = styled.div`
   height: 30%;
   margin: 0;
   padding: 0;
+`;
+
+const Image = styled.img`
+  width: calc(100% / 5);
+  height: 100%;
 `;
 
 const FeedbackPart = styled.div`
@@ -40,10 +45,7 @@ const TopicDetail = ({ topic }) => {
     <TopicDetailTemplate>
       <ImageTemplate>
         {images.map((id) => (
-          <img
-            style={{ width: "136px", height: "100%" }}
-            src={`/image/${id}`}
-          />
+          <Image src={`/image/${id}`} />
         ))}
       </ImageTemplate>
       <TopicContentsTemplate>
@@ -52,7 +54,7 @@ const TopicDetail = ({ topic }) => {
           <FeedBack num={comments.length} des={"댓글"} />
           <FeedBack num={bookmark} des={"북마크"} />
         </FeedbackPart>
-        <CreateComments />
+        <CreateComments placeholder="여행자님의 의견을 듣고 싶어요!" />
       </TopicContentsTemplate>
       <TopicCommentTemplate comments={comments} />
     </TopicDetailTemplate>
@@ -74,7 +76,7 @@ TopicDetail.defaultProps = {
     comments: [
       {
         commentId: 0,
-        responseTo: "root",
+        responseTo: { user: "root", preNum: null },
         userInfo: {
           nickname: "두근두근한 치즈피자",
           profile: "/image/temp.jpg",
@@ -86,7 +88,7 @@ TopicDetail.defaultProps = {
       },
       {
         commentId: 1,
-        responseTo: 0,
+        responseTo: { user: "두근두근한 치즈피자", preNum: 0 },
         userInfo: {
           nickname: "이불 속에 파묻힌 햄스터",
           profile: "/image/hamster.jpg",

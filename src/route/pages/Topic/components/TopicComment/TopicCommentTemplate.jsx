@@ -5,7 +5,6 @@ import CommentFeedback from "./CommentFeedback";
 
 /* 댓글에 들어가는 모든 컴포넌트를 모아주는 블록 */
 const TopicCommentTemplateBlock = styled.div`
-  background-color: skyblue;
   width: 85%;
   padding: 10px;
   margin-left: auto;
