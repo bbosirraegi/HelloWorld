@@ -23,7 +23,7 @@ function CommunityReducer(state, action) {
 }
 
 //Context
-const CommunityStateContext = createContext(); // state 위한 context
+const CommunityStateContext = createContext(); // state 위한 context 
 const CommunityDispatchContext = createContext(); // dispatch 위한 context
 const CommunityNextIdContext = createContext(); // nextid 위한 context
 
@@ -54,6 +54,7 @@ export function CommunityProvider({ children }) {
 // 이렇게 해놓으면 나중에 그냥 useCommunityState 만 불러와서 쓰면 된다.
 export function useCommunityState() {
     // 에러처리
+
     const context = useContext(CommunityStateContext);
     if (!context) {
       throw new Error('Cannot find CommunityStateContext');

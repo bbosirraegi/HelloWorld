@@ -15,6 +15,9 @@ const CommunityItem = styled.div`
 
   width: 80%;
   height: 300px;
+
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 
 function MainItem({ title, content }) {
