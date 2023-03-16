@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useCommunityDispatch, useCommunityNextId } from './../../Context';
 
 // 글쓰기 리스트 (헤드 뺀 나머지) 블록 스타일링
 const CreateListBlock = styled.div`
   flex: 1; // 자신이 차지할 수 있는 모든 영역 차지
   padding: 20px 32px;
   padding-bottom: 48px;
-  overflow-y: auto; // 항목 많아지게 되면 스크롤바
+  //overflow-y: auto; // 항목 많아지게 되면 스크롤바
   display: flex;
   flex-direction: column; //input 박스들 column 형태로 정렬
   /* background: gray; //사이즈 조정이 잘 되고 있는지 확인하기 위한 임시 스타일 */
@@ -47,37 +48,46 @@ const CreateButton = styled.button`
 
 function CreateList({setCreate}) {
 
-  const [value, setValue] = useState(''); //기본값 공백
+  const [title, setTitle] = useState(''); //기본값 공백
+  const [content, setContent] = useState(''); //기본값 공백
 
   //제출 버튼 클릭하면 input 박스에 적힌 내용이 Main(b 영역)에 들어가도록 구현하고 싶음
   //일단 onClick부터 설정해보고 있음 (아직 미완성)
   //todolist 참고하여 만들고 있기 때문에 Context를 만들던지, Context 없이 진행할지... 선택해야함
   //setCreate props는 layout/Header.jsx 에서 받아옵니당
   const onClick = (e) => {
+    e.preventDefault(); //동작 중단. 
+    // 창 새로고침이나 링크 이동이 preventDefault를 통해 동작 중단됨
+
     //제출 버튼 onClick 이벤트 발생했을 때 dispatch
     dispatch({
-      list: {
+      type: 'CREATE',
+      community: {
         id: nextId.current,
-        title: value,
-        content: value
+        title: title,
+        content: content
       }
-    })
+    });
+    setTitle(''); //공백처리
+    setContent(''); //공백처리
     setCreate(false); //닫아줘야하므로
-    setValue(''); //공백처리
     nextId.current += 1; //id 값 +1
   };
 
+  const dispatch = useCommunityDispatch();
+  const nextId = useCommunityNextId();
+
   return (
     <>
-    {/* onClick 하면 input 박스에 적힌 내용이 main에 도출되도록 이벤트 주고 싶은데 좀 쉽게 전달하고 싶어서(?) Head와 List를 합쳤다 */}
-    <CreateHeadBlock>
-        <h2>글쓰기</h2>
-        <CreateButton >제출</CreateButton>
-    </CreateHeadBlock>
-    <CreateListBlock>
-      <input className='search-box' type="text" name="title" placeholder="제목" />
-      <input type="text" name="content" placeholder="어떤 여행을 하고 오셨나요?" />
-    </CreateListBlock>
+      {/* onClick 하면 input 박스에 적힌 내용이 main에 도출되도록 이벤트 주고 싶은데 좀 쉽게 전달하고 싶어서(?) Head와 List를 합쳤다 */}
+      <CreateHeadBlock>
+          <h2>글쓰기</h2>
+          <CreateButton onClick={onClick}>제출</CreateButton>
+      </CreateHeadBlock>
+      <CreateListBlock>
+        <input title={title} className='search-box' type="text" name="title" placeholder="제목" />
+        <input content={content} type="text" name="content" placeholder="어떤 여행을 하고 오셨나요?" />
+      </CreateListBlock>
     </>
   );
 }
