@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import CreateComments from "../components/CreateComments";
+import CreateComments from "../CreateComments";
+import ReplyTemplate from "./ReplyTemplate";
+import { VscTriangleUp, VscTriangleDown } from "react-icons/vsc";
 
 /* 댓글달기, 좋아요 template 블록 */
 const FeedbackBlock = styled.div`
@@ -30,11 +32,30 @@ const HeartBtnBlock = styled.div`
   display: flex;
 `;
 
-const CommentFeedback = ({ heart }) => {
+/* 대댓글 토글 Block */
+const ReplyTemplateBlock = styled.div`
+  padding: 5px;
+  font-size: 12px;
+  color: #2e86de;
+  display: flex;
+  flex-direction: row;
+`;
+
+const ReplyToggle = styled.div`
+  margin-left: 5px;
+`;
+
+const CommentFeedback = ({ comment }) => {
   const [addReply, setAddReply] = useState(false);
+  const [reply, setReply] = useState(false);
+  const replyToggle = () => setReply(!reply);
   const toAddReply = () => setAddReply(!addReply);
+  const replyNum = "0";
+  const heart = comment.heart;
+  const author = comment.userInfo.nickname;
+  const placeholder = `${author}님에게 댓글 달기`;
   return (
-    <div>
+    <>
       <FeedbackBlock>
         <AddToggle onClick={toAddReply}>
           {addReply ? "댓글 숨기기" : "댓글 달기"}
@@ -50,8 +71,16 @@ const CommentFeedback = ({ heart }) => {
           <div>{heart}</div>
         </HeartBlock>
       </FeedbackBlock>
-      {addReply && <CreateComments />}
-    </div>
+      {addReply && <CreateComments placeholder={placeholder} />}
+      <ReplyTemplateBlock onClick={replyToggle}>
+        {reply ? <VscTriangleUp /> : <VscTriangleDown />}
+        <ReplyToggle>
+          {!reply ? "답글 숨기기" : `답글 ${replyNum}개 보기`}
+        </ReplyToggle>
+      </ReplyTemplateBlock>
+      {/* 수정 필요!! */}
+      {reply && <ReplyTemplate comment={comment} />}
+    </>
   );
 };
 

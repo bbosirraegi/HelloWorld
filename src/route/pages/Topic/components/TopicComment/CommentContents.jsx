@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Avatar from "../components/Avatar";
-import Profile from "../components/Profile";
+import Avatar from "../Avatar";
+import Profile from "../Profile";
 import CommentFeedback from "./CommentFeedback";
 
 /* 댓글 영역 template */
@@ -59,13 +59,10 @@ const CommentTextBlock = styled.div`
 
 // 댓글 컨텐츠 컴포넌트
 const CommentContents = ({ comment }) => {
-  // const userInfo = comments.userInfo
-  // console.log(comment);
   const userInfo = comment.userInfo;
   const img = comment.imgUrl;
   const date = comment.date;
   const text = comment.comment;
-  const heart = comment.heart;
   return (
     <CommentTemplateBlock>
       <AvatarBlock>
@@ -83,7 +80,7 @@ const CommentContents = ({ comment }) => {
         </CommentInfo>
         {img && <CommentImg img={img} />}
         <CommentTextBlock>{text}</CommentTextBlock>
-        <CommentFeedback heart={heart} />
+        <CommentFeedback comment={comment} />
       </CommentBlock>
     </CommentTemplateBlock>
   );
