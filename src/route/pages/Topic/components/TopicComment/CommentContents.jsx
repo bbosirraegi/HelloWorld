@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Avatar from "../Avatar";
 import Profile from "../Profile";
 import CommentFeedback from "./CommentFeedback";
+import TopicCommentTemplate from "./TopicCommentTemplate";
 
 /* 댓글 영역 template */
 const CommentTemplateBlock = styled.div`
@@ -63,6 +64,11 @@ const CommentContents = ({ comment }) => {
   const img = comment.imgUrl;
   const date = comment.date;
   const text = comment.comment;
+  const isRoot = comment.isRoot;
+  const heart = comment.heart;
+  const reply = comment.reply;
+  console.log("isRoot", isRoot);
+
   return (
     <CommentTemplateBlock>
       <AvatarBlock>
@@ -80,7 +86,12 @@ const CommentContents = ({ comment }) => {
         </CommentInfo>
         {img && <CommentImg img={img} />}
         <CommentTextBlock>{text}</CommentTextBlock>
-        <CommentFeedback comment={comment} />
+        <CommentFeedback
+          heart={heart}
+          isRoot={isRoot}
+          author={userInfo.nickname}
+          reply={reply}
+        />
       </CommentBlock>
     </CommentTemplateBlock>
   );

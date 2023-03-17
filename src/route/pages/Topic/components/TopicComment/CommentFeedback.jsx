@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import CreateComments from "../CreateComments";
 import ReplyTemplate from "./ReplyTemplate";
+import CommentContents from "./CommentContents";
 import { VscTriangleUp, VscTriangleDown } from "react-icons/vsc";
+import { useParams } from "react-router-dom";
 
 /* 댓글달기, 좋아요 template 블록 */
 const FeedbackBlock = styled.div`
@@ -24,6 +26,10 @@ const HeartBlock = styled.div`
   align-items: center;
   padding: 5px;
   font-size: 15px;
+  &:hover {
+    opacity: 0.7;
+    transition: 0.3s;
+  }
 `;
 
 /* 좋아요 버튼 */
@@ -45,42 +51,63 @@ const ReplyToggle = styled.div`
   margin-left: 5px;
 `;
 
-const CommentFeedback = ({ comment }) => {
+const CommentFeedback = ({ heart, isRoot, author, reply }) => {
+  /* State */
   const [addReply, setAddReply] = useState(false);
-  const [reply, setReply] = useState(false);
-  const replyToggle = () => setReply(!reply);
+  const [showReply, setShowReply] = useState(false);
+  const [heartColor, setHeartColor] = useState(false);
+  /* function */
   const toAddReply = () => setAddReply(!addReply);
-  const replyNum = "0";
-  const heart = comment.heart;
-  const author = comment.userInfo.nickname;
-  const placeholder = `${author}님에게 댓글 달기`;
+  const toShowReply = () => setShowReply(!showReply);
+  const reversal = () => setHeartColor(!heartColor);
+
+  /* variable */
+  const placeholder = `${author}님에게 답글 달기`;
+
+  /* render */
   return (
-    <>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <FeedbackBlock>
-        <AddToggle onClick={toAddReply}>
-          {addReply ? "댓글 숨기기" : "댓글 달기"}
-        </AddToggle>
-        <HeartBlock>
-          <HeartBtnBlock>
-            {heart ? (
-              <AiFillHeart style={{ color: "#ee5253" }} />
-            ) : (
-              <AiOutlineHeart />
-            )}
-          </HeartBtnBlock>
-          <div>{heart}</div>
+        {isRoot && (
+          <AddToggle onClick={toAddReply}>
+            {addReply ? "댓글 숨기기" : "댓글달기"}
+          </AddToggle>
+        )}
+        <HeartBlock onClick={reversal}>
+          {heartColor ? (
+            <AiFillHeart style={{ color: "#ee5253", marginRight: "5px" }} />
+          ) : (
+            <AiOutlineHeart style={{ marginRight: "5px" }} />
+          )}
+          {heart}
         </HeartBlock>
       </FeedbackBlock>
-      {addReply && <CreateComments placeholder={placeholder} />}
-      <ReplyTemplateBlock onClick={replyToggle}>
-        {reply ? <VscTriangleUp /> : <VscTriangleDown />}
-        <ReplyToggle>
-          {!reply ? "답글 숨기기" : `답글 ${replyNum}개 보기`}
-        </ReplyToggle>
-      </ReplyTemplateBlock>
-      {/* 수정 필요!! */}
-      {reply && <ReplyTemplate comment={comment} />}
-    </>
+      {addReply && (
+        <div>
+          <CreateComments placeholder={placeholder} />
+          <ReplyTemplateBlock onClick={toShowReply}>
+            {showReply ? (
+              <>
+                <VscTriangleDown style={{ marginRight: "5px" }} />
+                <div>답글 숨기기</div>
+              </>
+            ) : (
+              <>
+                <VscTriangleUp style={{ marginRight: "5px" }} />
+                <div>답글 {reply.length}개 보기</div>
+              </>
+            )}
+          </ReplyTemplateBlock>
+          {showReply && (
+            <ReplyTemplate>
+              {reply.map((one) => (
+                <CommentContents key={one.commentId} comment={one} />
+              ))}
+            </ReplyTemplate>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 

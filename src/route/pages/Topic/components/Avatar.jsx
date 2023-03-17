@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Profile from "./Profile";
 
 /* Avatar 이미지 & 크기 고정하기 */
 const AvatarImage = styled.div`
@@ -11,6 +10,7 @@ const AvatarImage = styled.div`
   background: url(${(props) => props.imgUrl});
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
   cursor: pointer;
 `;
 

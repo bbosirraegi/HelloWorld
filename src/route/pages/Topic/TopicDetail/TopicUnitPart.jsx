@@ -26,13 +26,13 @@ const Title = styled.p`
 const Description = styled.p`
   font-weight: 100;
   margin: 0;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-size: 15px;
   color: #84817a;
 `;
 
 const MarkButton = styled.div`
-  width: 20%;
+  width: 5%;
   padding: 10px;
   display: flex;
   flex-direction: column;

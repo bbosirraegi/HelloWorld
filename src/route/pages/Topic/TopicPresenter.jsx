@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import CreateTemplate from "../../../components/create/CreateTemplate";
-import TopicCreate from "./TopicCreate";
 import TopicPreview from "./TopicPreview";
+import { useTopicState } from "../../../Context";
 
 const TopicDisplayBlock = styled.div`
   width: 100wh;
@@ -38,15 +37,21 @@ const RecommentBtn = styled.button`
   }
 `;
 
-const TopicPresenter = ({ topics }) => {
+const TopicPresenter = () => {
   const [showModal, setShowModal] = useState(false);
+  const topics = useTopicState();
   const isAdmin = true;
   return (
     <TopicDisplayBlock>
-      {/* 각 아이템의 key는 현재시간 + id로 한다. */}
-      <TopicPreview topic={topics[0]} />
-      <TopicPreview topic={topics[1]} />
-      <TopicPreview topic={topics[2]} />
+      {/* 각 아이템의 key는 현재시간 + random로 한다. */}
+      {topics.map((topic) => (
+        <TopicPreview
+          key={
+            parseInt(Date.now().toString()) + Math.floor(Math.random() * 100)
+          }
+          topic={topic}
+        />
+      ))}
       {/* <CreateTemplate /> */}
       {/* 토픽 추천하기*/}
       {/* <CreateTemplate /> */}

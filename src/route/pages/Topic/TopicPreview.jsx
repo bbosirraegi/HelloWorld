@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { BsBookmark, BsFillBookmarkFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import CreateTemplate from "../../../components/create/CreateTemplate";
 
 const PreviewTemplateBlock = styled.div`
   width: 85%;
