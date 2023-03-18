@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import MainPresenter from "../../route/pages/Main/MainPresenter";
 import { useCommunityDispatch, useCommunityNextId } from "./../../Context";
 
 // 글쓰기 리스트 (헤드 뺀 나머지) 블록 스타일링
