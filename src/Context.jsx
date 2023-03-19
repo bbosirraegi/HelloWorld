@@ -94,7 +94,7 @@ export function useCommunityState() {
 export function useCommunityDispatch() {
   const context = useContext(CommunityDispatchContext);
   if (!context) {
-    throw new Error("Cannot find CommunityProvider");
+    throw new Error("Cannot find AnyProvider");
   }
   return context;
 }
@@ -102,7 +102,7 @@ export function useCommunityDispatch() {
 export function useCommunityNextId() {
   const context = useContext(CommunityNextIdContext);
   if (!context) {
-    throw new Error("Cannot find CommunityProvider");
+    throw new Error("Cannot find AnyProvider");
   }
   return context;
 }
@@ -200,7 +200,7 @@ const TopicDispatchContext = createContext();
 
 function errorHandler(context) {
   if (!context) {
-    throw new Error("CANNOT FIND TopicProvider");
+    throw new Error("CANNOT FIND AnyProvider");
   }
   return context;
 }
