@@ -19,7 +19,7 @@ const ModalCloseBtn = styled.div`
 `;
 
 const TitleBlock = styled.div`
-  fontsize: "12px";
+  fontsize: 12px;
 `;
 
 const SubmitBtn = styled.button`
@@ -39,15 +39,14 @@ const SubmitBtn = styled.button`
   }
 `;
 
-const ModalHeader = ({ closeModal, onSubmitRecommend, title }) => {
-  console.log(onSubmitRecommend());
+const ModalHeader = ({ closeModal, title }) => {
   return (
     <ModalHeaderBlock>
       <ModalCloseBtn onClick={closeModal}>
         <GrFormClose />
       </ModalCloseBtn>
       <TitleBlock>{title}</TitleBlock>
-      <SubmitBtn onClick={onSubmitRecommend}>작성완료</SubmitBtn>
+      <SubmitBtn>작성완료</SubmitBtn>
     </ModalHeaderBlock>
   );
 };
