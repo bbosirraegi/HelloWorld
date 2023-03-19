@@ -99,22 +99,6 @@ const TopicPresenter = () => {
   const setCreate = () => setShowModal(!showModal);
   const topics = useTopicState();
   const isAdmin = true;
-  const dispatch = useTopicDispatch();
-  const onSubmitRecommend = () => {
-    dispatch({
-      type: "TOPIC_RECOMMENDATION",
-      recommendation: {
-        recoId: Math.floor(Math.random() * 1000),
-        subject: subject,
-        contents: content,
-        nickname: nickname,
-      },
-    });
-    console.log("click");
-    setSubject("");
-    setContent("");
-    onCloseModal();
-  };
   return (
     <TopicDisplayBlock>
       {/* 각 아이템의 key는 현재시간 + random로 한다. */}
@@ -142,11 +126,7 @@ const TopicPresenter = () => {
       )}
       {showModal && (
         <ModalTemplate closeModal={onCloseModal}>
-          <ModalHeader
-            title="토픽 추천하기"
-            submit={onSubmitRecommend}
-            closeModal={onCloseModal}
-          />
+          <ModalHeader title="토픽 추천하기" closeModal={onCloseModal} />
           <ModalContentsTemplateBlock>
             <ModalUserInfo imgUrl={profileImg} nickname={nickname} />
             <ModalSubjectInput

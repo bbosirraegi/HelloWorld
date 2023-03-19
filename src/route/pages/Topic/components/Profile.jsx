@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Name = styled.div`
-  font-size: ${(props) => props.fontSize}
+  font-size: ${(props) => props.fontSize};
   cursor: pointer;
 `;
 
