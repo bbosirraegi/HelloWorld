@@ -10,6 +10,7 @@ import {
   SignOut,
   TopicDetail,
 } from "./pages";
+import ModalTest from "./pages/Topic/components/Modal";
 
 const IndexRouter = () => {
   return (
@@ -29,6 +30,7 @@ const IndexRouter = () => {
           <Route path="signout" element={<SignOut />} />
           <Route path=":user_id" element={<Mypage />} />
         </Route>
+        <Route path="modal_test" element={<ModalTest />} />
       </Route>
     </Routes>
   );
