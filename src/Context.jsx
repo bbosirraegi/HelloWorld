@@ -3,7 +3,7 @@ import React, { useReducer, createContext, useContext, useRef } from "react";
 // 일단 박아넣은 예시들
 // 기본 객체 만들어주기. 배열
 /* FOR COMMUNITY */
-const Communityinitial = [
+const initialCommunity = [
   {
     id: 1,
     title: "강원도 여행가기",
@@ -21,6 +21,7 @@ const Communityinitial = [
   },
 ];
 
+/* Community REDUCER */
 // CREATE 생성
 // 액션들에 대해서 상태 업데이트
 function CommunityReducer(state, action) {
@@ -37,15 +38,21 @@ function CommunityReducer(state, action) {
   }
 }
 
-//Context
+/* Community CONTEXT */
 const CommunityStateContext = createContext(); // state 위한 context
 const CommunityDispatchContext = createContext(); // dispatch 위한 context
 const CommunityNextIdContext = createContext(); // nextid 위한 context
 
+
+
+
 // 컴포넌트
-export function CommunityProvider({ children }) {
-  const [state, dispatch] = useReducer(CommunityReducer, Communityinitial);
-  // CommunityReducer, 초기상태(Communityinitial)
+// Provider 다 합쳐서 AnyProvider 로 이름 바꿔보았어용
+export function AnyProvider({ children }) {
+  const [communitystate, communitydispatch] = useReducer(CommunityReducer, initialCommunity);
+  // CommunityReducer, 초기상태(initialCommunity)
+
+  const [topicstate, topicdispatch] = useReducer(topicReducer, initialTopic);
 
   const nextId = useRef(4);
   // 현재 4개 들어있으니 그 다음인 5로 초기화
@@ -53,16 +60,25 @@ export function CommunityProvider({ children }) {
   return (
     // State와 Dispath 중 뭐를 바깥으로 해줘도 상관없다.
     // value 값 설정해줘야한다.
-    <CommunityStateContext.Provider value={state}>
-      <CommunityDispatchContext.Provider value={dispatch}>
+    <CommunityStateContext.Provider value={communitystate}>
+      <CommunityDispatchContext.Provider value={communitydispatch}>
         <CommunityNextIdContext.Provider value={nextId}>
+          <TopicStateContext.Provider value={topicstate}>
+            <TopicDispatchContext.Provider value={topicdispatch}>
           {children}
+            </TopicDispatchContext.Provider>
+           </TopicStateContext.Provider>
         </CommunityNextIdContext.Provider>
       </CommunityDispatchContext.Provider>
     </CommunityStateContext.Provider>
   );
 }
 
+
+
+
+
+/* Community CUSTOM HOOK */
 // 3개의 커스텀 훅
 // 이렇게 해놓으면 나중에 그냥 useCommunityState 만 불러와서 쓰면 된다.
 export function useCommunityState() {
@@ -70,7 +86,7 @@ export function useCommunityState() {
 
   const context = useContext(CommunityStateContext);
   if (!context) {
-    throw new Error("Cannot find CommunityStateContext");
+    throw new Error("Cannot find AnyProvider");
   }
   return context;
 }
@@ -78,7 +94,7 @@ export function useCommunityState() {
 export function useCommunityDispatch() {
   const context = useContext(CommunityDispatchContext);
   if (!context) {
-    throw new Error("Cannot find CommunityDispatchContext");
+    throw new Error("Cannot find CommunityProvider");
   }
   return context;
 }
@@ -86,10 +102,14 @@ export function useCommunityDispatch() {
 export function useCommunityNextId() {
   const context = useContext(CommunityNextIdContext);
   if (!context) {
-    throw new Error("Cannot find CommunityNextIdContext");
+    throw new Error("Cannot find CommunityProvider");
   }
   return context;
 }
+
+
+
+
 
 /* FOR TOPIC */
 /* TOPIC INITIAL STATE */
@@ -177,17 +197,6 @@ function topicReducer(state, action) {
 const TopicStateContext = createContext();
 const TopicDispatchContext = createContext();
 
-/* TOPIC PROVIDER */
-export function TopicProvider({ children }) {
-  const [state, dispatch] = useReducer(topicReducer, initialTopic);
-  return (
-    <TopicStateContext.Provider value={state}>
-      <TopicDispatchContext.Provider value={dispatch}>
-        {children}
-      </TopicDispatchContext.Provider>
-    </TopicStateContext.Provider>
-  );
-}
 
 function errorHandler(context) {
   if (!context) {

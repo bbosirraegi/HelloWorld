@@ -1,16 +1,14 @@
 import React from "react";
 import IndexRouter from "./route";
 import { MainLayout } from "./components";
-import { CommunityProvider, TopicProvider } from "./Context";
+import { AnyProvider } from "./Context";
 import "./App.css";
 
 const App = () => {
   return (
-    <TopicProvider>
-      <CommunityProvider>
+      <AnyProvider>
         <IndexRouter />
-      </CommunityProvider>
-    </TopicProvider>
+      </AnyProvider>
   );
 };
 
