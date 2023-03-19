@@ -7,6 +7,7 @@ const AvatarImage = styled.div`
   height: ${(props) => props.size};
   aspect-ratio: 1/1;
   border-radius: 50%;
+  margin-right: 10px;
   background: url(${(props) => props.imgUrl});
   background-repeat: no-repeat;
   background-size: cover;

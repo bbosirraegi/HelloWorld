@@ -29,6 +29,8 @@ const CreateTemplateBlock = styled.div`
 
   display: flex;
   flex-direction: column; /* 위에서 아래 방향(컬럼 방향) 설정 */
+
+  overflow: hidden;
 `;
 
 // 상단의 X 부분 (close)

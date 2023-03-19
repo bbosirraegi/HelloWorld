@@ -148,6 +148,19 @@ const initialTopic = [
             imgUrl: "/image/vietnam/v_food_7.jpg",
             heart: 0,
           },
+          {
+            commentId: 2,
+            userInfo: {
+              nickname: "거울보는 포도",
+              profile:
+                "https://pbs.twimg.com/profile_images/731548506184286208/XtsD3VxB_400x400.jpg",
+            },
+            comment: "저는 월남쌈 맛있게 먹었어요😆",
+            isRoot: false,
+            imgUrl:
+              "https://statics.vinpearl.com/%EB%B2%A0%ED%8A%B8%EB%82%A8%EC%9D%8C%EC%8B%9D-12_1653752290.jpg",
+            heart: 1,
+          },
         ],
         imgUrl: "/image/vietnam/v_food_6.jpg",
         heart: 3,
@@ -187,9 +200,21 @@ const initialTopic = [
   },
 ];
 
+const topicRecommendation = [
+  {
+    recoId: 0,
+    subject: "국내 벚꽃 명소 알리기",
+    contents:
+      "안녕하세요!\n봄을 좋아하는 용감한 에펠탑이라고 합니다.\n날이 따뜻해서 그런지 경남 지역에는 벌써 벚꽃이 피었답니다:)\n그래서 벚꽃이 만발하기 전, 국내의 벚꽃 명소에 대해 회원님들과 이야기를 나눠 보고 싶습니다!",
+    nickname: "용감한 에펠탑",
+  },
+];
+
 /* TOPIC REDUCER */
 function topicReducer(state, action) {
   switch (action.type) {
+    case "TOPIC_RECOMMENDATION":
+      topicRecommendation.concat(action.recommendation);
   }
 }
 
