@@ -7,6 +7,7 @@ import CreateTemplate from "../create/CreateTemplate";
 import MypagemTemplate from "../mypage-m/MypagemTemplate";
 import MypagemList from "../mypage-m/MypagemList";
 // import CreateHead from '../create/CreateHead';
+import ModalTest from './../../route/pages/Topic/components/Modal/index';
 
 function Header() {
   const [create, setCreate] = useState(false); // 모달관리, 기본값 false
@@ -51,6 +52,7 @@ function Header() {
             {/* <CreateHead /> */}
             <CreateList setCreate={setCreate} />
           </CreateTemplate>
+          // <ModalTest />
         )}
       </div>
       {mypage && (

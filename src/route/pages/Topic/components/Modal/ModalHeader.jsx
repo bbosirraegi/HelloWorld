@@ -19,7 +19,7 @@ const ModalCloseBtn = styled.div`
 `;
 
 const TitleBlock = styled.div`
-  fontsize: 12px;
+  font-size: 15px;
 `;
 
 const SubmitBtn = styled.button`
