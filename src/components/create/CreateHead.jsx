@@ -4,27 +4,24 @@ import styled from "styled-components";
 import AiOutlineClose from "react-icons/ai";
 
 // 글쓰기 헤드 부분 (x와 글쓰기 글자) 블록 스타일링
-// scss문법을 쓰고 싶어서... 일단 놔뒀는데 나중에 css 로 옮겨줄 것
 const CreateHeadBlock = styled.div`
   display: flex;
-  // padding-top: 12px;
   padding-bottom: 14px;
   align-items: center;
   justify-content: center;
   border-bottom: 1px solid #e9ecef;
   position: relative;
+`;
 
-  // scss 문법
-  h2 {
-    margin: 0;
-    font-size: 17px;
-    color: #343a40;
-  }
+const TitleBlock = styled.div`
+  font-size: 15px;
 `;
 
 const CreateButton = styled.button`
-  position: absolute;
-  margin-left: 80%;
+  color: rgba(0, 0, 0, 0.7);
+  background-color: transparent;
+  font-size: 25px;
+  cursor: pointer;
 `;
 
 // 부모요소를 position: relative;
@@ -41,7 +38,7 @@ function CreateHead({ title }) {
       <Close onClick={closeCreate}>
         <AiOutlineClose />
       </Close>
-      <h2>{title}</h2>
+      <TitleBlock>{title}</TitleBlock>
       <CreateButton>제출</CreateButton>
     </CreateHeadBlock>
   );

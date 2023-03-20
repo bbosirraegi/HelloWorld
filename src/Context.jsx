@@ -59,7 +59,7 @@ export function AnyProvider({ children }) {
 
   return (
     // State와 Dispath 중 뭐를 바깥으로 해줘도 상관없다.
-    // value 값 설정해줘야한다.
+    // value 값 설정해줘야한다. 상태값 나타내는 state와 props 넘겨주는? dispatch
     <CommunityStateContext.Provider value={communitystate}>
       <CommunityDispatchContext.Provider value={communitydispatch}>
         <CommunityNextIdContext.Provider value={nextId}>
