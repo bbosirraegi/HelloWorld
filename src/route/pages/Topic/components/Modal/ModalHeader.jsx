@@ -39,14 +39,14 @@ const SubmitBtn = styled.button`
   }
 `;
 
-const ModalHeader = ({ closeModal, title }) => {
+const ModalHeader = ({ closeModal, submit, title }) => {
   return (
     <ModalHeaderBlock>
       <ModalCloseBtn onClick={closeModal}>
         <GrFormClose />
       </ModalCloseBtn>
       <TitleBlock>{title}</TitleBlock>
-      <SubmitBtn>작성완료</SubmitBtn>
+      <SubmitBtn onClick={submit}>작성완료</SubmitBtn>
     </ModalHeaderBlock>
   );
 };

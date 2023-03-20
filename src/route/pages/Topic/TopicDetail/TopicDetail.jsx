@@ -43,8 +43,8 @@ const TopicDetail = () => {
   const topic = topics[param];
   const images = topic.images;
   const comments = topic.comments;
-  console.log("댓글수", comments);
   const commentsLen = comments.length;
+  const on = "topic_detail";
 
   /* 임시지정 */
   const bookmark = 10;
@@ -66,7 +66,7 @@ const TopicDetail = () => {
           <FeedBack num={comments.length} des={"댓글"} />
           <FeedBack num={bookmark} des={"북마크"} />
         </FeedbackPart>
-        <CreateComments placeholder="여행자님의 의견을 듣고 싶어요!" />
+        <CreateComments on={on} placeholder="여행자님의 의견을 듣고 싶어요!" />
       </TopicContentsTemplate>
       {commentsLen ? <TopicCommentTemplate comments={comments} /> : null}
     </TopicDetailTemplate>

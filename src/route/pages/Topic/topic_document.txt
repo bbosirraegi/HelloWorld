@@ -46,7 +46,7 @@
 
 (4) 토픽 댓글 
 ==================================================================================================================
-댓글 저장방식 : [{댓글1},{댓글2},{댓글1 대댓글}...]
+댓글 저장방식 : [{{댓글1},[{댓글1 대댓글}]},{댓글2},...]
 참고 
 -> https://velog.io/@wkahd01/%EB%8C%80%EB%8C%93%EA%B8%80-%EA%B8%B0%EB%8A%A5-%EB%A7%8C%EB%93%A4%EA%B8%B0-React
 -----------------------------------------------------------------------------------------------------------------
@@ -80,4 +80,34 @@ comments:
     },
   ],
 ==================================================================================================================
-
+(5) 토픽 댓글 추가하기
+1) 댓글 작성 컴포넌트에서 data 가공해주기
+ ① 해당하는 토픽 가져와 비구조화 할당해주기
+ => 해당하는 토픽만 가져올 수 있다!
+ const state = useTopicState();
+ ② 현재 토픽의 id와 일치하는 topic을 state에서 가져오기!
+ const [변수명] = state.filter(topic=>topic.id===topic_id);  
+ cf)// const t2 = Object.assign({}, test); //객체 복사
+ ③ 새로운 COMMENT 배열 생성하기
+  const newComment = [
+    ④ 기존 TOPIC 댓글 객체들 불러오기
+    ...TARGET_TOPIC.comments,
+    ⑤ 삽입할 comment 객체 생성하기
+    {
+      commentId: 3,
+      userInfo: {
+        nickname: "관리자",
+        profile: "/image/hamster.jpg",
+      },
+      comment: commentInput,
+      isRoot: true,
+      imgUrl: imgFile,
+      heart: 0,
+    },
+  ];
+ 2) 새로운 댓글 배열 dispatch 해주기
+  dispatch({ type: "ADD_COMMENT", id: topic_id, comments: newComment });
+ 
+ 3) context에서 댓글 배열 대체해주기
+  case 'ADD_COMMENT':
+    return state.map(item=>item.id === action.id?{...item,comments:action.comments}:item)

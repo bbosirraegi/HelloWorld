@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Avatar from "./Avatar";
 import { IoImageOutline } from "react-icons/io5";
 import { RiSendPlane2Fill } from "react-icons/ri";
+import { useTopicDispatch, useTopicState } from "../../../../Context";
+import { useParams } from "react-router-dom";
 
 /* 댓글 추가 부분을 감싸는 전체 부분 */
 const CommentsTemplate = styled.div`
@@ -76,13 +78,16 @@ const ImagePreview = styled.div`
   background-position: center;
 `;
 
-const CreateComments = ({ placeholder = "" }) => {
+const CreateComments = ({ on = "", placeholder = "" }) => {
   /* state */
   const [insertImage, setInsertImage] = useState(false);
   const [imgFile, setImgFile] = useState("");
+  const [commentInput, setCommentInput] = useState("");
+  const topic_id = parseInt(useParams().topic_id);
   /* hooks */
   const imgRef = useRef();
   /* function */
+  const commentEnter = (e) => setCommentInput(e.target.value);
   const toggleInsertImage = () => setInsertImage(!insertImage);
 
   /* 이미지 업로드 input의 onChange */
@@ -95,10 +100,39 @@ const CreateComments = ({ placeholder = "" }) => {
       setImgFile(reader.result);
     };
   };
+  const state = useTopicState();
+
+  const dispatch = useTopicDispatch();
+  const addComment = () => {
+    if (on === "topic_detail") {
+      const [TARGET_TOPIC] = state.filter((topic) => topic.id === topic_id);
+      const newComment = [
+        ...TARGET_TOPIC.comments,
+        {
+          commentId: 3,
+          userInfo: {
+            nickname: "관리자",
+            profile: "/image/hamster.jpg",
+          },
+          comment: commentInput,
+          isRoot: true,
+          imgUrl: imgFile,
+          heart: 0,
+        },
+      ];
+      // 새로운 댓글 배열 dispatch 해주기
+      dispatch({ type: "ADD_COMMENT", id: topic_id, comments: newComment });
+    }
+    setCommentInput("");
+    setImgFile("");
+  };
 
   const createComment = (e) => {
     e.preventDefault();
+
+    addComment();
   };
+
   /* render */
   return (
     <CommentsTemplate>
@@ -122,8 +156,10 @@ const CreateComments = ({ placeholder = "" }) => {
           name="comment"
           onClick={toggleInsertImage}
           placeholder={placeholder}
+          value={commentInput}
+          onChange={commentEnter}
         />
-        <SendButton>
+        <SendButton onClick={createComment}>
           <RiSendPlane2Fill />
         </SendButton>
       </Form>

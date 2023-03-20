@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import TopicPreview from "./TopicPreview";
-import { useTopicDispatch, useTopicState } from "../../../Context";
+import {
+  useRecommendDispatch,
+  useTopicDispatch,
+  useTopicState,
+} from "../../../Context";
 import ModalTemplate from "./components/Modal/ModalTemplate";
 import ModalHeader from "./components/Modal/ModalHeader";
 import ModalUserInfo from "./components/Modal/ModalUserInfo";
@@ -80,6 +84,7 @@ const ModalContentsInput = styled.textarea`
 `;
 
 const TopicPresenter = () => {
+  /* state */
   const [showModal, setShowModal] = useState(false);
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
@@ -94,11 +99,26 @@ const TopicPresenter = () => {
     setSubject("");
     setContent("");
   };
+  const dispatch = useRecommendDispatch();
+  const recoId = Math.floor(Math.random() * 1000);
+  const submit = () => {
+    dispatch({
+      type: "ADD_RECOMMEND",
+      reco: {
+        recoId: recoId,
+        subject: subject,
+        contents: content,
+        nickname: nickname,
+      },
+    });
+    onCloseModal();
+  };
   const profileImg = "https://t1.daumcdn.net/cfile/tistory/99891B485AA0B33012";
   const nickname = "관리자";
   const setCreate = () => setShowModal(!showModal);
   const topics = useTopicState();
   const isAdmin = true;
+
   return (
     <TopicDisplayBlock>
       {/* 각 아이템의 key는 현재시간 + random로 한다. */}
@@ -126,7 +146,11 @@ const TopicPresenter = () => {
       )}
       {showModal && (
         <ModalTemplate closeModal={onCloseModal}>
-          <ModalHeader title="토픽 추천하기" closeModal={onCloseModal} />
+          <ModalHeader
+            title="토픽 추천하기"
+            submit={submit}
+            closeModal={onCloseModal}
+          />
           <ModalContentsTemplateBlock>
             <ModalUserInfo imgUrl={profileImg} nickname={nickname} />
             <ModalSubjectInput

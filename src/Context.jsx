@@ -21,96 +21,6 @@ const initialCommunity = [
   },
 ];
 
-/* Community REDUCER */
-// CREATE 생성
-// 액션들에 대해서 상태 업데이트
-function CommunityReducer(state, action) {
-  switch (
-    action.type // 만약 액션 타입이 ~ 이라면?
-  ) {
-    case "CREATE":
-      return state.concat(action.community);
-    //액션 항목 안에 community 넣어서 dispatch 해줄 것
-    //state 배열에 action.community 추가하여 리턴
-
-    default: // 처리할 수 없는 액션 온다면 throw
-      throw new Error(`Unhandled action type : ${action.type}`);
-  }
-}
-
-/* Community CONTEXT */
-const CommunityStateContext = createContext(); // state 위한 context
-const CommunityDispatchContext = createContext(); // dispatch 위한 context
-const CommunityNextIdContext = createContext(); // nextid 위한 context
-
-
-
-
-// 컴포넌트
-// Provider 다 합쳐서 AnyProvider 로 이름 바꿔보았어용
-export function AnyProvider({ children }) {
-  const [communitystate, communitydispatch] = useReducer(CommunityReducer, initialCommunity);
-  // CommunityReducer, 초기상태(initialCommunity)
-
-  const [topicstate, topicdispatch] = useReducer(topicReducer, initialTopic);
-
-  const nextId = useRef(4);
-  // 현재 4개 들어있으니 그 다음인 5로 초기화
-
-  return (
-    // State와 Dispath 중 뭐를 바깥으로 해줘도 상관없다.
-    // value 값 설정해줘야한다.
-    <CommunityStateContext.Provider value={communitystate}>
-      <CommunityDispatchContext.Provider value={communitydispatch}>
-        <CommunityNextIdContext.Provider value={nextId}>
-          <TopicStateContext.Provider value={topicstate}>
-            <TopicDispatchContext.Provider value={topicdispatch}>
-          {children}
-            </TopicDispatchContext.Provider>
-           </TopicStateContext.Provider>
-        </CommunityNextIdContext.Provider>
-      </CommunityDispatchContext.Provider>
-    </CommunityStateContext.Provider>
-  );
-}
-
-
-
-
-
-/* Community CUSTOM HOOK */
-// 3개의 커스텀 훅
-// 이렇게 해놓으면 나중에 그냥 useCommunityState 만 불러와서 쓰면 된다.
-export function useCommunityState() {
-  // 에러처리
-
-  const context = useContext(CommunityStateContext);
-  if (!context) {
-    throw new Error("Cannot find AnyProvider");
-  }
-  return context;
-}
-
-export function useCommunityDispatch() {
-  const context = useContext(CommunityDispatchContext);
-  if (!context) {
-    throw new Error("Cannot find AnyProvider");
-  }
-  return context;
-}
-
-export function useCommunityNextId() {
-  const context = useContext(CommunityNextIdContext);
-  if (!context) {
-    throw new Error("Cannot find AnyProvider");
-  }
-  return context;
-}
-
-
-
-
-
 /* FOR TOPIC */
 /* TOPIC INITIAL STATE */
 /* 북마크 속성 추가해주기 */
@@ -210,22 +120,130 @@ const topicRecommendation = [
   },
 ];
 
+/* Community REDUCER */
+// CREATE 생성
+// 액션들에 대해서 상태 업데이트
+function CommunityReducer(state, action) {
+  switch (
+    action.type // 만약 액션 타입이 ~ 이라면?
+  ) {
+    case "CREATE":
+      return state.concat(action.community);
+    //액션 항목 안에 community 넣어서 dispatch 해줄 것
+    //state 배열에 action.community 추가하여 리턴
+
+    default: // 처리할 수 없는 액션 온다면 throw
+      throw new Error(`Unhandled action type : ${action.type}`);
+  }
+}
+
 /* TOPIC REDUCER */
 function topicReducer(state, action) {
   switch (action.type) {
-    case "TOPIC_RECOMMENDATION":
-      topicRecommendation.concat(action.recommendation);
+    case "ADD_COMMENT":
+      console.log("add comment");
+      return state.map((item) =>
+        item.id === action.id ? { ...item, comments: action.comments } : item
+      );
+    default: // 처리할 수 없는 액션 온다면 throw
+      throw new Error(`Unhandled action type : ${action.type}`);
   }
 }
+
+function RecommendReducer(state, action) {
+  switch (action.type) {
+    case "ADD_RECOMMEND":
+      console.log(action.reco);
+      return state.concat(action.reco);
+    default: // 처리할 수 없는 액션 온다면 throw
+      throw new Error(`Unhandled action type : ${action.type}`);
+  }
+}
+
+/* Community CONTEXT */
+const CommunityStateContext = createContext(); // state 위한 context
+const CommunityDispatchContext = createContext(); // dispatch 위한 context
+const CommunityNextIdContext = createContext(); // nextid 위한 context
 
 /* TOPIC CONTEXT */
 const TopicStateContext = createContext();
 const TopicDispatchContext = createContext();
 
+/* RECOMMEND CONTEXT */
+const RecommendStateContext = createContext();
+const RecommendDispatchContext = createContext();
+
+// 컴포넌트
+// Provider 다 합쳐서 AnyProvider 로 이름 바꿔보았어용
+export function AnyProvider({ children }) {
+  // CommunityReducer, 초기상태(initialCommunity)
+  const [communitystate, communitydispatch] = useReducer(
+    CommunityReducer,
+    initialCommunity
+  );
+
+  const [topicstate, topicdispatch] = useReducer(topicReducer, initialTopic);
+  const [recommendState, recommendDispatch] = useReducer(
+    RecommendReducer,
+    topicRecommendation
+  );
+
+  const nextId = useRef(4);
+  // 현재 4개 들어있으니 그 다음인 5로 초기화
+
+  return (
+    // State와 Dispath 중 뭐를 바깥으로 해줘도 상관없다.
+    // value 값 설정해줘야한다.
+    <CommunityStateContext.Provider value={communitystate}>
+      <CommunityDispatchContext.Provider value={communitydispatch}>
+        <CommunityNextIdContext.Provider value={nextId}>
+          <TopicStateContext.Provider value={topicstate}>
+            <TopicDispatchContext.Provider value={topicdispatch}>
+              <RecommendStateContext.Provider value={recommendState}>
+                <RecommendDispatchContext.Provider value={recommendDispatch}>
+                  {children}
+                </RecommendDispatchContext.Provider>
+              </RecommendStateContext.Provider>
+            </TopicDispatchContext.Provider>
+          </TopicStateContext.Provider>
+        </CommunityNextIdContext.Provider>
+      </CommunityDispatchContext.Provider>
+    </CommunityStateContext.Provider>
+  );
+}
+
+/* Community CUSTOM HOOK */
+// 3개의 커스텀 훅
+// 이렇게 해놓으면 나중에 그냥 useCommunityState 만 불러와서 쓰면 된다.
+export function useCommunityState() {
+  // 에러처리
+
+  const context = useContext(CommunityStateContext);
+  if (!context) {
+    throw new Error("Cannot find AnyProvider");
+  }
+  return context;
+}
+
+export function useCommunityDispatch() {
+  const context = useContext(CommunityDispatchContext);
+  if (!context) {
+    throw new Error("Cannot find AnyProvider");
+  }
+  return context;
+}
+
+export function useCommunityNextId() {
+  const context = useContext(CommunityNextIdContext);
+  if (!context) {
+    throw new Error("Cannot find AnyProvider");
+  }
+  return context;
+}
 
 function errorHandler(context) {
   if (!context) {
-    throw new Error("CANNOT FIND AnyProvider");
+    throw new Error("CANNOT FIND AnyProvider_TOPIC");
   }
   return context;
 }
@@ -237,4 +255,12 @@ export function useTopicState() {
 
 export function useTopicDispatch() {
   return errorHandler(useContext(TopicDispatchContext));
+}
+
+export function useRecommendState() {
+  return errorHandler(useContext(RecommendStateContext));
+}
+
+export function useRecommendDispatch() {
+  return errorHandler(useContext(RecommendDispatchContext));
 }
