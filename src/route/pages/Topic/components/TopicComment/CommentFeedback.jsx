@@ -5,7 +5,7 @@ import CreateComments from "../CreateComments";
 import ReplyTemplate from "./ReplyTemplate";
 import CommentContents from "./CommentContents";
 import { VscTriangleUp, VscTriangleDown } from "react-icons/vsc";
-import { useParams } from "react-router-dom";
+import { useTopicDispatch, useTopicState } from "../../../../../Context";
 
 /* 댓글달기, 좋아요 template 블록 */
 const FeedbackBlock = styled.div`
@@ -13,6 +13,11 @@ const FeedbackBlock = styled.div`
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
+`;
+
+const FeedbackTemplateBlock = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 /* 댓글달기 토글 */
@@ -32,12 +37,6 @@ const HeartBlock = styled.div`
   }
 `;
 
-/* 좋아요 버튼 */
-const HeartBtnBlock = styled.div`
-  margin-right: 5px;
-  display: flex;
-`;
-
 /* 대댓글 토글 Block */
 const ReplyTemplateBlock = styled.div`
   padding: 5px;
@@ -47,11 +46,16 @@ const ReplyTemplateBlock = styled.div`
   flex-direction: row;
 `;
 
-const ReplyToggle = styled.div`
-  margin-left: 5px;
-`;
-
-const CommentFeedback = ({ heart, isRoot, author, reply }) => {
+const CommentFeedback = ({
+  topic_id,
+  heart,
+  isRoot,
+  commentId,
+  author,
+  reply,
+}) => {
+  /* context */
+  const dispatch = useTopicDispatch();
   /* State */
   const [addReply, setAddReply] = useState(false);
   const [showReply, setShowReply] = useState(false);
@@ -59,21 +63,23 @@ const CommentFeedback = ({ heart, isRoot, author, reply }) => {
   /* function */
   const toAddReply = () => setAddReply(!addReply);
   const toShowReply = () => setShowReply(!showReply);
-  const reversal = () => setHeartColor(!heartColor);
+  const heartFeedback = () => {
+    setHeartColor(!heartColor);
+  };
 
   /* variable */
   const placeholder = `${author}님에게 답글 달기`;
 
   /* render */
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <FeedbackTemplateBlock>
       <FeedbackBlock>
         {isRoot && (
           <AddToggle onClick={toAddReply}>
             {addReply ? "댓글 숨기기" : "댓글달기"}
           </AddToggle>
         )}
-        <HeartBlock onClick={reversal}>
+        <HeartBlock onClick={heartFeedback}>
           {heartColor ? (
             <AiFillHeart style={{ color: "#ee5253", marginRight: "5px" }} />
           ) : (
@@ -107,7 +113,7 @@ const CommentFeedback = ({ heart, isRoot, author, reply }) => {
           )}
         </div>
       )}
-    </div>
+    </FeedbackTemplateBlock>
   );
 };
 

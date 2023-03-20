@@ -6,7 +6,7 @@ import FeedBack from "../components/FeedBack";
 import CreateComments from "../components/CreateComments";
 import TopicCommentTemplate from "../components/TopicComment/TopicCommentTemplate";
 import { useParams } from "react-router-dom";
-import { useTopicState } from "../../../../Context";
+import { useTopicDispatch, useTopicState } from "../../../../Context";
 
 const TopicDetailTemplate = styled.div`
   width: 100%;
@@ -39,15 +39,18 @@ const FeedbackPart = styled.div`
 
 const TopicDetail = () => {
   const topics = useTopicState();
-  const param = useParams().topic_id;
-  const topic = topics[param];
+  const topic_id = useParams().topic_id;
+  const topic = topics[topic_id];
   const images = topic.images;
   const comments = topic.comments;
-  console.log("댓글수", comments);
   const commentsLen = comments.length;
+
+  /* context */
 
   /* 임시지정 */
   const bookmark = 10;
+  const nickname = "test";
+  const profile = "image/temp_profile.jpg";
 
   return (
     <TopicDetailTemplate>
@@ -66,9 +69,15 @@ const TopicDetail = () => {
           <FeedBack num={comments.length} des={"댓글"} />
           <FeedBack num={bookmark} des={"북마크"} />
         </FeedbackPart>
-        <CreateComments placeholder="여행자님의 의견을 듣고 싶어요!" />
+        <CreateComments
+          topic_id={topic_id}
+          operate_in="topic_detail"
+          nickname={nickname}
+          profile={profile}
+          placeholder="여행자님의 의견을 듣고 싶어요!"
+        />
       </TopicContentsTemplate>
-      {commentsLen ? <TopicCommentTemplate comments={comments} /> : null}
+      {commentsLen ? <TopicCommentTemplate /> : null}
     </TopicDetailTemplate>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useTopicDispatch } from "../../../../../Context";
 import Avatar from "../Avatar";
 import Profile from "../Profile";
 import CommentFeedback from "./CommentFeedback";
@@ -25,6 +26,12 @@ const CommentBlock = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+`;
+
+const Sepearator = styled.div`
+  margin-left: 5px;
+  margin-right: 5px;
+  color: #ced6e0;
 `;
 
 /* 댓글 정보 블록 */
@@ -59,7 +66,7 @@ const CommentTextBlock = styled.div`
 `;
 
 // 댓글 컨텐츠 컴포넌트
-const CommentContents = ({ comment }) => {
+const CommentContents = ({ topic_id, comment }) => {
   const userInfo = comment.userInfo;
   const img = comment.imgUrl;
   const date = comment.date;
@@ -67,7 +74,9 @@ const CommentContents = ({ comment }) => {
   const isRoot = comment.isRoot;
   const heart = comment.heart;
   const reply = comment.reply;
-  console.log("isRoot", isRoot);
+  const commentId = comment.commentId;
+
+  // topic_id로 topic 찾고 -> isRoot이면, comments에, 아니면 comments의 reply에 저장하기
 
   return (
     <CommentTemplateBlock>
@@ -77,18 +86,16 @@ const CommentContents = ({ comment }) => {
       <CommentBlock>
         <CommentInfo>
           <Profile nickname={userInfo.nickname} />
-          <div
-            style={{ marginLeft: "5px", marginRight: "5px", color: "#ced6e0" }}
-          >
-            ·
-          </div>
+          <Sepearator>·</Sepearator>
           <div style={{ color: "lightgray" }}>{date}</div>
         </CommentInfo>
         {img && <CommentImg img={img} />}
         <CommentTextBlock>{text}</CommentTextBlock>
         <CommentFeedback
+          topic_id={topic_id}
           heart={heart}
           isRoot={isRoot}
+          commentId={commentId}
           author={userInfo.nickname}
           reply={reply}
         />

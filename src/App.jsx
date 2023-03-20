@@ -1,14 +1,13 @@
 import React from "react";
 import IndexRouter from "./route";
-import { MainLayout } from "./components";
 import { AnyProvider } from "./Context";
 import "./App.css";
 
 const App = () => {
   return (
-      <AnyProvider>
-        <IndexRouter />
-      </AnyProvider>
+    <AnyProvider>
+      <IndexRouter />
+    </AnyProvider>
   );
 };
 

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Avatar from "./Avatar";
 import { IoImageOutline } from "react-icons/io5";
 import { RiSendPlane2Fill } from "react-icons/ri";
+import { useTopicDispatch } from "../../../../Context";
 
 /* 댓글 추가 부분을 감싸는 전체 부분 */
 const CommentsTemplate = styled.div`
@@ -76,14 +77,49 @@ const ImagePreview = styled.div`
   background-position: center;
 `;
 
-const CreateComments = ({ placeholder = "" }) => {
+const CreateComments = ({
+  topic_id = "",
+  comment_id = "",
+  operate_in = "topic",
+  nickname = "",
+  profile = "image/user.png",
+  placeholder = "",
+}) => {
   /* state */
   const [insertImage, setInsertImage] = useState(false);
   const [imgFile, setImgFile] = useState("");
+  const [comment, setComment] = useState("");
   /* hooks */
   const imgRef = useRef();
+
+  /* context */
+  const dispatch = useTopicDispatch();
+  const addComment = () => {
+    if (operate_in === "topic_detail") {
+      dispatch({
+        type: "ADD_COMMENT",
+        paylaod: {
+          topic_id: topic_id,
+          com: {
+            commentId: 1,
+            userInfo: {
+              nickname: nickname,
+              profile: "/image/temp.jpg",
+            },
+            comment: comment,
+            isRoot: true,
+            reply: [],
+            imgUrl: imgFile,
+            heart: 0,
+          },
+        },
+      });
+    }
+  };
+
   /* function */
   const toggleInsertImage = () => setInsertImage(!insertImage);
+  const onCommentEnter = (e) => setComment(e.target.value);
 
   /* 이미지 업로드 input의 onChange */
   /* 참고 : https://velog.io/@hye_rin/React-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%97%85%EB%A1%9C%EB%93%9C%ED%95%98%EA%B3%A0-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0 */
@@ -98,6 +134,8 @@ const CreateComments = ({ placeholder = "" }) => {
 
   const createComment = (e) => {
     e.preventDefault();
+    addComment();
+    setComment("");
   };
   /* render */
   return (
@@ -122,8 +160,10 @@ const CreateComments = ({ placeholder = "" }) => {
           name="comment"
           onClick={toggleInsertImage}
           placeholder={placeholder}
+          value={comment}
+          onChange={onCommentEnter}
         />
-        <SendButton>
+        <SendButton onClick={createComment}>
           <RiSendPlane2Fill />
         </SendButton>
       </Form>
