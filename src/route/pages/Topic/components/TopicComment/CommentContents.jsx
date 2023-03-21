@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "../Avatar";
 import Profile from "../Profile";
@@ -67,7 +68,7 @@ const CommentContents = ({ comment }) => {
   const isRoot = comment.isRoot;
   const heart = comment.heart;
   const reply = comment.reply;
-  console.log("isRoot", isRoot);
+  const comment_id = comment.commentId;
 
   return (
     <CommentTemplateBlock>
@@ -87,6 +88,7 @@ const CommentContents = ({ comment }) => {
         {img && <CommentImg img={img} />}
         <CommentTextBlock>{text}</CommentTextBlock>
         <CommentFeedback
+          comment_id={comment_id}
           heart={heart}
           isRoot={isRoot}
           author={userInfo.nickname}

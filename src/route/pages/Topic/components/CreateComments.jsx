@@ -78,7 +78,7 @@ const ImagePreview = styled.div`
   background-position: center;
 `;
 
-const CreateComments = ({ on = "", placeholder = "" }) => {
+const CreateComments = ({ on = "", comment_id = "", placeholder = "" }) => {
   /* state */
   const [insertImage, setInsertImage] = useState(false);
   const [imgFile, setImgFile] = useState("");
@@ -86,6 +86,9 @@ const CreateComments = ({ on = "", placeholder = "" }) => {
   const topic_id = parseInt(useParams().topic_id);
   /* hooks */
   const imgRef = useRef();
+  /* context */
+  const state = useTopicState();
+  const dispatch = useTopicDispatch();
   /* function */
   const commentEnter = (e) => setCommentInput(e.target.value);
   const toggleInsertImage = () => setInsertImage(!insertImage);
@@ -100,12 +103,10 @@ const CreateComments = ({ on = "", placeholder = "" }) => {
       setImgFile(reader.result);
     };
   };
-  const state = useTopicState();
 
-  const dispatch = useTopicDispatch();
   const addComment = () => {
+    const [TARGET_TOPIC] = state.filter((topic) => topic.id === topic_id);
     if (on === "topic_detail") {
-      const [TARGET_TOPIC] = state.filter((topic) => topic.id === topic_id);
       const newComment = [
         ...TARGET_TOPIC.comments,
         {
@@ -114,6 +115,7 @@ const CreateComments = ({ on = "", placeholder = "" }) => {
             nickname: "관리자",
             profile: "/image/hamster.jpg",
           },
+          reply: [],
           comment: commentInput,
           isRoot: true,
           imgUrl: imgFile,
@@ -122,6 +124,34 @@ const CreateComments = ({ on = "", placeholder = "" }) => {
       ];
       // 새로운 댓글 배열 dispatch 해주기
       dispatch({ type: "ADD_COMMENT", id: topic_id, comments: newComment });
+    } else if (on === "comment") {
+      // 2. 토픽의 comment 가져오기
+      const [TARGET_COMMENT] = TARGET_TOPIC.comments.filter(
+        (comment) => comment.commentId === comment_id
+      );
+      // 3. 새로운 대댓글 배열 만들기
+      const newReply = [
+        ...TARGET_COMMENT.reply,
+        {
+          commentId: 4,
+          userInfo: {
+            nickname: "방황하는 다람쥐",
+            profile: "/image/squirrel.jpg",
+          },
+          comment: commentInput,
+          isRoot: false,
+          imgUrl: imgFile,
+          heart: 0,
+        },
+      ];
+      //4. 새로운 comments 배열 생성하기
+      const new_comments = TARGET_TOPIC.comments.map((item) =>
+        item.commentId === comment_id ? { ...item, reply: newReply } : item
+      );
+      ///5. 새로운 comments 배열 dispatch
+      dispatch({ type: "ADD_REPLY", id: topic_id, comments: new_comments });
+    } else {
+      throw new Error("THIS MODE IS UNVALID!🙄");
     }
     setCommentInput("");
     setImgFile("");
