@@ -145,6 +145,11 @@ function topicReducer(state, action) {
       return state.map((item) =>
         item.id === action.id ? { ...item, comments: action.comments } : item
       );
+    case "ADD_REPLY":
+      console.log("add reply");
+      return state.map((topic) =>
+        topic.id === action.id ? { ...topic, comments: action.comments } : topic
+      );
     default: // 처리할 수 없는 액션 온다면 throw
       throw new Error(`Unhandled action type : ${action.type}`);
   }
