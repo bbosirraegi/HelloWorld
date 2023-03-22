@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import MainPresenter from "../../route/pages/Main/MainPresenter";
 import { useCommunityDispatch, useCommunityNextId } from "./../../Context";
@@ -101,24 +101,36 @@ function CreateList({ setCreate }) {
   const [title, setTitle] = useState(""); //기본값 공백
   const [content, setContent] = useState(""); //기본값 공백
 
+  // 아무것도 안 적었으면 title과 content 에 focus 하기 위함
+  // DOM 노드나 다른 컴포넌트에 접근해서 조작하기 위함. handleClick에서는 useRef로 컴포넌트 접근에 사용한다.
+  const titleRef = useRef(null); //초기값 null
+  const contentRef = useRef(null);
+
   //제출 버튼 클릭하면 input 박스에 적힌 내용이 Main(b 영역)에 들어가도록 구현하고 싶음
   //일단 onClick부터 설정해보고 있음 (아직 미완성)
   //todolist 참고하여 만들고 있기 때문에 Context를 만들던지, Context 없이 진행할지... 선택해야함
   //setCreate props는 layout/Header.jsx 에서 받아옵니당
   const onClick = (e) => {
-    //제출 버튼 onClick 이벤트 발생했을 때 dispatch
-    dispatch({
-      type: "CREATE",
-      community: {
-        id: nextId.current,
-        title: title,
-        content: content,
-      },
-    });
-    setTitle(""); //공백처리
-    setContent(""); //공백처리
-    setCreate(false); //닫아줘야하므로
-    nextId.current += 1; //id 값 +1
+    e.preventDefault(); // 클릭 이벤트의 기본 동작 취소
+    if (title === "") {
+      titleRef.current.focus(); //title에 아무것도 없으면 focus
+    } else if (content === "") {
+      contentRef.current.focus(); // content에 아무것도 없으면 focus
+    } else {
+      //제출 버튼 onClick 이벤트 발생했을 때 dispatch
+      dispatch({
+        type: "CREATE",
+        community: {
+          id: nextId.current,
+          title: title,
+          content: content,
+        },
+      });
+      setTitle(""); //공백처리
+      setContent(""); //공백처리
+      setCreate(false); //닫아줘야하므로
+      nextId.current += 1; //id 값 +1
+    }
   };
 
   const dispatch = useCommunityDispatch();
@@ -133,14 +145,6 @@ function CreateList({ setCreate }) {
   // Test Input about Avata
   const profileImg = "https://t1.daumcdn.net/cfile/tistory/99891B485AA0B33012";
   const nickname = "사람1";
-
-  // 아무것도 안 적었으면 title과 content 에 focus
-  const inputRef = useRef(null);
-  useEffect(() => {
-    if (title === "" || content === "") {
-      inputRef.current.focus();
-    }
-  }, [title, content]);
 
   return (
     <div>
@@ -166,7 +170,7 @@ function CreateList({ setCreate }) {
           placeholder="제목을 작성해 주세요"
           value={title}
           onChange={onChangeTitle}
-          ref={inputRef}
+          ref={titleRef}
         />
         <CreateContents
           content={content}
@@ -175,6 +179,7 @@ function CreateList({ setCreate }) {
           placeholder="여행에 대한 자유로운 이야기를 작성해 주세요"
           value={content}
           onChange={onChangeContent}
+          ref={contentRef}
         />
       </CreateListBlock>
     </div>
