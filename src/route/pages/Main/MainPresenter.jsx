@@ -14,7 +14,6 @@ const CommunityBlock = styled.div`
 
 function MainPresenter() {
   const communitys = useCommunityState();
-  console.log(communitys);
   return (
     <CommunityBlock>
       {communitys.map((community) => (
