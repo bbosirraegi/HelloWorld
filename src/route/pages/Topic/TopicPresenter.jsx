@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import TopicPreview from "./TopicPreview";
 import {
@@ -118,17 +118,11 @@ const TopicPresenter = () => {
   const setCreate = () => setShowModal(!showModal);
   const topics = useTopicState();
   const isAdmin = true;
-
   return (
     <TopicDisplayBlock>
       {/* 각 아이템의 key는 현재시간 + random로 한다. */}
       {topics.map((topic) => (
-        <TopicPreview
-          key={
-            parseInt(Date.now().toString()) + Math.floor(Math.random() * 100)
-          }
-          topic={topic}
-        />
+        <TopicPreview key={topic.id} topic={topic} />
       ))}
       {/* <CreateTemplate /> */}
       {/* 토픽 추천하기*/}
