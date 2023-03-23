@@ -4,20 +4,23 @@ import MainPresenter from "../../route/pages/Main/MainPresenter";
 import { useCommunityDispatch, useCommunityNextId } from "./../../Context";
 import { AiOutlineClose } from "react-icons/ai";
 import ModalUserInfo from "../../route/pages/Topic/components/Modal/ModalUserInfo";
+import { Button } from "@mui/material";
 
 
 // 글쓰기 헤드 부분 (제출 버튼과 글쓰기 글자) 블록 스타일링
 const CreateHeadBlock = styled.div`
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
+  justify-content: center;
   height: 40px;
-  padding: 5px 10px;
+  padding: 5px 5px 5px 10px;
   border-bottom: 1px solid #bdc3c7;
 `;
 
 const CreateButton = styled.button`
-  padding: 5px 10px;
+  position: absolute;
+  right: 10px;
   width: 65px;
   height: 30px;
   border-radius: 50px;
@@ -35,12 +38,16 @@ const CreateButton = styled.button`
 
 // 상단의 X 부분 (close)
 const Close = styled.div`
+  position: absolute;
+  left: 10px;
+  padding-top: 5px;
   color: rgba(0, 0, 0, 0.7);
   background-color: transparent;
   font-size: 18px;
   cursor: pointer;
 `;
 
+// "글쓰기" 글자 부분
 const TitleBlock = styled.div`
   font-size: 15px;
   display: flex;
@@ -86,6 +93,30 @@ const UserInfoBlock = styled.div`
   width: 100%;
   padding: 20px;
   padding-bottom: 0%;
+`
+
+const ButtonsBlock = styled.div`
+  display: flex;
+  flex-direction: row;
+  text-align: center; /* 버튼들 중앙으로 */
+  padding: 20px 10px;
+`
+const Buttons = styled.button`
+  width: calc(100%/2);
+  height: 120px;
+  margin: 10px;
+  border-radius: 8px; /* 테두리 둥글게 */
+  border:1px solid #bdc3c7;
+  background: white;
+  font-size: 15px;
+`
+
+const BlaBla = styled.div`
+  width: 100%;
+  height: calc(100%/2);
+  text-align: center;
+  margin-top: 10px;
+  color: gray;
 `
 
 
@@ -146,6 +177,15 @@ function CreateList({ setCreate }) {
   const profileImg = "https://t1.daumcdn.net/cfile/tistory/99891B485AA0B33012";
   const nickname = "사람1";
 
+  //여행&정보 이야기 버튼 클릭했을 때
+  const [chooseleft, setChooseleft] = useState(false); //여행&정보이야기 글쓰기 창 기본값 false
+  const [chooseButtons, setChooseButtons] = useState(true);
+  const onClickButtons = () => {
+    setChooseleft(!chooseleft); //기존값 반전
+    setChooseButtons(!chooseButtons);
+  }
+
+
   return (
     <div>
       {/* onClick 하면 input 박스에 적힌 내용이 main에 도출되도록 이벤트 주고 싶은데 좀 쉽게 전달하고 싶어서(?) Head와 List를 합쳤다 */}
@@ -154,34 +194,53 @@ function CreateList({ setCreate }) {
           <AiOutlineClose />
         </Close>
         <TitleBlock>글쓰기</TitleBlock>
-        <CreateButton onClick={onClick}>작성 완료</CreateButton>
+        {chooseleft && (<CreateButton onClick={onClick}>작성 완료</CreateButton>)}
       </CreateHeadBlock>
 
-      <UserInfoBlock>
-        <ModalUserInfo imgUrl={profileImg} nickname={nickname} />
-      </UserInfoBlock>
-      
-      <CreateListBlock>
-        <CreateTitle
-          title={title}
-          className="search-box"
-          type="text"
-          name="title"
-          placeholder="제목을 작성해 주세요"
-          value={title}
-          onChange={onChangeTitle}
-          ref={titleRef}
-        />
-        <CreateContents
-          content={content}
-          type="text"
-          name="content"
-          placeholder="여행에 대한 자유로운 이야기를 작성해 주세요"
-          value={content}
-          onChange={onChangeContent}
-          ref={contentRef}
-        />
-      </CreateListBlock>
+      {/* 버튼 클릭하면 사라지기 */}
+      {chooseButtons && (
+        <>
+          <ButtonsBlock>
+            <Buttons onClick={onClickButtons}>여행 & 정보 이야기</Buttons>
+            <Buttons>질문 & 투표</Buttons>
+          </ButtonsBlock>
+          <BlaBla>
+            여행과 관련된 이야기를 나눠주세요. <br/>
+            혐오, 음란물 등 부적절한 내용을 남기지 말아주세요.
+          </BlaBla>
+        </>
+      )}
+
+      {/* 왼쪽 버튼 선택했을 때 나타나는 창 */}
+      {chooseleft && (
+        <>
+          <UserInfoBlock>
+            <ModalUserInfo imgUrl={profileImg} nickname={nickname} />
+          </UserInfoBlock>
+          
+          <CreateListBlock>
+            <CreateTitle
+              title={title}
+              className="search-box"
+              type="text"
+              name="title"
+              placeholder="제목을 작성해 주세요"
+              value={title}
+              onChange={onChangeTitle}
+              ref={titleRef}
+            />
+            <CreateContents
+              content={content}
+              type="text"
+              name="content"
+              placeholder="여행에 대한 자유로운 이야기를 작성해 주세요"
+              value={content}
+              onChange={onChangeContent}
+              ref={contentRef}
+            />
+          </CreateListBlock>
+        </>
+      )}
     </div>
   );
 }

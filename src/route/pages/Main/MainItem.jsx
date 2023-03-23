@@ -21,7 +21,6 @@ const CommunityItem = styled.div`
 
 function MainItem({ title, content }) {
   // const dispatch = useCommunityDispatch();
-  console.log(title, content);
   return (
     <CommunityItem>
       <div>{title}</div>
