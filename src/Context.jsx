@@ -158,7 +158,6 @@ function topicReducer(state, action) {
 function RecommendReducer(state, action) {
   switch (action.type) {
     case "ADD_RECOMMEND":
-      console.log(action.reco);
       return state.concat(action.reco);
     default: // 처리할 수 없는 액션 온다면 throw
       throw new Error(`Unhandled action type : ${action.type}`);
