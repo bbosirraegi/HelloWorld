@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AiFillHome, AiOutlinePlusCircle } from "react-icons/ai";
 import { MdInsertComment, MdNotifications } from "react-icons/md";
-import CreateList from "../create/CreateList";
+import CreateList from "components/create/CreateList";
 import CreateTemplate from "../create/CreateTemplate";
 import MypagemTemplate from "../mypage-m/MypagemTemplate";
 import MypagemList from "../mypage-m/MypagemList";
-// import CreateHead from '../create/CreateHead';
-import ModalTest from './../../route/pages/Topic/components/Modal/index';
 
-function Header() {
+function Header({ isLoggedIn }) {
   const [create, setCreate] = useState(false); // 모달관리, 기본값 false
   const onCreate = () => setCreate(!create); // create 기존값 반전
   // 글쓰기 클릭하면 글쓰기 창 켜지게 (true)
@@ -57,12 +55,12 @@ function Header() {
       </div>
       {mypage && (
         <MypagemTemplate setMypage={setMypage}>
-          <MypagemList />
+          {/* 얘도 모달임 */}
+          <MypagemList isLoggedIn={isLoggedIn} />
         </MypagemTemplate>
       )}
       <div onClick={onMypage} className="a-mypage">
         Mypage
-        {/* 얘도 모달임 */}
       </div>
     </div>
   );

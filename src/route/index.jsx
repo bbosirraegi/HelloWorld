@@ -1,21 +1,14 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { MainLayout } from "../components";
-import {
-  Topic,
-  Main,
-  Posts,
-  SignIn,
-  Mypage,
-  SignOut,
-  TopicDetail,
-} from "./pages";
-import ModalTest from "./pages/Topic/components/Modal";
+import MainLayout from "components/layout/MainLayout";
+import { Topic, Main, Posts, SignIn, Mypage, TopicDetail } from "route/pages";
+import ModalTest from "route/pages/Topic/components/Modal";
+import AdminPage from "./pages/AdminPage";
 
-const IndexRouter = () => {
+const IndexRouter = ({ isLoggedIn }) => {
   return (
     <Routes>
-      <Route path="/" element={<MainLayout />}>
+      <Route path="/" element={<MainLayout isLoggedIn={isLoggedIn} />}>
         <Route index element={<Main />} />
         <Route path="/topic">
           <Route index element={<Topic />} />
@@ -23,11 +16,10 @@ const IndexRouter = () => {
         </Route>
         <Route path="/notification" element={<Topic />} />
         <Route path="/posts" element={<Posts />} />
-
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/signin" element={<SignIn />} />
         {/* 마이페이지 모달이 이동하는 링크(route) */}
         <Route path="/mypage">
-          <Route path="signin" element={<SignIn />} />
-          <Route path="signout" element={<SignOut />} />
           <Route path=":user_id" element={<Mypage />} />
         </Route>
         <Route path="modal_test" element={<ModalTest />} />
