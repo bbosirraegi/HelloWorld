@@ -19,7 +19,9 @@ function Header({ isLoggedIn }) {
   return (
     <div className="a-container">
       <div className="a-header">
-        <Link to="/">HelloWorld</Link>
+        <Link to="/">
+          <img src="image/logo.png" width="70px" height="80px" />
+        </Link>
       </div>
       <div className="a-navi">
         {/* NAVI */}

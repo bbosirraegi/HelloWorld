@@ -1,13 +1,16 @@
-import { dbService } from "fBase";
+import { height, width } from "@mui/system";
+import { dbService, storageService } from "fBase";
 import {
   addDoc,
   collection,
+  deleteDoc,
   getDocs,
   onSnapshot,
   orderBy,
   query,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import { uploadString, ref, getStorage } from "firebase/storage";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 } from "uuid";
 
@@ -50,7 +53,6 @@ const TopicContentsInput = styled.textarea`
 `;
 
 const PreviewTemplateBlock = styled.div`
-  background-color: goldenrod;
   height: 100px;
   display: flex;
   flex-direction: row;
@@ -59,7 +61,10 @@ const PreviewTemplateBlock = styled.div`
 const PreviewImage = styled.div`
   width: calc(100% / 5);
   aspect-ratio: 1/1;
-  background-color: ${(props) => props.color};
+  background: url(${(props) => props.fileUrl});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 `;
 
 const SubmitBtnTemplate = styled.div`
@@ -77,7 +82,7 @@ const SubmitBtn = styled.input`
   background-color: #2e86de;
   color: white;
 `;
-const AdminPage = () => {
+const AdminPage = ({ userObj }) => {
   /* state */
   // Document에 collection 추가하기
   const [title, setTitle] = useState("");
@@ -85,7 +90,9 @@ const AdminPage = () => {
   const [topic, setTopic] = useState("");
   // Data 가져올 페이지에 새로운 state 만들어주기
   const [topics, setTopics] = useState([]);
-
+  // 이미지 urls
+  const [fileUrls, setFileUrls] = useState(null);
+  const target = doc(dbService, "topics", `${topic.id}`);
   /* function */
   const onTitleInput = (e) => {
     const {
@@ -101,9 +108,18 @@ const AdminPage = () => {
     setContents(value);
   };
 
+  const onClearAttachment = () => setFileUrls(null);
+
   //토픽 추가하기
   const onSubmit = async (e) => {
     e.preventDefault();
+    //image업로드
+    fileUrls &&
+      fileUrls.map(async (fileUrl) => {
+        const fileRef = ref(storageService, `${userObj.uid}/${v4()}`);
+        const response = await uploadString(fileRef, fileUrl, "data_url");
+        console.log(response);
+      });
     try {
       await addDoc(collection(dbService, "topics"), {
         id: v4(),
@@ -111,30 +127,49 @@ const AdminPage = () => {
         title: title,
         contents: contents,
         isMarked: ["admin"],
+        images: fileUrls,
       });
       setTitle("");
       setContents("");
+
+      onClearAttachment();
     } catch (error) {
       console.log(`Error adding Document: `, error);
     }
   };
-  // 토픽들 firestore에서 가져오기
-  // const getTopics = async () => {
-  //   const dbTopics = await getDocs(collection(dbService, "topics"));
-  //   // console.log(dbTopics);
-  //   //토픽 data에 접근하기 - 이용해서, topic state에 넣기
-  //   // dbTopics.forEach((doc) => console.log(doc.data()));
-  //   dbTopics.forEach((doc) => {
-  //     // data구조를 object로 만들어주기
-  //     const topicObject = {
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     };
-  //     setTopics((prev) => [topicObject, ...prev]);
-  //   });
-  //   console.log(topics);
-  // };
+
+  const onFileChange = (e) => {
+    // input file로 부터 이미지 파일 불러오기
+    // files: 선택한 파일 개수
+    const {
+      target: { files },
+    } = e;
+
+    console.log(files);
+
+    let attachUrls = [];
+    let attach;
+    let attachLength = files.length;
+    if (attachLength > 5) {
+      alert("이미지는 5장까지만 첨부 가능합니다! 5장만 적용됩니다");
+      attachLength = 5;
+    } else {
+      attachLength = files.length;
+    }
+
+    for (let i = 0; i < attachLength; i++) {
+      attach = files[i];
+      let reader = new FileReader();
+      reader.onload = () => {
+        attachUrls[i] = reader.result;
+        setFileUrls([...attachUrls]);
+      };
+      reader.readAsDataURL(attach);
+    }
+  };
+
   /* Hooks */
+  /* 토픽들 firestore에서 가져오기 */
   useEffect(() => {
     // 실시간 data 가져오기 - 이 방법으로 data 입력하기!
     const q = query(collection(dbService, "topics"), orderBy("createdAt"));
@@ -146,6 +181,16 @@ const AdminPage = () => {
       setTopics(topicArr);
     });
   }, []);
+
+  const onDeleteClick = async () => {
+    const ok = confirm("삭제하시겠습니까?");
+    const storage = getStorage();
+    const deleteRef = ref(storage, topics.images);
+
+    if (ok) {
+      console.log("삭제");
+    }
+  };
   /* render */
   return (
     <AdminFormTemplate>
@@ -173,23 +218,24 @@ const AdminPage = () => {
           onChange={onContentsInput}
         />
         <label htmlFor="inputFile">
-          <div>이미지 추가하기</div>
+          <div style={{ marginBottom: "10px" }}>이미지 추가하기</div>
           <input
             type="file"
             multiple
             accept="image/*"
             name="topicImages"
             id="inputFile"
+            onChange={onFileChange}
             style={{ display: "none" }}
           />
         </label>
-        <PreviewTemplateBlock>
-          <PreviewImage color="red">1</PreviewImage>
-          <PreviewImage color="orange">2</PreviewImage>
-          <PreviewImage color="yellow">3</PreviewImage>
-          <PreviewImage color="green">4</PreviewImage>
-          <PreviewImage color="blue">5</PreviewImage>
-        </PreviewTemplateBlock>
+        {fileUrls && (
+          <PreviewTemplateBlock>
+            {fileUrls.map((fileUrl) => (
+              <PreviewImage key={v4()} fileUrl={fileUrl} />
+            ))}
+          </PreviewTemplateBlock>
+        )}
         <SubmitBtnTemplate>
           <SubmitBtn type="submit" value="제출하기" />
         </SubmitBtnTemplate>
@@ -198,7 +244,11 @@ const AdminPage = () => {
         {topics.map((topic) => (
           <div key={topic.id}>
             <h4>{topic.title}</h4>
-            <span>{topic.contents}</span>
+            <div>{topic.contents}</div>
+            {topic.images[0] && (
+              <img src={topic.images[0]} width="100px" height="100px" />
+            )}
+            <button onClick={onDeleteClick}>삭제하기</button>
           </div>
         ))}
       </div>
