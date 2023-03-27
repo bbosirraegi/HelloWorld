@@ -9,6 +9,7 @@ import {
 import ModalTemplate from "./components/Modal/ModalTemplate";
 import ModalHeader from "./components/Modal/ModalHeader";
 import ModalUserInfo from "./components/Modal/ModalUserInfo";
+import { useNavigate } from "react-router-dom";
 
 const TopicDisplayBlock = styled.div`
   width: 100wh;
@@ -83,11 +84,29 @@ const ModalContentsInput = styled.textarea`
   }
 `;
 
-const TopicPresenter = () => {
+const TopicPresenter = ({ adminObj }) => {
   /* state */
   const [showModal, setShowModal] = useState(false);
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
+  const recoId = Math.floor(Math.random() * 1000);
+
+  /* variable */
+  const navigate = useNavigate();
+  const profileImg = "https://t1.daumcdn.net/cfile/tistory/99891B485AA0B33012";
+  const nickname = "관리자";
+  const setCreate = () => setShowModal(!showModal);
+  const topics = useTopicState();
+  const isAdmin = true;
+
+  /* context */
+  const dispatch = useRecommendDispatch();
+
+  /* function */
+  const AdminMode = () => {
+    navigate("/admin");
+  };
+
   const onSubjectChange = (e) => {
     setSubject(e.target.value);
   };
@@ -99,8 +118,7 @@ const TopicPresenter = () => {
     setSubject("");
     setContent("");
   };
-  const dispatch = useRecommendDispatch();
-  const recoId = Math.floor(Math.random() * 1000);
+
   const submit = () => {
     dispatch({
       type: "ADD_RECOMMEND",
@@ -113,11 +131,7 @@ const TopicPresenter = () => {
     });
     onCloseModal();
   };
-  const profileImg = "https://t1.daumcdn.net/cfile/tistory/99891B485AA0B33012";
-  const nickname = "관리자";
-  const setCreate = () => setShowModal(!showModal);
-  const topics = useTopicState();
-  const isAdmin = true;
+  
   return (
     <TopicDisplayBlock>
       {/* 각 아이템의 key는 현재시간 + random로 한다. */}
@@ -135,7 +149,9 @@ const TopicPresenter = () => {
       {isAdmin && (
         <TopicCreateBlock>
           <div>관리자 모드</div>
-          <RecommentBtn color="#9c88ff">토픽 추가</RecommentBtn>
+          <RecommentBtn onClick={AdminMode} color="#9c88ff">
+            토픽 추가
+          </RecommentBtn>
         </TopicCreateBlock>
       )}
       {showModal && (

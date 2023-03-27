@@ -1,17 +1,17 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import "../../css/mainlayout.css";
+import "css/mainlayout.css";
 import BestTopics from "./BestTopic";
 import ContentsHeader from "./ContentsLayout/ContentsHeader";
 import ContentsPart from "./ContentsLayout/ContentsPart";
 import Header from "./Header";
 
-function MainLayout() {
+function MainLayout({ isLoggedIn }) {
   return (
     <div className="container vhvw">
       <div className="mainlayout-a">
         {/* Header */}
-        <Header />
+        <Header isLoggedIn={isLoggedIn} />
       </div>
       <div className="mainlayout-b">
         {/* Main */}
