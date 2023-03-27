@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 const {
   VITE_FIREBASE_API_KEY,
   VITE_FIREBASE_AUTH_DOMAIN,
@@ -35,3 +36,4 @@ export default app;
 //Initialize Firebase Authentication and get a reference to the service
 export const authService = getAuth(app);
 export const dbService = getFirestore(app);
+export const storageService = getStorage(app);

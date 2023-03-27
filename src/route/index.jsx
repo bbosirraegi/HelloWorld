@@ -5,7 +5,7 @@ import { Topic, Main, Posts, SignIn, Mypage, TopicDetail } from "route/pages";
 import ModalTest from "route/pages/Topic/components/Modal";
 import AdminPage from "./pages/AdminPage";
 
-const IndexRouter = ({ isLoggedIn }) => {
+const IndexRouter = ({ isLoggedIn, userObj }) => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout isLoggedIn={isLoggedIn} />}>
@@ -16,7 +16,7 @@ const IndexRouter = ({ isLoggedIn }) => {
         </Route>
         <Route path="/notification" element={<Topic />} />
         <Route path="/posts" element={<Posts />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin" element={<AdminPage userObj={userObj} />} />
         <Route path="/signin" element={<SignIn />} />
         {/* 마이페이지 모달이 이동하는 링크(route) */}
         <Route path="/mypage">

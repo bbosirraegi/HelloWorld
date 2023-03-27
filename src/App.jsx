@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import IndexRouter from "./route";
-import { MainLayout } from "./components";
 import { AnyProvider } from "./Context";
-import "./App.css";
-import firebase from "firebase/compat/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { authService } from "fBase";
+import IndexRouter from "./route";
+import LoadingPage from "LoadingPage";
+import "App.css";
 
 const App = () => {
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // 로그인한 사용자 정보 받아오기
+  const [userObj, setUserObj] = useState(null);
 
   useEffect(() => {
     const auth = getAuth();
@@ -17,18 +17,20 @@ const App = () => {
       if (user) {
         setIsLoggedIn(true);
         // const uid = user.uid;
+        setUserObj(user);
       } else {
         setIsLoggedIn(false);
       }
       setInit(true);
     });
   }, []);
+
   return init ? (
     <AnyProvider>
-      <IndexRouter isLoggedIn={isLoggedIn} />
+      <IndexRouter userObj={userObj} isLoggedIn={isLoggedIn} />
     </AnyProvider>
   ) : (
-    <div>Initializing...</div>
+    <LoadingPage />
   );
 };
 
