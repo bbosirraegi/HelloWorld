@@ -128,9 +128,10 @@ function CommunityReducer(state, action) {
     action.type // 만약 액션 타입이 ~ 이라면?
   ) {
     case "CREATE":
-      return state.concat(action.community);
+      // state 배열을  action.community 배열에 붙여주기(concat)
+      // 새로 생성되는 게시물(action.community)이 상단에 배치됨
+      return action.community.concat(state);
     //액션 항목 안에 community 넣어서 dispatch 해줄 것
-    //state 배열에 action.community 추가하여 리턴
 
     default: // 처리할 수 없는 액션 온다면 throw
       throw new Error(`Unhandled action type : ${action.type}`);
