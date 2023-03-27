@@ -3,8 +3,11 @@ import styled from "styled-components";
 import MainPresenter from "../../route/pages/Main/MainPresenter";
 import { useCommunityDispatch, useCommunityNextId } from "./../../Context";
 import { AiOutlineClose } from "react-icons/ai";
+import {MdArrowBack} from "react-icons/md";
 import ModalUserInfo from "../../route/pages/Topic/components/Modal/ModalUserInfo";
 import { Button } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
+import Avatar from "../../route/pages/Topic/components/Avatar";
 
 
 // 글쓰기 헤드 부분 (제출 버튼과 글쓰기 글자) 블록 스타일링
@@ -36,8 +39,8 @@ const CreateButton = styled.button`
   }
 `;
 
-// 상단의 X 부분 (close)
-const Close = styled.div`
+// 상단의 X, <- 부분 (close, back)
+const CloseBackButton = styled.div`
   position: absolute;
   left: 10px;
   padding-top: 5px;
@@ -151,11 +154,11 @@ function CreateList({ setCreate }) {
       //제출 버튼 onClick 이벤트 발생했을 때 dispatch
       dispatch({
         type: "CREATE",
-        community: {
+        community: [{ //배열로 변경 (Context.jsx에서 concat)
           id: nextId.current,
           title: title,
           content: content,
-        },
+        }],
       });
       setTitle(""); //공백처리
       setContent(""); //공백처리
@@ -185,14 +188,19 @@ function CreateList({ setCreate }) {
     setChooseButtons(!chooseButtons);
   }
 
-
   return (
     <div>
       {/* onClick 하면 input 박스에 적힌 내용이 main에 도출되도록 이벤트 주고 싶은데 좀 쉽게 전달하고 싶어서(?) Head와 List를 합쳤다 */}
       <CreateHeadBlock>
-        <Close onClick={closeCreate}>
-          <AiOutlineClose />
-        </Close>
+        {/* 3항 연산자 사용해서 사라짐과 나타남 동시에 적용되도록 구현 */}
+        {chooseButtons ? (
+          <CloseBackButton onClick={closeCreate}>
+            <AiOutlineClose />
+          </CloseBackButton>
+        ) : (
+          <CloseBackButton onClick={onClickButtons}><MdArrowBack /></CloseBackButton>
+        )}
+
         <TitleBlock>글쓰기</TitleBlock>
         {chooseleft && (<CreateButton onClick={onClick}>작성 완료</CreateButton>)}
       </CreateHeadBlock>
