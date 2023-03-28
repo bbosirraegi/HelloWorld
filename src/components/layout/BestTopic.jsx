@@ -1,3 +1,4 @@
+import { useCommunityState } from 'Context';
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import '../../css/besttopic.css'
@@ -9,17 +10,20 @@ import '../../css/besttopic.css'
 //     background: gray;
 // `;
 
-// 일단 박아넣은 예시들
-const initialTopic = [
-    {id: 0, title: "강원도 여행가기", content: "오늘은 강원도 여행을 가볼거에요"},
-    {id: 1, title: "전라도 여행가기", content: "오늘은 전라도 여행을 가볼거에요"},
-    {id: 2, title: "부산시 여행가기", content: "오늘은 부산시 여행을 가볼거에요"}
-];
-
 
 function BestTopics() {
-    
-    const [topics, topicState] = useState(initialTopic);
+
+    const besttopics = useCommunityState();
+
+    // 배열에서 무작위로 3개의 요소 추출하기
+    // Math.random() 함수를 사용하여 배열을 무작위로 정렬
+    // Math.random() : -1부터 1까지의 무작위 숫자 반환.
+    // Math.random() - Math.random() : 이 값이 음수일 경우 sort() 메서드는 배열의 요소를 뒤집음. 즉 무작위로 요소 위치 섞는 효과가 있음.
+    // slice() 메소드를 사용하여 첫 번째 요소부터 세 번째 요소까지 자르기
+    const randomTopics = besttopics.sort(() => Math.random() - Math.random()).slice(0, 3);
+
+    // BestTopic.jsx 에서 randomTopics 설정해주니까 Main도 랜덤으로 바뀌어버림.... (사용 안하고 선언만 해줘도 냅~다 랜덤)
+    // 근데 왜!!!???? randomTopics 선언과 이게 도대체 무슨 연관이 있는 거지???
 
     return (
         <div>
@@ -27,10 +31,10 @@ function BestTopics() {
             <p>베스트 게시글</p>
             <div className='topic-content-box'>
                 {/* 배열 보여주기 */}
-                {topics.map((topic, index) => (
-                    <div key={index}>
-                        <div className='topic-content'>{topic.title}</div>
-                        <div>{topic.content}</div>
+                {randomTopics.map((community) => (
+                    <div key={community.id}>
+                        <div className='topic-content'>{community.title}</div>
+                        <div>{community.content}</div>
                     </div>
                 ))}
             </div>

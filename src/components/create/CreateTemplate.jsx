@@ -1,10 +1,11 @@
+import RUSure from "components/RUSure";
 import React, { useState } from "react";
 import styled from "styled-components";
 
 
 // 모달 외부 영역
 const CreateOutsideBlock = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -15,48 +16,6 @@ const CreateOutsideBlock = styled.div`
   align-items: center;
 `;
 
-// 백그라운드 클릭하면 정말 나가시겠습니까? 모달 띄우기
-const RUSureModalBlock = styled.div`
-  width: 280px;
-  height: 150px;
-
-  z-index: 9999; // 제일 상단
-
-  position: fixed;
-
-  background: white;
-  border-radius: 20px; /* 테두리 둥글게 */
-  box-shadow: 0px 20px 50px 20px rgba(40, 40, 40, 0.18); /* rgba: 투명도 설정 */
-
-  overflow: hidden;
-
-  text-align: center;
-`
-
-const RUSureModalList = styled.div`
-  margin-top: 20px;
-  font-weight: bold;
-`
-
-const RUSureButtonsBlock = styled.div`
-  display: flex;
-  padding: 10px;
-`
-const RUSureButton = styled.button`
-  width: calc(100%/2);
-  height: 50px;
-  margin: 10px 5px;
-  border-radius: 8px; /* 테두리 둥글게 */
-  border:1px solid gray;
-  color: black;
-  background: white;
-  font-size: 15px;
-  :hover {
-    background-color: #2e86de;
-    color: white;
-    border: #2e86de;
-  }
-`
 
 // 글쓰기 창 전체블록 스타일링
 const CreateTemplateBlock = styled.div`
@@ -91,23 +50,15 @@ function CreateTemplate({ children, setCreate }) {
   const onRusure = () => setRusure(!rusure); //setRusure 을 true로 바꿔주면서 모달 보이게
   
   const onYes = () => setCreate(false);
+  const onNo = () => setRusure(false);
 
   return (
     // (e) => e.stopPropagation() : 부모 요소에 적용되는 동작을 자식 요소에 주는 것을 방지
     <CreateOutsideBlock onClick={onRusure}>
-      {rusure && (
-          <RUSureModalBlock>
-            <RUSureModalList>
-              게시글 쓰기에서 벗어나시겠어요? <br/>
-              작성된 내용은 모두 삭제됩니다
-            </RUSureModalList>
-            <RUSureButtonsBlock>
-              <RUSureButton>취소</RUSureButton>
-              <RUSureButton onClick={onYes}>확인</RUSureButton>
-            </RUSureButtonsBlock>
-          </RUSureModalBlock>
-      )}
       <CreateTemplateBlock onClick={(e) => e.stopPropagation()}>
+      {rusure && (
+        <RUSure onYes={onYes} onNo={onNo} />
+      )}
         <div>{children}</div>
       </CreateTemplateBlock>
     </CreateOutsideBlock>

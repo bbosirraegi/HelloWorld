@@ -8,7 +8,7 @@ import ModalUserInfo from "../../route/pages/Topic/components/Modal/ModalUserInf
 import { Button } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import Avatar from "../../route/pages/Topic/components/Avatar";
-
+import RUSure from "components/RUSure";
 
 // 글쓰기 헤드 부분 (제출 버튼과 글쓰기 글자) 블록 스타일링
 const CreateHeadBlock = styled.div`
@@ -188,6 +188,12 @@ function CreateList({ setCreate }) {
     setChooseButtons(!chooseButtons);
   }
 
+  //뒤로가기 클릭하면 진짜 나갈거? 띄우기
+  const [rusure, setRusure] = useState(false); //기존값 false
+  const onRusure = () => setRusure(!rusure); //setRusure 을 true로 바꿔주면서 모달 보이게
+  const onYes = () => setCreate(false);
+  const onNo = () => setRusure(false);
+
   return (
     <div>
       {/* onClick 하면 input 박스에 적힌 내용이 main에 도출되도록 이벤트 주고 싶은데 좀 쉽게 전달하고 싶어서(?) Head와 List를 합쳤다 */}
@@ -198,7 +204,12 @@ function CreateList({ setCreate }) {
             <AiOutlineClose />
           </CloseBackButton>
         ) : (
-          <CloseBackButton onClick={onClickButtons}><MdArrowBack /></CloseBackButton>
+          <CloseBackButton onClick={onRusure}>
+            <MdArrowBack />
+            {rusure && (
+              <RUSure onYes={onYes} onNo={onNo}/>
+            )}
+          </CloseBackButton>
         )}
 
         <TitleBlock>글쓰기</TitleBlock>
