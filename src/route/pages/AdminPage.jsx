@@ -4,6 +4,7 @@ import {
   addDoc,
   collection,
   deleteDoc,
+  doc,
   getDocs,
   onSnapshot,
   orderBy,
@@ -82,7 +83,7 @@ const SubmitBtn = styled.input`
   background-color: #2e86de;
   color: white;
 `;
-const AdminPage = ({ userObj }) => {
+const AdminPage = () => {
   /* state */
   // Document에 collection 추가하기
   const [title, setTitle] = useState("");
@@ -114,12 +115,20 @@ const AdminPage = ({ userObj }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     //image업로드
-    fileUrls &&
-      fileUrls.map(async (fileUrl) => {
-        const fileRef = ref(storageService, `${userObj.uid}/${v4()}`);
+    // fileUrls &&
+    let upload = false;
+
+    if (fileUrls) {
+      upload = fileUrls.map(async (fileUrl) => {
+        const fileRef = ref(storageService, `admin/${v4()}`);
         const response = await uploadString(fileRef, fileUrl, "data_url");
-        console.log(response);
+        return response;
       });
+      // 배열에서 map 내부 비동기 처리하기
+      // 안해주면 넘어감.
+      await Promise.all(upload);
+    }
+
     try {
       await addDoc(collection(dbService, "topics"), {
         id: v4(),
@@ -150,13 +159,14 @@ const AdminPage = ({ userObj }) => {
     let attachUrls = [];
     let attach;
     let attachLength = files.length;
-    if (attachLength > 5) {
-      alert("이미지는 5장까지만 첨부 가능합니다! 5장만 적용됩니다");
-      attachLength = 5;
+    if (attachLength == 1) {
+      attachLength = 1;
     } else {
+      alert("이미지는 1장까지만 첨부 가능합니다! 1장만 적용됩니다");
       attachLength = files.length;
     }
 
+    //파일 여러 장 업로드 시...
     for (let i = 0; i < attachLength; i++) {
       attach = files[i];
       let reader = new FileReader();
@@ -245,7 +255,7 @@ const AdminPage = ({ userObj }) => {
           <div key={topic.id}>
             <h4>{topic.title}</h4>
             <div>{topic.contents}</div>
-            {topic.images[0] && (
+            {topic.images.length && (
               <img src={topic.images[0]} width="100px" height="100px" />
             )}
             <button onClick={onDeleteClick}>삭제하기</button>
