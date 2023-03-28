@@ -17,7 +17,12 @@ const App = () => {
       if (user) {
         setIsLoggedIn(true);
         // const uid = user.uid;
-        setUserObj(user);
+        setUserObj({
+          uid: user.uid,
+          displayName: user.displayName,
+          email: user.email,
+          profile: user.photoURL,
+        });
       } else {
         setIsLoggedIn(false);
       }

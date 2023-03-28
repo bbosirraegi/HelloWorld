@@ -1,0 +1,9 @@
+1. auth
+현재 authService의 user를 통해 받아오고 있는 사용자 정보
+- uid = 사용자id
+- displayName: nickname(?)
+- e-mail: 사용자 이메일
+- profile: 사용자 프로필 사진
+
+2. storage
+- 여러 장 업로드 가능!

@@ -15,7 +15,7 @@ const SigninContainer = () => {
   /* State */
   const [email, setEmail] = useState("");
   const [passWord, setPassWord] = useState("");
-  const [newAccount, setNewAccount] = useState(true);
+  const [newAccount, setNewAccount] = useState(false);
 
   /* Variable */
   const auth = getAuth();
