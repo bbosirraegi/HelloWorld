@@ -12,6 +12,7 @@ const ModalOutsideBlock = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 99999;
 `;
 
 const ModalBodyBlock = styled.div`

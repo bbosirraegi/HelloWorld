@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import TopicPreview from "./TopicPreview";
-import {
-  useRecommendDispatch,
-  useTopicDispatch,
-  useTopicState,
-} from "../../../Context";
-import ModalTemplate from "./components/Modal/ModalTemplate";
-import ModalHeader from "./components/Modal/ModalHeader";
-import ModalUserInfo from "./components/Modal/ModalUserInfo";
+import { useRecommendDispatch, useTopicDispatch, useTopicState } from "Context";
+import ModalTemplate from "components/Modal/ModalTemplate";
+import ModalHeader from "components/Modal/ModalHeader";
+import ModalUserInfo from "components/Modal/ModalUserInfo";
 import { useNavigate } from "react-router-dom";
 
 const TopicDisplayBlock = styled.div`
@@ -84,7 +80,8 @@ const ModalContentsInput = styled.textarea`
   }
 `;
 
-const TopicPresenter = ({ adminObj }) => {
+const TopicPresenter = ({ userObj }) => {
+  console.log(userObj.email);
   /* state */
   const [showModal, setShowModal] = useState(false);
   const [subject, setSubject] = useState("");
@@ -131,7 +128,7 @@ const TopicPresenter = ({ adminObj }) => {
     });
     onCloseModal();
   };
-  
+
   return (
     <TopicDisplayBlock>
       {/* 각 아이템의 key는 현재시간 + random로 한다. */}

@@ -38,7 +38,6 @@ const MypagemTemplateBlock = styled.div`
     position: absolute;
     bottom: -9px;
     left: 94px;
-    z-index: 2;
   }
 `;
 

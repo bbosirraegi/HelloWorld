@@ -13,7 +13,9 @@ function Header({ isLoggedIn }) {
   // 글쓰기 클릭하면 글쓰기 창 켜지게 (true)
 
   const [mypage, setMypage] = useState(false); //모달관리, 기본값 false
-  const onMypage = () => setMypage(!mypage); //mypage 기존값 반전
+  const onMypage = () => {
+    setMypage(!mypage);
+  }; //mypage 기존값 반전
   // 마이페이지 클릭하면 마이페이지 창 켜지게 (true)
 
   return (

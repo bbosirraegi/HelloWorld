@@ -3,10 +3,10 @@ import styled from "styled-components";
 import MainPresenter from "../../route/pages/Main/MainPresenter";
 import { useCommunityDispatch, useCommunityNextId } from "./../../Context";
 import { AiOutlineClose } from "react-icons/ai";
-import {MdArrowBack} from "react-icons/md";
-import ModalUserInfo from "../../route/pages/Topic/components/Modal/ModalUserInfo";
+import { MdArrowBack } from "react-icons/md";
+import ModalUserInfo from "../Modal/ModalUserInfo";
 import { Button } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Avatar from "../../route/pages/Topic/components/Avatar";
 import RUSure from "components/RUSure";
 
@@ -77,7 +77,7 @@ const CreateTitle = styled.input`
     font-size: 25px;
     color: gray;
   }
-`
+`;
 
 const CreateContents = styled.textarea`
   width: 100%;
@@ -90,39 +90,37 @@ const CreateContents = styled.textarea`
     font-size: 18px;
     color: gray;
   }
-`
+`;
 
 const UserInfoBlock = styled.div`
   width: 100%;
   padding: 20px;
   padding-bottom: 0%;
-`
+`;
 
 const ButtonsBlock = styled.div`
   display: flex;
   flex-direction: row;
   text-align: center; /* 버튼들 중앙으로 */
   padding: 20px 10px;
-`
+`;
 const Buttons = styled.button`
-  width: calc(100%/2);
+  width: calc(100% / 2);
   height: 120px;
   margin: 10px;
   border-radius: 8px; /* 테두리 둥글게 */
-  border:1px solid #bdc3c7;
+  border: 1px solid #bdc3c7;
   background: white;
   font-size: 15px;
-`
+`;
 
 const BlaBla = styled.div`
   width: 100%;
-  height: calc(100%/2);
+  height: calc(100% / 2);
   text-align: center;
   margin-top: 10px;
   color: gray;
-`
-
-
+`;
 
 // 부모요소를 position: relative;
 // 자식요소를 position: absolute; 로 설정하면
@@ -154,11 +152,14 @@ function CreateList({ setCreate }) {
       //제출 버튼 onClick 이벤트 발생했을 때 dispatch
       dispatch({
         type: "CREATE",
-        community: [{ //배열로 변경 (Context.jsx에서 concat)
-          id: nextId.current,
-          title: title,
-          content: content,
-        }],
+        community: [
+          {
+            //배열로 변경 (Context.jsx에서 concat)
+            id: nextId.current,
+            title: title,
+            content: content,
+          },
+        ],
       });
       setTitle(""); //공백처리
       setContent(""); //공백처리
@@ -175,7 +176,6 @@ function CreateList({ setCreate }) {
   const closeCreate = () => setCreate(false);
   //setCreate 을 false로 바꿔주면서 창 닫히게
 
-
   // Test Input about Avata
   const profileImg = "https://t1.daumcdn.net/cfile/tistory/99891B485AA0B33012";
   const nickname = "사람1";
@@ -186,7 +186,7 @@ function CreateList({ setCreate }) {
   const onClickButtons = () => {
     setChooseleft(!chooseleft); //기존값 반전
     setChooseButtons(!chooseButtons);
-  }
+  };
 
   //뒤로가기 클릭하면 진짜 나갈거? 띄우기
   const [rusure, setRusure] = useState(false); //기존값 false
@@ -206,14 +206,12 @@ function CreateList({ setCreate }) {
         ) : (
           <CloseBackButton onClick={onRusure}>
             <MdArrowBack />
-            {rusure && (
-              <RUSure onYes={onYes} onNo={onNo}/>
-            )}
+            {rusure && <RUSure onYes={onYes} onNo={onNo} />}
           </CloseBackButton>
         )}
 
         <TitleBlock>글쓰기</TitleBlock>
-        {chooseleft && (<CreateButton onClick={onClick}>작성 완료</CreateButton>)}
+        {chooseleft && <CreateButton onClick={onClick}>작성 완료</CreateButton>}
       </CreateHeadBlock>
 
       {/* 버튼 클릭하면 사라지기 */}
@@ -224,7 +222,7 @@ function CreateList({ setCreate }) {
             <Buttons>질문 & 투표</Buttons>
           </ButtonsBlock>
           <BlaBla>
-            여행과 관련된 이야기를 나눠주세요. <br/>
+            여행과 관련된 이야기를 나눠주세요. <br />
             혐오, 음란물 등 부적절한 내용을 남기지 말아주세요.
           </BlaBla>
         </>
@@ -236,7 +234,7 @@ function CreateList({ setCreate }) {
           <UserInfoBlock>
             <ModalUserInfo imgUrl={profileImg} nickname={nickname} />
           </UserInfoBlock>
-          
+
           <CreateListBlock>
             <CreateTitle
               title={title}
