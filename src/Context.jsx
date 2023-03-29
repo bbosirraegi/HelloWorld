@@ -7,7 +7,9 @@ const initialCommunity = [
   {
     id: 1,
     title: "강원도 여행가기",
-    content: "오늘은 강원도 여행을 가볼거에요",
+    content: 
+      "오늘은 강원도 여행을 가볼거에요\n근데 이거 아래로 내리기 하려면\n그니까 엔터 치려면 어떻게 해야하는 거에요?\n이렇게 글이 길어지면 어찌되는 거에요????????"
+    // \n 왜 안먹힐까.... 왜... 와이....
   },
   {
     id: 2,
@@ -17,6 +19,16 @@ const initialCommunity = [
   {
     id: 3,
     title: "부산시 여행가기",
+    content: "오늘은 부산시 여행을 가볼거에요",
+  },
+  {
+    id: 4,
+    title: "서울시 여행가기",
+    content: "오늘은 부산시 여행을 가볼거에요",
+  },
+  {
+    id: 5,
+    title: "경기도 여행가기",
     content: "오늘은 부산시 여행을 가볼거에요",
   },
 ];
@@ -193,8 +205,8 @@ export function AnyProvider({ children }) {
     topicRecommendation
   );
 
-  const nextId = useRef(4);
-  // 현재 4개 들어있으니 그 다음인 5로 초기화
+  const nextId = useRef(6);
+  // 현재 5개 들어있으니 그 다음인 6로 초기화
 
   return (
     // State와 Dispath 중 뭐를 바깥으로 해줘도 상관없다.
