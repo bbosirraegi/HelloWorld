@@ -3,7 +3,7 @@
 import React from "react";
 import TopicPresenter from "./TopicPresenter";
 
-const TopicContainer = () => {
+const TopicContainer = ({ userObj }) => {
   /* Router */
   /* State */
   /* context로 전달해줄 것...! */
@@ -13,7 +13,7 @@ const TopicContainer = () => {
   /* Hooks */
 
   /* Render */
-  return <TopicPresenter />;
+  return <TopicPresenter userObj={userObj} />;
 };
 
 export default TopicContainer;

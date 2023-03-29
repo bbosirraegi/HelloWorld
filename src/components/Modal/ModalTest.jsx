@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Avatar from "../Avatar";
-import Profile from "../Profile";
+import Avatar from "../../route/pages/Topic/components/Avatar";
+import Profile from "../../route/pages/Topic/components/Profile";
 import ModalHeader from "./ModalHeader";
 import ModalTemplate from "./ModalTemplate";
 import ModalUserInfo from "./ModalUserInfo";

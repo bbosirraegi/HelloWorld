@@ -2,17 +2,17 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import MainLayout from "components/layout/MainLayout";
 import { Topic, Main, Posts, SignIn, Mypage, TopicDetail } from "route/pages";
-import ModalTest from "route/pages/Topic/components/Modal";
+import ModalTest from "components/Modal";
 import AdminPage from "./pages/AdminPage";
-import ErrorPage from "components/ErrorPage";
 
 const IndexRouter = ({ isLoggedIn, userObj }) => {
+  console.log(userObj);
   return (
     <Routes>
       <Route path="/" element={<MainLayout isLoggedIn={isLoggedIn} />}>
         <Route index element={<Main />} />
         <Route path="/topic">
-          <Route index element={<Topic />} />
+          <Route index element={<Topic userObj={userObj} />} />
           <Route path=":topic_id" element={<TopicDetail />} />
         </Route>
         <Route path="/notification" element={<Topic />} />
@@ -25,10 +25,6 @@ const IndexRouter = ({ isLoggedIn, userObj }) => {
         </Route>
         <Route path="modal_test" element={<ModalTest />} />
       </Route>
-      <Route
-        path="/signin"
-        element={!isLoggedIn ? <SignIn /> : <ErrorPage msg={"비정상적 접근"} />}
-      />
     </Routes>
   );
 };

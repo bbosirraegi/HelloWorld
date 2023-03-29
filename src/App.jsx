@@ -15,13 +15,14 @@ const App = () => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log(user);
         setIsLoggedIn(true);
         // const uid = user.uid;
         setUserObj({
-          uid: user.uid,
-          displayName: user.displayName,
-          email: user.email,
-          profile: user.photoURL,
+          uid: user.uid ? user.uid : "",
+          displayName: user.displayName ? user.displayName : "",
+          email: user.email ? user.email : "",
+          profile: user.photoURL ? user.photoURL : "/image/user.png",
         });
       } else {
         setIsLoggedIn(false);
