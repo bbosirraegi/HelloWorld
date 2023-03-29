@@ -45,20 +45,20 @@ const SigninPresenter = ({
       </span>
       <div>
         {/* 소셜 로그인 */}
-        <div className="social-button" onClick={onSocialClick} name="google">
+        <button className="social-button" onClick={onSocialClick} name="google">
           <div className="social-mark">
             <FcGoogle />
           </div>
           <div>Google</div>
           <div></div>
-        </div>
-        <div className="social-button" onClick={onSocialClick} name="github">
+        </button>
+        <button className="social-button" onClick={onSocialClick} name="github">
           <div className="social-mark">
             <BsGithub />
           </div>
           <div>Github</div>
           <div></div>
-        </div>
+        </button>
       </div>
     </div>
   );
