@@ -15,14 +15,21 @@ const App = () => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user);
+        let role = 0;
         setIsLoggedIn(true);
         // const uid = user.uid;
+        if (
+          user.email === "jusanghui21@gmail.com" ||
+          user.email === "dbsry129@naver.com"
+        ) {
+          role = 1;
+        }
         setUserObj({
           uid: user.uid ? user.uid : "",
           displayName: user.displayName ? user.displayName : "",
           email: user.email ? user.email : "",
           profile: user.photoURL ? user.photoURL : "/image/user.png",
+          role: role,
         });
       } else {
         setIsLoggedIn(false);
