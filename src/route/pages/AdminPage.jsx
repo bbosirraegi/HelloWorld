@@ -129,6 +129,8 @@ const AdminPage = () => {
       await Promise.all(upload);
     }
 
+    //데이터 추가 : addDoc 사용
+    //한 db 는 collection 들을 갖고 있고, 각 collection 은 document 들을 가짐
     try {
       await addDoc(collection(dbService, "topics"), {
         id: v4(),
@@ -182,7 +184,10 @@ const AdminPage = () => {
   /* 토픽들 firestore에서 가져오기 */
   useEffect(() => {
     // 실시간 data 가져오기 - 이 방법으로 data 입력하기!
+    // 페이지가 마운트 될 때 가져와지므로 useEffect 사용하는 것임!
+    // topics 라는 콜렉션 가져와서 createAt 이라는 속성에 따라서 정렬. 그 결과를 q 에 넣는 것!
     const q = query(collection(dbService, "topics"), orderBy("createdAt"));
+    // onSnapshot : 실시간으로 db 받아올 수 있게 해주는 것
     onSnapshot(q, (snapshot) => {
       const topicArr = snapshot.docs.map((doc) => ({
         id: doc.id,

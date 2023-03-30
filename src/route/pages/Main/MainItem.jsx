@@ -97,6 +97,8 @@ function MainItem({ title, content, id }) {
   // 커뮤니티 미리보기 클릭 시 화면이동
   const navigate = useNavigate();
 
+  
+
   return (
     <CommunityItem>
       <CommunityItemHeader>
