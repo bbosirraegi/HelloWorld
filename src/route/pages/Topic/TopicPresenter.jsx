@@ -81,7 +81,7 @@ const ModalContentsInput = styled.textarea`
 `;
 
 const TopicPresenter = ({ userObj }) => {
-  console.log(userObj.email);
+  console.log(userObj);
   /* state */
   const [showModal, setShowModal] = useState(false);
   const [subject, setSubject] = useState("");
@@ -90,11 +90,19 @@ const TopicPresenter = ({ userObj }) => {
 
   /* variable */
   const navigate = useNavigate();
-  const profileImg = "https://t1.daumcdn.net/cfile/tistory/99891B485AA0B33012";
-  const nickname = "관리자";
-  const setCreate = () => setShowModal(!showModal);
+  let profileImg = "https://t1.daumcdn.net/cfile/tistory/99891B485AA0B33012";
+  let nickname = "로그인하지 않은 사용자";
+  let isAdmin = false;
+  if (userObj) {
+    isAdmin = userObj.role;
+    nickname = userObj.displayName;
+    profileImg = userObj.profile;
+    console.log(userObj.profile);
+  }
+  const setCreate = () => {
+    userObj && setShowModal(!showModal);
+  };
   const topics = useTopicState();
-  const isAdmin = true;
 
   /* context */
   const dispatch = useRecommendDispatch();
