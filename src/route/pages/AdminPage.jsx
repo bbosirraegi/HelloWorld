@@ -115,19 +115,19 @@ const AdminPage = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     //image업로드
-    // fileUrls &&
-    let upload = false;
-
-    if (fileUrls) {
-      upload = fileUrls.map(async (fileUrl) => {
-        const fileRef = ref(storageService, `admin/${v4()}`);
-        const response = await uploadString(fileRef, fileUrl, "data_url");
-        return response;
-      });
-      // 배열에서 map 내부 비동기 처리하기
-      // 안해주면 넘어감.
-      await Promise.all(upload);
-    }
+    let fileUrl = "";
+    
+    // if (fileUrls) {
+    //   let fileUrl = "";
+    //   upload = fileUrls.map(async (fileUrl) => {
+    //     const fileRef = ref(storageService, `admin/${v4()}`);
+    //     const response = await uploadString(fileRef, fileUrl, "data_url");
+    //     return response;
+    //   });
+    //   // 배열에서 map 내부 비동기 처리하기
+    //   // 안해주면 넘어감.
+    //   await Promise.all(upload);
+    // }
 
     try {
       await addDoc(collection(dbService, "topics"), {
@@ -136,7 +136,7 @@ const AdminPage = () => {
         title: title,
         contents: contents,
         isMarked: ["admin"],
-        images: fileUrls,
+        // images: fileUrls,
       });
       setTitle("");
       setContents("");
@@ -168,8 +168,8 @@ const AdminPage = () => {
 
     //파일 여러 장 업로드 시...
     for (let i = 0; i < attachLength; i++) {
-      attach = files[i];
       let reader = new FileReader();
+      attach = files[i];
       reader.onload = () => {
         attachUrls[i] = reader.result;
         setFileUrls([...attachUrls]);
