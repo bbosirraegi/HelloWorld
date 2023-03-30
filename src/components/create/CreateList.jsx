@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import MainPresenter from "../../route/pages/Main/MainPresenter";
-import { useCommunityDispatch, useCommunityNextId } from "./../../Context";
 import { AiOutlineClose } from "react-icons/ai";
 import { MdArrowBack } from "react-icons/md";
 import ModalUserInfo from "../Modal/ModalUserInfo";
@@ -9,6 +8,10 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Avatar from "../../route/pages/Topic/components/Avatar";
 import RUSure from "components/RUSure";
+import { addDoc, collection } from "firebase/firestore"
+import { dbService } from "fBase";
+// uuid import
+import { v4 } from "uuid";
 
 // 글쓰기 헤드 부분 (제출 버튼과 글쓰기 글자) 블록 스타일링
 const CreateHeadBlock = styled.div`
@@ -142,7 +145,8 @@ function CreateList({ setCreate }) {
   //일단 onClick부터 설정해보고 있음 (아직 미완성)
   //todolist 참고하여 만들고 있기 때문에 Context를 만들던지, Context 없이 진행할지... 선택해야함
   //setCreate props는 layout/Header.jsx 에서 받아옵니당
-  const onClick = (e) => {
+  // firestore에 추가하기 위해 async 추가
+  const onClick = async(e) => {
     e.preventDefault(); // 클릭 이벤트의 기본 동작 취소
     if (title === "") {
       titleRef.current.focus(); //title에 아무것도 없으면 focus
@@ -150,26 +154,45 @@ function CreateList({ setCreate }) {
       contentRef.current.focus(); // content에 아무것도 없으면 focus
     } else {
       //제출 버튼 onClick 이벤트 발생했을 때 dispatch
-      dispatch({
-        type: "CREATE",
-        community: [
-          {
-            //배열로 변경 (Context.jsx에서 concat)
-            id: nextId.current,
-            title: title,
-            content: content,
-          },
-        ],
-      });
+      
+      // 일단은 dispatch는 나둬보겠슴미당
+      // 아! 참고로 addDoc 함수는 async await로 비동기 처리해줘야 함미당
+      // data firestore에 추가하기
+      // 그럼 추가해 볼까요?
+      // 컬렉션 명은 무엇으로 할까욤 
+      // 그럼 이제 data를 추가해줍씨다
+      // 넴 마쟈요 그런데 입력값이랑 필드명이랑 일치하면 아마 필드명은 생략해도 될거에여
+      // 넴넴 좋아요
+      // 그럼 이제 테스트 해볼까요?.? 좋숩니닷
+      // v4() 이런식으로 넣어주면 됩니당 넴 좋아요
+      // 시간은 무엇으로 넣어줄까요?ㅎ.ㅎ 보통은 Date.now()를 많이 씁미당 
+      //앗하! 혹시 new Date() 도 많이 쓰나욥!?  
+      // 아 그것은 날짜 객체를 생성하는 것이라
+      // 아니면.. 날짜 객체를 생성하고 format 지정해서 string으로 넣어줘도 될 거에용
+      // 그런데 만약에 정렬을 사용할 예정이라면, Date.now()를 이용하는게 편리합니당
+      // 앗. 이름 지정을 안해줬었군요
+      //그럼 이제 무엇을 해보면 좋을까요 아 이제 data를 불러와야겠군여
+      //데이터 불러오기라 함은 
+      // firestore에 저장된 값을 불러와서 화면에 보여주는 것이겠지요
+      // 근데 현재 creat modal 에 적고 올리면 Main에 title과 content를 보여주게 설정해놨긴 했는데 firebasestore 연동으로 바꿔야 하는 건가요!?
+      // 음 그 과정을 context로 dispatch해서 하는 것이 아니라 firebase로 하게 되는 것이지요.
+      // 앗하 이해했읍니다 쓰앵님 
+      // 그럼 data를 불러오는 페이지로 가봅씨다 그 전에 테스트 데이터 하나만 추가해 줍씨다
+     // data는 어느 페이지에서 불러오게 되어있나욤?.?
+     // MainItem 입니닷
+     // main Item은 그 각 커뮤니티 글이지요?
+     // 그렇담 이 MainItem을 불러오는 곳에 data를 불러와서 배열에 담고 map함수로 저 친구들을 하나씩 추가해줘야 함미당..!
+    // MainItem을 불러오는 곳은 MainPresenter 이니 그곳에서 useEffect로 비동기로 데이터 받고 보여주면 되겟군여
+    // 그렇지요ㅋㅋㅋ 귯귯!!!!
+    // 음 그런데 일단은 div를 따로 만들어서 그곳에서 불러오는 것을 테스트를 해봅시당
+      await addDoc(collection(dbService,"community"),{ title, content, uuid: v4(), createdAt: Date.now() })
+
       setTitle(""); //공백처리
       setContent(""); //공백처리
       setCreate(false); //닫아줘야하므로
-      nextId.current += 1; //id 값 +1
     }
   };
 
-  const dispatch = useCommunityDispatch();
-  const nextId = useCommunityNextId();
   const onChangeTitle = (e) => setTitle(e.target.value);
   const onChangeContent = (e) => setContent(e.target.value);
 

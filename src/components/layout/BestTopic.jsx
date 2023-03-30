@@ -10,6 +10,10 @@ import "../../css/besttopic.css";
 //     background: gray;
 // `;
 
+const BTContentBlock = styled.div`
+  white-space: pre-wrap;
+`
+
 function BestTopics() {
   /*
   const besttopics = useCommunityState();
@@ -53,7 +57,7 @@ function BestTopics() {
         {randomTopics.map((community) => (
           <div key={community.id}>
             <div className="topic-content">{community.title}</div>
-            <div>{community.content}</div>
+            <BTContentBlock>{community.content}</BTContentBlock>
           </div>
         ))}
       </div>
