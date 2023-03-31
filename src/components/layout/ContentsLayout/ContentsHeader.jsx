@@ -24,11 +24,16 @@ const ContentsHeader = () => {
   } else if (pathName.includes("mypage")) {
     name = "마이페이지";
     toggle = true;
+  } else if (pathName === "/admin") {
+    name = "관리자 페이지";
+    toggle = true;
   }
   return (
     <div className="contents_header">
-      {toggle && <FiArrowLeft onClick={() => navigate(-1)} />}
-      {name}
+      <div style={{ display: "flex", marginRight: "10px" }}>
+        {toggle && <FiArrowLeft onClick={() => navigate(-1)} />}
+      </div>
+      <div>{name}</div>
     </div>
   );
 };

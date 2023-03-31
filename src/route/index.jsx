@@ -5,15 +5,24 @@ import { Topic, Main, Posts, SignIn, Mypage, TopicDetail } from "route/pages";
 import ModalTest from "components/Modal";
 import AdminPage from "./pages/AdminPage";
 
-const IndexRouter = ({ isLoggedIn, userObj }) => {
+const IndexRouter = ({ isLoggedIn, userObj, refreshUser }) => {
   console.log(userObj);
   return (
     <Routes>
-      <Route path="/" element={<MainLayout isLoggedIn={isLoggedIn} />}>
+      <Route
+        path="/"
+        element={
+          <MainLayout
+            refreshUser={refreshUser}
+            userObj={userObj}
+            isLoggedIn={isLoggedIn}
+          />
+        }
+      >
         <Route index element={<Main />} />
         <Route path="/topic">
           <Route index element={<Topic userObj={userObj} />} />
-          <Route path=":topic_id" element={<TopicDetail />} />
+          <Route path=":topic_id" element={<TopicDetail userObj={userObj} />} />
         </Route>
         <Route path="/notification" element={<Topic />} />
         <Route path="/posts" element={<Posts />} />

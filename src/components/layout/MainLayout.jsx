@@ -6,12 +6,16 @@ import ContentsHeader from "./ContentsLayout/ContentsHeader";
 import ContentsPart from "./ContentsLayout/ContentsPart";
 import Header from "./Header";
 
-function MainLayout({ isLoggedIn }) {
+function MainLayout({ userObj, refreshUser, isLoggedIn }) {
   return (
     <div className="container vhvw">
       <div className="mainlayout-a">
         {/* Header */}
-        <Header isLoggedIn={isLoggedIn} />
+        <Header
+          userObj={userObj}
+          isLoggedIn={isLoggedIn}
+          refreshUser={refreshUser}
+        />
       </div>
       <div className="mainlayout-b">
         {/* Main */}

@@ -20,11 +20,13 @@ import LoadingPage from "LoadingPage";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 } from "uuid";
+import Avatar from "./Topic/components/Avatar";
+import Profile from "./Topic/components/Profile";
 
 const AdminFormTemplate = styled.div`
   display: flex;
   height: 100vh;
-  align-items: center;
+  // align-items: center;
   flex-direction: column;
 `;
 
@@ -100,10 +102,13 @@ const AdminPage = () => {
   const [topic, setTopic] = useState("");
   // Data 가져올 페이지에 새로운 state 만들어주기
   const [topics, setTopics] = useState([]);
+  const [recommends, setRecommends] = useState([]);
   // 이미지 urls
   const [fileUrls, setFileUrls] = useState(null);
-  const target = doc(dbService, "topics", `${topic.id}`);
+  /* Variable */
+  const InputFile = useRef();
   /* function */
+
   const onTitleInput = (e) => {
     const {
       target: { value },
@@ -119,6 +124,9 @@ const AdminPage = () => {
   };
 
   const onClearAttachment = () => setFileUrls(null);
+  const onClearInput = () => {
+    InputFile.current.value = "";
+  };
 
   //토픽 추가하기
   const onSubmit = async (e) => {
@@ -150,11 +158,13 @@ const AdminPage = () => {
         createdAt: Date.now(),
         title: title,
         contents: contents,
-        isMarked: ["admin"],
+        isMarked: [],
         images: fileUrls,
       });
 
       alert("complete");
+      onClearInput();
+      onClearAttachment();
       setTitle("");
       setContents("");
 
@@ -196,21 +206,114 @@ const AdminPage = () => {
     // 실시간 data 가져오기 - 이 방법으로 data 입력하기!
     // 페이지가 마운트 될 때 가져와지므로 useEffect 사용하는 것임!
     // topics 라는 콜렉션 가져와서 createAt 이라는 속성에 따라서 정렬. 그 결과를 q 에 넣는 것!
-    const q = query(collection(dbService, "topics"), orderBy("createdAt"));
+    const topics = query(collection(dbService, "topics"), orderBy("createdAt"));
+    const recommend = query(
+      collection(dbService, "topic_recommend"),
+      orderBy("createAt")
+    );
     // onSnapshot : 실시간으로 db 받아올 수 있게 해주는 것
-    onSnapshot(q, (snapshot) => {
+    onSnapshot(topics, (snapshot) => {
       const topicArr = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
       setTopics(topicArr);
     });
-  }, []);
 
+    onSnapshot(recommend, (snapshot) => {
+      const recommendArr = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setRecommends(recommendArr);
+    });
+  }, []);
   /* render */
   return (
-    <>
+    <div style={{ padding: "10px 20px" }}>
+      {/* 토픽 신청 리스트 */}
+      <div>
+        <h3>토픽 신청 내역</h3>
+        {recommends.map((recommend) => (
+          <div
+            key={recommend.id}
+            style={{
+              padding: "10px",
+              border: "2px solid lightgray",
+              borderRadius: "10px",
+              display: "flex",
+            }}
+          >
+            <div>
+              <Avatar imgUrl={recommend.profile} />
+            </div>
+            <div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <div>
+                  <Profile nickname={recommend.author} fontSize="15px" />
+                </div>
+                <div style={{ fontSize: "15px", marginLeft: "10px" }}>
+                  {recommend.date}
+                </div>
+              </div>
+              <div>
+                <div
+                  id="subject"
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "18px",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {recommend.subject}
+                </div>
+                <div id="content" style={{ whiteSpace: "pre-wrap" }}>
+                  {recommend.content}
+                </div>
+              </div>
+              <div>
+                <button
+                  style={{
+                    width: "80px",
+                    height: "30px",
+                    borderRadius: "30px",
+                    outline: "none",
+                    border: "none",
+                    marginTop: "10px",
+                    marginRight: "10px",
+                    backgroundColor: "#2e86de",
+                    color: "white",
+                    cursor: "pointer",
+                  }}
+                >
+                  채택하기
+                </button>
+                <button
+                  style={{
+                    width: "80px",
+                    height: "30px",
+                    borderRadius: "30px",
+                    outline: "none",
+                    border: "none",
+                    marginTop: "10px",
+                    backgroundColor: "tomato",
+                    color: "white",
+                    cursor: "pointer",
+                  }}
+                >
+                  삭제하기
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* 토픽 추가하기 */}
       <AdminFormTemplate>
+        <div>
+          <h3>토픽 추가하기</h3>
+        </div>
         <AdminForm onSubmit={onSubmit}>
           <label htmlFor="title" style={{ marginBottom: "10px" }}>
             제목
@@ -228,7 +331,7 @@ const AdminPage = () => {
           </label>
           <TopicContentsInput
             name="contents"
-            maxLength={120}
+            maxLength={200}
             id="contents"
             placeholder="토픽 내용을 입력해주세요!"
             value={contents}
@@ -237,12 +340,13 @@ const AdminPage = () => {
           <label htmlFor="inputFile">
             <div style={{ marginBottom: "10px" }}>이미지 추가하기</div>
             <input
+              id="inputFile"
               type="file"
               multiple
               accept="image/*"
               name="topicImages"
-              id="inputFile"
               onChange={onFileChange}
+              ref={InputFile}
               style={{ display: "none" }}
             />
           </label>
@@ -257,20 +361,8 @@ const AdminPage = () => {
             <SubmitBtn type="submit" value="제출하기" />
           </SubmitBtnTemplate>
         </AdminForm>
-        {/* <div>
-        {topics.map((topic) => (
-          <div key={topic.id}>
-            <h4>{topic.title}</h4>
-            <div>{topic.contents}</div>
-            {topic.images.length && (
-              <img src={topic.images[0]} width="100px" height="100px" />
-            )}
-            <button onClick={onDeleteClick}>삭제하기</button>
-          </div>
-        ))}
-      </div> */}
       </AdminFormTemplate>
-    </>
+    </div>
   );
 };
 

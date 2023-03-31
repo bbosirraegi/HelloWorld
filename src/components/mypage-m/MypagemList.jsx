@@ -7,7 +7,7 @@ import LoginModal from "route/pages/LoginModal";
 // 페이지가 새로 만들어지고 안에서 동작들을 해야하므로 index.jsx에서
 // <Route path="/mypage/notice" element={<Notice />} /> 설정해줘야함!
 // 위처럼 해주면 B부분에 나올 것임ㅎ.ㅎ
-function MypagemList({ isLoggedIn }) {
+function MypagemList({ refreshUser, isLoggedIn }) {
   const [showModal, setShowModal] = useState(false);
   const auth = getAuth();
   const navigate = useNavigate();
@@ -15,6 +15,7 @@ function MypagemList({ isLoggedIn }) {
   const logout = () => {
     console.log("로그아웃!");
     auth.signOut();
+    refreshUser();
     navigate("/");
   };
 

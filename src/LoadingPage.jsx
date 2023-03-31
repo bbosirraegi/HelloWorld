@@ -17,10 +17,10 @@ const ContentTemplate = styled.div`
 // 로딩 페이지
 const LoadingPage = () => {
   const images = [
-    "image/loading/travel.gif",
-    "image/loading/plane.gif",
-    "image/loading/airplane.gif",
-    "image/loading/map.gif",
+    "/image/loading/travel.gif",
+    "/image/loading/plane.gif",
+    "/image/loading/airplane.gif",
+    "/image/loading/map.gif",
   ];
   return (
     <LoadingTemplate>
