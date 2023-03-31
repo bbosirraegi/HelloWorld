@@ -155,7 +155,7 @@ const TopicPresenter = ({ userObj }) => {
         <TopicCreateBlock>
           <div>관리자 모드</div>
           <RecommentBtn onClick={AdminMode} color="#9c88ff">
-            토픽 추가
+            ON
           </RecommentBtn>
         </TopicCreateBlock>
       )}

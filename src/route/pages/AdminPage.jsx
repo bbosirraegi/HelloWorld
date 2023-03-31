@@ -10,7 +10,13 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { uploadString, ref, getStorage } from "firebase/storage";
+import {
+  uploadString,
+  ref,
+  getStorage,
+  getDownloadURL,
+} from "firebase/storage";
+import LoadingPage from "LoadingPage";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 } from "uuid";
@@ -86,8 +92,11 @@ const SubmitBtn = styled.input`
 const AdminPage = () => {
   /* state */
   // Document에 collection 추가하기
+  // 제목 입력 값
   const [title, setTitle] = useState("");
+  // 내용 입력 값
   const [contents, setContents] = useState("");
+  // firestore에서 topic 가져오기
   const [topic, setTopic] = useState("");
   // Data 가져올 페이지에 새로운 state 만들어주기
   const [topics, setTopics] = useState([]);
@@ -114,20 +123,24 @@ const AdminPage = () => {
   //토픽 추가하기
   const onSubmit = async (e) => {
     e.preventDefault();
-    //image업로드
-    let fileUrl = "";
-    
-    // if (fileUrls) {
-    //   let fileUrl = "";
-    //   upload = fileUrls.map(async (fileUrl) => {
-    //     const fileRef = ref(storageService, `admin/${v4()}`);
-    //     const response = await uploadString(fileRef, fileUrl, "data_url");
-    //     return response;
-    //   });
-    //   // 배열에서 map 내부 비동기 처리하기
-    //   // 안해주면 넘어감.
-    //   await Promise.all(upload);
-    // }
+    // const imgArr = [];
+    if (fileUrls) {
+      // image 업로드
+      let result = "";
+      const fileLength = fileUrls.length;
+      // map 함수의 경우 계속 동작을 하지 않아서 for문으로 접근하기
+      // 성공!
+      for (let i = 0; i < fileLength; i++) {
+        // 이미지 파일에 대한 reference 생성하기
+        const fileRef = ref(storageService, `admin/topic/${v4()}`);
+        // 업로드 결과 받아오기 (reference, 파일, 형식)
+        const response = await uploadString(fileRef, fileUrls[i], "data_url");
+        // response의 ref를 통해 downloadURL 받아오기
+        result = await getDownloadURL(response.ref);
+        // 업로드된 이미지 담는 배열에 담아주기
+        fileUrls[i] = result;
+      }
+    }
 
     //데이터 추가 : addDoc 사용
     //한 db 는 collection 들을 갖고 있고, 각 collection 은 document 들을 가짐
@@ -138,8 +151,10 @@ const AdminPage = () => {
         title: title,
         contents: contents,
         isMarked: ["admin"],
-        // images: fileUrls,
+        images: fileUrls,
       });
+
+      alert("complete");
       setTitle("");
       setContents("");
 
@@ -150,33 +165,28 @@ const AdminPage = () => {
   };
 
   const onFileChange = (e) => {
-    // input file로 부터 이미지 파일 불러오기
-    // files: 선택한 파일 개수
     const {
       target: { files },
     } = e;
 
+    // files : 이미지 '리스트'
     console.log(files);
 
-    let attachUrls = [];
+    //결과 url들이 담길 배열
+    const resultArr = [];
+
+    // 현재 파일
     let attach;
     let attachLength = files.length;
-    if (attachLength == 1) {
-      attachLength = 1;
-    } else {
-      alert("이미지는 1장까지만 첨부 가능합니다! 1장만 적용됩니다");
-      attachLength = files.length;
-    }
 
-    //파일 여러 장 업로드 시...
     for (let i = 0; i < attachLength; i++) {
-      let reader = new FileReader();
+      let fileReader = new FileReader();
       attach = files[i];
-      reader.onload = () => {
-        attachUrls[i] = reader.result;
-        setFileUrls([...attachUrls]);
+      fileReader.onload = () => {
+        resultArr[i] = fileReader.result;
+        setFileUrls([...resultArr]);
       };
-      reader.readAsDataURL(attach);
+      fileReader.readAsDataURL(attach);
     }
   };
 
@@ -197,65 +207,57 @@ const AdminPage = () => {
     });
   }, []);
 
-  const onDeleteClick = async () => {
-    const ok = confirm("삭제하시겠습니까?");
-    const storage = getStorage();
-    const deleteRef = ref(storage, topics.images);
-
-    if (ok) {
-      console.log("삭제");
-    }
-  };
   /* render */
   return (
-    <AdminFormTemplate>
-      <AdminForm onSubmit={onSubmit}>
-        <label htmlFor="title" style={{ marginBottom: "10px" }}>
-          제목
-        </label>
-        <TopicTitleInput
-          type="text"
-          name="title"
-          id="title"
-          placeholder="토픽 제목을 입력해주세요!"
-          value={title}
-          onChange={onTitleInput}
-        />
-        <label htmlFor="contents" style={{ marginBottom: "10px" }}>
-          토픽
-        </label>
-        <TopicContentsInput
-          name="contents"
-          maxLength={120}
-          id="contents"
-          placeholder="토픽 내용을 입력해주세요!"
-          value={contents}
-          onChange={onContentsInput}
-        />
-        <label htmlFor="inputFile">
-          <div style={{ marginBottom: "10px" }}>이미지 추가하기</div>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            name="topicImages"
-            id="inputFile"
-            onChange={onFileChange}
-            style={{ display: "none" }}
+    <>
+      <AdminFormTemplate>
+        <AdminForm onSubmit={onSubmit}>
+          <label htmlFor="title" style={{ marginBottom: "10px" }}>
+            제목
+          </label>
+          <TopicTitleInput
+            type="text"
+            name="title"
+            id="title"
+            placeholder="토픽 제목을 입력해주세요!"
+            value={title}
+            onChange={onTitleInput}
           />
-        </label>
-        {fileUrls && (
-          <PreviewTemplateBlock>
-            {fileUrls.map((fileUrl) => (
-              <PreviewImage key={v4()} fileUrl={fileUrl} />
-            ))}
-          </PreviewTemplateBlock>
-        )}
-        <SubmitBtnTemplate>
-          <SubmitBtn type="submit" value="제출하기" />
-        </SubmitBtnTemplate>
-      </AdminForm>
-      <div>
+          <label htmlFor="contents" style={{ marginBottom: "10px" }}>
+            토픽
+          </label>
+          <TopicContentsInput
+            name="contents"
+            maxLength={120}
+            id="contents"
+            placeholder="토픽 내용을 입력해주세요!"
+            value={contents}
+            onChange={onContentsInput}
+          />
+          <label htmlFor="inputFile">
+            <div style={{ marginBottom: "10px" }}>이미지 추가하기</div>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              name="topicImages"
+              id="inputFile"
+              onChange={onFileChange}
+              style={{ display: "none" }}
+            />
+          </label>
+          {fileUrls && (
+            <PreviewTemplateBlock>
+              {fileUrls.map((fileUrl) => (
+                <PreviewImage key={v4()} fileUrl={fileUrl} />
+              ))}
+            </PreviewTemplateBlock>
+          )}
+          <SubmitBtnTemplate>
+            <SubmitBtn type="submit" value="제출하기" />
+          </SubmitBtnTemplate>
+        </AdminForm>
+        {/* <div>
         {topics.map((topic) => (
           <div key={topic.id}>
             <h4>{topic.title}</h4>
@@ -266,8 +268,9 @@ const AdminPage = () => {
             <button onClick={onDeleteClick}>삭제하기</button>
           </div>
         ))}
-      </div>
-    </AdminFormTemplate>
+      </div> */}
+      </AdminFormTemplate>
+    </>
   );
 };
 
