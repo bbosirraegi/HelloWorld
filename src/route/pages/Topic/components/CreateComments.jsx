@@ -78,7 +78,12 @@ const ImagePreview = styled.div`
   background-position: center;
 `;
 
-const CreateComments = ({ on = "", comment_id = "", placeholder = "" }) => {
+const CreateComments = ({
+  userObj,
+  on = "",
+  comment_id = "",
+  placeholder = "",
+}) => {
   /* state */
   const [insertImage, setInsertImage] = useState(false);
   const [imgFile, setImgFile] = useState("");
@@ -167,19 +172,24 @@ const CreateComments = ({ on = "", comment_id = "", placeholder = "" }) => {
   return (
     <CommentsTemplate>
       <div style={{ marginRight: "10px" }}>
-        <Avatar imgUrl={"/image/temp_profile.jpg"} size="40px" />
+        <Avatar
+          imgUrl={userObj ? userObj.profile : "/image/user.png"}
+          size="40px"
+        />
       </div>
-      <Form onSubmit={createComment}>
+      <Form onSubmit={userObj ? createComment : false}>
         <AttatchImage htmlFor="profileImg">
           <IoImageOutline />
-          <input
-            id="profileImg"
-            type="file"
-            accept="image/*"
-            ref={imgRef}
-            onChange={saveImgFile}
-            style={{ display: "none" }}
-          />
+          {userObj && (
+            <input
+              id="profileImg"
+              type="file"
+              accept="image/*"
+              ref={imgRef}
+              onChange={saveImgFile}
+              style={{ display: "none" }}
+            />
+          )}
         </AttatchImage>
         <CommentsInput
           type="text"
@@ -189,7 +199,7 @@ const CreateComments = ({ on = "", comment_id = "", placeholder = "" }) => {
           value={commentInput}
           onChange={commentEnter}
         />
-        <SendButton onClick={createComment}>
+        <SendButton onClick={userObj ? createComment : false}>
           <RiSendPlane2Fill />
         </SendButton>
       </Form>

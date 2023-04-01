@@ -60,20 +60,26 @@ const ContentsCount = styled.div`
 const BookmarkButton = styled.div``;
 
 const TopicPreview = ({ topic }) => {
+  // State
+  const [isMarked, setIsMarked] = useState(topic.isMarked.length);
+  // Variable
   const title = topic.title;
   /* preview image는 각 토픽의 첫번째 이미지로 지정 */
-  const previewImage = `/image/${topic.images[0]}`;
+  const previewImage = topic.images[0];
+  const feedbacks = 0;
+  /* 토픽 미리보기 클릭 시 화면이동 */
+  const navigate = useNavigate();
   /* 의견 수 */
-  const feedbacks = topic.comments.length;
+  if (topic.comments) {
+    feedbacks = topic.comments.length;
+  }
+  // Function
   /* 북마크 토글 */
-  const [isMarked, setIsMarked] = useState(topic.isMarked);
+  /* 북마크 수 추가 시키기...? */
   const onClick = (e) => {
     e.stopPropagation();
     setIsMarked(!isMarked);
   };
-
-  /* 토픽 미리보기 클릭 시 화면이동 */
-  const navigate = useNavigate();
 
   return (
     <PreviewTemplateBlock onClick={() => navigate(`${topic.id}`)}>

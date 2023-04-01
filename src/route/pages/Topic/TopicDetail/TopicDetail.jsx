@@ -7,6 +7,12 @@ import CreateComments from "../components/CreateComments";
 import TopicCommentTemplate from "../components/TopicComment/TopicCommentTemplate";
 import { useParams } from "react-router-dom";
 import { useTopicState } from "../../../../Context";
+import { useState } from "react";
+import { useEffect } from "react";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { dbService } from "fBase";
+import LoadingPage from "LoadingPage";
+import { v4 } from "uuid";
 
 const TopicDetailTemplate = styled.div`
   width: 100%;
@@ -37,39 +43,68 @@ const FeedbackPart = styled.div`
   flex-direction: row;
 `;
 
-const TopicDetail = () => {
+const TopicDetail = ({ userObj }) => {
+  /* State */
+  const [topic, setTopic] = useState(null);
+  const [init, setInit] = useState(false);
+
+  /* Variable */
   const topics = useTopicState();
-  const param = useParams().topic_id;
-  const topic = topics[param];
-  const images = topic.images;
-  const comments = topic.comments;
+  const id = useParams().topic_id;
+
+  const comments = [];
   const commentsLen = comments.length;
   const on = "topic_detail";
+  let images = "";
 
   /* 임시지정 */
-  const bookmark = 10;
+  let bookmark = [];
 
-  return (
+  const resultFromDb = async (result) => {
+    const querySnapshot = await getDocs(result);
+    querySnapshot.forEach((doc) => setTopic(doc.data()));
+    setInit(true);
+  };
+
+  useEffect(() => {
+    const topicRef = collection(dbService, "topics");
+    // 검색쿼리
+    const result = query(topicRef, where("id", "==", id));
+    //getDocs() 메서드로 쿼리 결과 값 가져오기
+    // useEffect에선 async...await 쓰면 안됨!
+    // 사용해야 할 땐, 함수를 따로 만들어줄 것...!
+    resultFromDb(result);
+  }, []);
+
+  // console.log(topic.images);
+  /* Function */
+  /* id로 검색해 토픽 받아오기  */
+
+  return init ? (
     <TopicDetailTemplate>
       <ImageTemplate>
-        {images.map((id) => (
-          <Image
-            key={Math.floor(Math.random() * 100)}
-            divide={images.length}
-            src={`/image/${id}`}
-          />
+        {topic.images.map((id) => (
+          <Image key={v4()} divide={topic.images.length} src={id} />
         ))}
       </ImageTemplate>
       <TopicContentsTemplate>
         <TopicUnitPart topic={topic} />
         <FeedbackPart>
           <FeedBack num={comments.length} des={"댓글"} />
-          <FeedBack num={bookmark} des={"북마크"} />
+          <FeedBack num={topic.isMarked.length} des={"북마크"} />
         </FeedbackPart>
-        <CreateComments on={on} placeholder="여행자님의 의견을 듣고 싶어요!" />
+        <CreateComments
+          userObj={userObj}
+          on={on}
+          placeholder={
+            userObj ? "여행자님의 의견을 듣고 싶어요!" : "로그인 해주세요."
+          }
+        />
       </TopicContentsTemplate>
       {commentsLen ? <TopicCommentTemplate comments={comments} /> : null}
     </TopicDetailTemplate>
+  ) : (
+    <LoadingPage />
   );
 };
 

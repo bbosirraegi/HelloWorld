@@ -4,6 +4,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import IndexRouter from "./route";
 import LoadingPage from "LoadingPage";
 import "App.css";
+import { authService } from "fBase";
 
 const App = () => {
   const [init, setInit] = useState(false);
@@ -38,9 +39,16 @@ const App = () => {
     });
   }, []);
 
+  const refreshUser = () => {
+    setUserObj(authService.currentUser);
+  };
   return init ? (
     <AnyProvider>
-      <IndexRouter userObj={userObj} isLoggedIn={isLoggedIn} />
+      <IndexRouter
+        userObj={userObj}
+        isLoggedIn={isLoggedIn}
+        refreshUser={refreshUser}
+      />
     </AnyProvider>
   ) : (
     <LoadingPage />

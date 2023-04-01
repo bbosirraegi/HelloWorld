@@ -6,6 +6,11 @@ import ModalTemplate from "components/Modal/ModalTemplate";
 import ModalHeader from "components/Modal/ModalHeader";
 import ModalUserInfo from "components/Modal/ModalUserInfo";
 import { useNavigate } from "react-router-dom";
+import { addDoc, collection, onSnapshot, query } from "firebase/firestore";
+import { dbService } from "fBase";
+import { v4 } from "uuid";
+import moment from "moment/moment";
+import "moment/locale/ko";
 
 const TopicDisplayBlock = styled.div`
   width: 100wh;
@@ -81,12 +86,11 @@ const ModalContentsInput = styled.textarea`
 `;
 
 const TopicPresenter = ({ userObj }) => {
-  console.log(userObj);
   /* state */
   const [showModal, setShowModal] = useState(false);
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
-  const recoId = Math.floor(Math.random() * 1000);
+  const [topics, setTopics] = useState([]);
 
   /* variable */
   const navigate = useNavigate();
@@ -97,15 +101,10 @@ const TopicPresenter = ({ userObj }) => {
     isAdmin = userObj.role;
     nickname = userObj.displayName;
     profileImg = userObj.profile;
-    console.log(userObj.profile);
   }
   const setCreate = () => {
     userObj && setShowModal(!showModal);
   };
-  const topics = useTopicState();
-
-  /* context */
-  const dispatch = useRecommendDispatch();
 
   /* function */
   const AdminMode = () => {
@@ -124,16 +123,37 @@ const TopicPresenter = ({ userObj }) => {
     setContent("");
   };
 
-  const submit = () => {
-    dispatch({
-      type: "ADD_RECOMMEND",
-      reco: {
-        recoId: recoId,
-        subject: subject,
-        contents: content,
-        nickname: nickname,
-      },
+  //data 가져오기
+  useEffect(() => {
+    const previews = query(collection(dbService, "topics"));
+    onSnapshot(previews, (snapshot) => {
+      const previewArr = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setTopics(previewArr);
     });
+  }, []);
+
+  const submit = async () => {
+    // topic 추천 data 입력하기
+    const date = moment().utc(true).format("YYYY[.]MM[.]D ddd HH:mm:ss");
+    try {
+      await addDoc(collection(dbService, "topic_recommend"), {
+        id: v4(),
+        createAt: Date.now(),
+        date: date,
+        author: nickname,
+        profile: profileImg,
+        subject: subject,
+        content: content,
+      });
+      alert("추천 완료!");
+      setSubject("");
+      setContent("");
+    } catch (error) {
+      console.log("오류 발생 :(", error);
+    }
     onCloseModal();
   };
 
