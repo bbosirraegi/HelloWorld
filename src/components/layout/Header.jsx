@@ -17,7 +17,6 @@ import CreateList from "components/create/CreateList";
 import CreateTemplate from "../create/CreateTemplate";
 import MypagemTemplate from "../mypage-m/MypagemTemplate";
 import MypagemList from "../mypage-m/MypagemList";
-import Avatar from "route/pages/Topic/components/Avatar";
 
 function Header({ userObj, refreshUser, isLoggedIn }) {
   const [create, setCreate] = useState(false); // 모달관리, 기본값 false
@@ -149,9 +148,13 @@ function Header({ userObj, refreshUser, isLoggedIn }) {
         </MypagemTemplate>
       )}
       <div onClick={onMypage} className="a-mypage">
-        <Avatar
-          imgUrl={userObj ? userObj.profile : "/image/user.png"}
-          size="40px"
+        <img
+          src={userObj ? userObj.profile : "/image/user.png"}
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+          }}
         />
       </div>
     </div>

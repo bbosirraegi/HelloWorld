@@ -41,7 +41,6 @@ const MarkButton = styled.div`
 `;
 
 const TopicUnitPart = ({ topic }) => {
-  console.log(topic);
   const title = topic.title;
   const contents = topic.contents;
   const [isMarked, setIsMarked] = useState(topic.isMarked.length);

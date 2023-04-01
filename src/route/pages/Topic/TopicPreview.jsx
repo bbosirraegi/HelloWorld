@@ -1,8 +1,8 @@
 // 토픽 미리보기!
 import React, { useState } from "react";
 import styled from "styled-components";
-import { BsBookmark, BsFillBookmarkFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import BookmarkBtn from "components/BookmarkBtn";
 
 const PreviewTemplateBlock = styled.div`
   width: 85%;
@@ -59,14 +59,15 @@ const ContentsCount = styled.div`
 
 const BookmarkButton = styled.div``;
 
-const TopicPreview = ({ topic }) => {
-  // State
-  const [isMarked, setIsMarked] = useState(topic.isMarked.length);
+const TopicPreview = ({ uid, topic }) => {
   // Variable
   const title = topic.title;
+  const on = "topic";
   /* preview image는 각 토픽의 첫번째 이미지로 지정 */
   const previewImage = topic.images[0];
-  const feedbacks = 0;
+  let feedbacks = 0;
+  const bookmarks = topic.isMarked;
+
   /* 토픽 미리보기 클릭 시 화면이동 */
   const navigate = useNavigate();
   /* 의견 수 */
@@ -76,21 +77,15 @@ const TopicPreview = ({ topic }) => {
   // Function
   /* 북마크 토글 */
   /* 북마크 수 추가 시키기...? */
-  const onClick = (e) => {
-    e.stopPropagation();
-    setIsMarked(!isMarked);
-  };
 
   return (
-    <PreviewTemplateBlock onClick={() => navigate(`${topic.id}`)}>
+    <PreviewTemplateBlock onClick={() => navigate(`${topic.topic_id}`)}>
       <PreviewImageBlock imageUrl={previewImage} />
       <PreviewContentBlock>
         <ContentTitleBlock>{title}</ContentTitleBlock>
         <FeedbackBlock>
           <ContentsCount>{feedbacks}개의 의견 보기</ContentsCount>
-          <BookmarkButton onClick={onClick}>
-            {isMarked ? <BsFillBookmarkFill /> : <BsBookmark />}
-          </BookmarkButton>
+          <BookmarkBtn uid={uid} tid={topic.id} bookmarks={bookmarks} on={on} />
         </FeedbackBlock>
       </PreviewContentBlock>
     </PreviewTemplateBlock>

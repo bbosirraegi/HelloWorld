@@ -105,6 +105,7 @@ const AdminPage = () => {
   const [recommends, setRecommends] = useState([]);
   // 이미지 urls
   const [fileUrls, setFileUrls] = useState(null);
+  const [imgArr, setImgArr] = useState([]);
   /* Variable */
   const InputFile = useRef();
   /* function */
@@ -131,11 +132,12 @@ const AdminPage = () => {
   //토픽 추가하기
   const onSubmit = async (e) => {
     e.preventDefault();
-    // const imgArr = [];
+
     if (fileUrls) {
       // image 업로드
       let result = "";
       const fileLength = fileUrls.length;
+
       // map 함수의 경우 계속 동작을 하지 않아서 for문으로 접근하기
       // 성공!
       for (let i = 0; i < fileLength; i++) {
@@ -154,7 +156,7 @@ const AdminPage = () => {
     //한 db 는 collection 들을 갖고 있고, 각 collection 은 document 들을 가짐
     try {
       await addDoc(collection(dbService, "topics"), {
-        id: v4(),
+        topic_id: v4(),
         createdAt: Date.now(),
         title: title,
         contents: contents,
@@ -179,24 +181,29 @@ const AdminPage = () => {
       target: { files },
     } = e;
 
-    // files : 이미지 '리스트'
-    console.log(files);
+    if (files.length > 5) {
+      alert("이미지는 5장까지만 업로드 가능합니다!");
+      onClearInput();
+      onClearAttachment();
+      alert("이미지를 다시 선택해주세요");
+    } else {
+      // files : 이미지 '리스트'
+      //결과 url들이 담길 배열
+      const resultArr = [];
 
-    //결과 url들이 담길 배열
-    const resultArr = [];
+      // 현재 파일
+      let attach;
+      let attachLength = files.length;
 
-    // 현재 파일
-    let attach;
-    let attachLength = files.length;
-
-    for (let i = 0; i < attachLength; i++) {
-      let fileReader = new FileReader();
-      attach = files[i];
-      fileReader.onload = () => {
-        resultArr[i] = fileReader.result;
-        setFileUrls([...resultArr]);
-      };
-      fileReader.readAsDataURL(attach);
+      for (let i = 0; i < attachLength; i++) {
+        let fileReader = new FileReader();
+        attach = files[i];
+        fileReader.onload = () => {
+          resultArr[i] = fileReader.result;
+          setFileUrls([...resultArr]);
+        };
+        fileReader.readAsDataURL(attach);
+      }
     }
   };
 
