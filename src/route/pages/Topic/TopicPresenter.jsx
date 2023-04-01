@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import TopicPreview from "./TopicPreview";
-import { useRecommendDispatch, useTopicDispatch, useTopicState } from "Context";
 import ModalTemplate from "components/Modal/ModalTemplate";
 import ModalHeader from "components/Modal/ModalHeader";
 import ModalUserInfo from "components/Modal/ModalUserInfo";
@@ -133,6 +132,10 @@ const TopicPresenter = ({ userObj }) => {
       }));
       setTopics(previewArr);
     });
+
+    {
+      topics.length > 10 && setTopics(topics.slice(0, 10));
+    }
   }, []);
 
   const submit = async () => {
@@ -140,7 +143,7 @@ const TopicPresenter = ({ userObj }) => {
     const date = moment().utc(true).format("YYYY[.]MM[.]D ddd HH:mm:ss");
     try {
       await addDoc(collection(dbService, "topic_recommend"), {
-        id: v4(),
+        topic_id: v4(),
         createAt: Date.now(),
         date: date,
         author: nickname,
@@ -156,12 +159,12 @@ const TopicPresenter = ({ userObj }) => {
     }
     onCloseModal();
   };
-
+  console.log(topics);
   return (
     <TopicDisplayBlock>
       {/* 각 아이템의 key는 현재시간 + random로 한다. */}
       {topics.map((topic) => (
-        <TopicPreview key={topic.id} topic={topic} />
+        <TopicPreview uid={userObj.uid} key={topic.id} topic={topic} />
       ))}
       {/* <CreateTemplate /> */}
       {/* 토픽 추천하기*/}

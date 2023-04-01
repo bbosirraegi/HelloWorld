@@ -49,7 +49,6 @@ const TopicDetail = ({ userObj }) => {
   const [init, setInit] = useState(false);
 
   /* Variable */
-  const topics = useTopicState();
   const id = useParams().topic_id;
 
   const comments = [];
@@ -69,7 +68,7 @@ const TopicDetail = ({ userObj }) => {
   useEffect(() => {
     const topicRef = collection(dbService, "topics");
     // 검색쿼리
-    const result = query(topicRef, where("id", "==", id));
+    const result = query(topicRef, where("topic_id", "==", id));
     //getDocs() 메서드로 쿼리 결과 값 가져오기
     // useEffect에선 async...await 쓰면 안됨!
     // 사용해야 할 땐, 함수를 따로 만들어줄 것...!
