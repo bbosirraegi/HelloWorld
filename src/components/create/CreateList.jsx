@@ -141,9 +141,7 @@ function CreateList({ setCreate }) {
   const titleRef = useRef(null); //초기값 null
   const contentRef = useRef(null);
 
-  //제출 버튼 클릭하면 input 박스에 적힌 내용이 Main(b 영역)에 들어가도록 구현하고 싶음
-  //일단 onClick부터 설정해보고 있음 (아직 미완성)
-  //todolist 참고하여 만들고 있기 때문에 Context를 만들던지, Context 없이 진행할지... 선택해야함
+  
   //setCreate props는 layout/Header.jsx 에서 받아옵니당
   // firestore에 추가하기 위해 async 추가
   const onClick = async(e) => {
