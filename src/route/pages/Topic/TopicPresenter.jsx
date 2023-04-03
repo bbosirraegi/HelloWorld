@@ -10,6 +10,7 @@ import { dbService } from "fBase";
 import { v4 } from "uuid";
 import moment from "moment/moment";
 import "moment/locale/ko";
+import { useTopicContext } from "App";
 
 const TopicDisplayBlock = styled.div`
   width: 100wh;
@@ -89,7 +90,7 @@ const TopicPresenter = ({ userObj }) => {
   const [showModal, setShowModal] = useState(false);
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
-  const [topics, setTopics] = useState([]);
+  const topics = useTopicContext();
 
   /* variable */
   const navigate = useNavigate();
@@ -101,11 +102,11 @@ const TopicPresenter = ({ userObj }) => {
     nickname = userObj.displayName;
     profileImg = userObj.profile;
   }
+  /* function */
   const setCreate = () => {
     userObj && setShowModal(!showModal);
   };
 
-  /* function */
   const AdminMode = () => {
     navigate("/admin");
   };
@@ -121,22 +122,6 @@ const TopicPresenter = ({ userObj }) => {
     setSubject("");
     setContent("");
   };
-
-  //data 가져오기
-  useEffect(() => {
-    const previews = query(collection(dbService, "topics"));
-    onSnapshot(previews, (snapshot) => {
-      const previewArr = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setTopics(previewArr);
-    });
-
-    {
-      topics.length > 10 && setTopics(topics.slice(0, 10));
-    }
-  }, []);
 
   const submit = async () => {
     // topic 추천 data 입력하기
@@ -159,7 +144,6 @@ const TopicPresenter = ({ userObj }) => {
     }
     onCloseModal();
   };
-  console.log(topics);
   return (
     <TopicDisplayBlock>
       {/* 각 아이템의 key는 현재시간 + random로 한다. */}

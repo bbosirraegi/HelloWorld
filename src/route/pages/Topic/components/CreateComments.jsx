@@ -1,10 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 import { IoImageOutline } from "react-icons/io5";
 import { RiSendPlane2Fill } from "react-icons/ri";
-import { useTopicDispatch, useTopicState } from "../../../../Context";
 import { useParams } from "react-router-dom";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { dbService, storageService } from "fBase";
+import { v4 } from "uuid";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 /* 댓글 추가 부분을 감싸는 전체 부분 */
 const CommentsTemplate = styled.div`
@@ -80,6 +90,7 @@ const ImagePreview = styled.div`
 
 const CreateComments = ({
   userObj,
+  topic,
   on = "",
   comment_id = "",
   placeholder = "",
@@ -88,12 +99,11 @@ const CreateComments = ({
   const [insertImage, setInsertImage] = useState(false);
   const [imgFile, setImgFile] = useState("");
   const [commentInput, setCommentInput] = useState("");
-  const topic_id = parseInt(useParams().topic_id);
+  const [init, setInit] = useState(false);
+  const id = useParams().id;
   /* hooks */
   const imgRef = useRef();
-  /* context */
-  const state = useTopicState();
-  const dispatch = useTopicDispatch();
+  const target = doc(dbService, "topics", id);
   /* function */
   const commentEnter = (e) => setCommentInput(e.target.value);
   const toggleInsertImage = () => setInsertImage(!insertImage);
@@ -109,64 +119,32 @@ const CreateComments = ({
     };
   };
 
-  const addComment = () => {
-    const [TARGET_TOPIC] = state.filter((topic) => topic.id === topic_id);
-    if (on === "topic_detail") {
-      const newComment = [
-        ...TARGET_TOPIC.comments,
-        {
-          commentId: 3,
-          userInfo: {
-            nickname: "관리자",
-            profile: "/image/hamster.jpg",
-          },
-          reply: [],
-          comment: commentInput,
-          isRoot: true,
-          imgUrl: imgFile,
-          heart: 0,
-        },
-      ];
-      // 새로운 댓글 배열 dispatch 해주기
-      dispatch({ type: "ADD_COMMENT", id: topic_id, comments: newComment });
-    } else if (on === "comment") {
-      // 2. 토픽의 comment 가져오기
-      const [TARGET_COMMENT] = TARGET_TOPIC.comments.filter(
-        (comment) => comment.commentId === comment_id
-      );
-      // 3. 새로운 대댓글 배열 만들기
-      const newReply = [
-        ...TARGET_COMMENT.reply,
-        {
-          commentId: 4,
-          userInfo: {
-            nickname: "방황하는 다람쥐",
-            profile: "/image/squirrel.jpg",
-          },
-          comment: commentInput,
-          isRoot: false,
-          imgUrl: imgFile,
-          heart: 0,
-        },
-      ];
-      //4. 새로운 comments 배열 생성하기
-      const new_comments = TARGET_TOPIC.comments.map((item) =>
-        item.commentId === comment_id ? { ...item, reply: newReply } : item
-      );
-      ///5. 새로운 comments 배열 dispatch
-      dispatch({ type: "ADD_REPLY", id: topic_id, comments: new_comments });
-    } else {
-      throw new Error("THIS MODE IS UNVALID!🙄");
-    }
-    setCommentInput("");
-    setImgFile("");
-  };
-
-  const createComment = (e) => {
+  //
+  const addComment = async (e) => {
     e.preventDefault();
-
-    addComment();
+    if (imgFile) {
+      //이미지 업로드
+      const fileRef = ref(storageService, `comments/id/${v4()}`);
+      const response = await uploadString(fileRef, imgFile, "data_url");
+      const result = await getDownloadURL(response.ref);
+      setImgFile(result);
+    }
+    const newComment = {
+      com_id: v4(),
+      userInfo: {
+        nickname: userObj.displayName,
+        profile: userObj.profile,
+      },
+      comments: commentInput,
+      isRoot: true,
+      reply: [],
+      imgUrl: imgFile,
+      heart: [],
+    };
+    await updateDoc(target, { comments: [...topic.comments, newComment] });
+    setCommentInput("");
   };
+  /* hook*/
 
   /* render */
   return (
@@ -177,7 +155,7 @@ const CreateComments = ({
           size="40px"
         />
       </div>
-      <Form onSubmit={userObj ? createComment : false}>
+      <Form onSubmit={addComment}>
         <AttatchImage htmlFor="profileImg">
           <IoImageOutline />
           {userObj && (
@@ -199,7 +177,7 @@ const CreateComments = ({
           value={commentInput}
           onChange={commentEnter}
         />
-        <SendButton onClick={userObj ? createComment : false}>
+        <SendButton>
           <RiSendPlane2Fill />
         </SendButton>
       </Form>

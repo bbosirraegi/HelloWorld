@@ -5,6 +5,7 @@ import Avatar from "../Avatar";
 import Profile from "../Profile";
 import CommentFeedback from "./CommentFeedback";
 import TopicCommentTemplate from "./TopicCommentTemplate";
+import moment from "moment";
 
 /* 댓글 영역 template */
 const CommentTemplateBlock = styled.div`
@@ -61,15 +62,13 @@ const CommentTextBlock = styled.div`
 
 // 댓글 컨텐츠 컴포넌트
 const CommentContents = ({ comment }) => {
-  const userInfo = comment.userInfo;
-  const img = comment.imgUrl;
-  const date = comment.date;
-  const text = comment.comment;
-  const isRoot = comment.isRoot;
+  const id = comment.com_id;
+  const comments = comment.comments;
   const heart = comment.heart;
+  const img_url = comment.img_url;
+  const isRoot = comment.isRoot;
   const reply = comment.reply;
-  const comment_id = comment.commentId;
-
+  const userInfo = comment.userInfo;
   return (
     <CommentTemplateBlock>
       <AvatarBlock>
@@ -83,17 +82,11 @@ const CommentContents = ({ comment }) => {
           >
             ·
           </div>
-          <div style={{ color: "lightgray" }}>{date}</div>
+          <div style={{ color: "lightgray" }}>2023.04.03</div>
         </CommentInfo>
-        {img && <CommentImg img={img} />}
-        <CommentTextBlock>{text}</CommentTextBlock>
-        <CommentFeedback
-          comment_id={comment_id}
-          heart={heart}
-          isRoot={isRoot}
-          author={userInfo.nickname}
-          reply={reply}
-        />
+        {img_url && <CommentImg img={img_url} />}
+        <CommentTextBlock>{comments}</CommentTextBlock>
+        <CommentFeedback comment={comment} />
       </CommentBlock>
     </CommentTemplateBlock>
   );
