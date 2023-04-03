@@ -5,6 +5,9 @@ import ReplyTemplate from "./ReplyTemplate";
 import CommentContents from "./CommentContents";
 import HeartBlock from "../HeartBlock";
 import { VscTriangleUp, VscTriangleDown } from "react-icons/vsc";
+import { useParams } from "react-router-dom";
+import { dbService } from "fBase";
+import { updateDoc, doc } from "firebase/firestore";
 
 /* 댓글달기, 좋아요 template 블록 */
 const FeedbackBlock = styled.div`
@@ -28,19 +31,28 @@ const ReplyTemplateBlock = styled.div`
   flex-direction: row;
 `;
 
-const CommentFeedback = ({ comment_id, heart, isRoot, author, reply = [] }) => {
+const CommentFeedback = ({ comment }) => {
   /* State */
   const [addReply, setAddReply] = useState(false);
   const [showReply, setShowReply] = useState(false);
   const [heartColor, setHeartColor] = useState(false);
+  /* variable */
+  const com_id = comment.com_id;
+
+  const isRoot = comment.isRoot;
+  const userInfo = comment.userInfo;
+  const reply = comment.reply;
+  const placeholder = `${userInfo.nickname}님에게 답글 달기`;
+  const replyLen = reply.length;
+  const id = useParams().id;
+
   /* function */
   const toAddReply = () => setAddReply(!addReply);
   const toShowReply = () => setShowReply(!showReply);
-  const reversal = () => setHeartColor(!heartColor);
-
-  /* variable */
-  const placeholder = `${author}님에게 답글 달기`;
-  const replyLen = reply.length;
+  const reversal = async () => {
+    setHeartColor(!heartColor);
+  };
+  console.log(heartColor);
 
   /* render */
   return (
@@ -53,8 +65,10 @@ const CommentFeedback = ({ comment_id, heart, isRoot, author, reply = [] }) => {
         )}
         <HeartBlock
           on="topic_comment"
+          comment={comment}
           reverse={reversal}
-          heart={heart}
+          heart={comment.heart}
+          userInfo={userInfo}
           heartColor={heartColor}
         />
       </FeedbackBlock>

@@ -4,9 +4,11 @@ import MainLayout from "components/layout/MainLayout";
 import { Topic, Main, Posts, SignIn, Mypage, TopicDetail } from "route/pages";
 import ModalTest from "components/Modal";
 import AdminPage from "./pages/AdminPage";
+import { useTopicContext } from "App";
 
 const IndexRouter = ({ isLoggedIn, userObj, refreshUser }) => {
-  console.log(userObj);
+  const topic = useTopicContext();
+  console.log(topic);
   return (
     <Routes>
       <Route
@@ -22,7 +24,10 @@ const IndexRouter = ({ isLoggedIn, userObj, refreshUser }) => {
         <Route index element={<Main />} />
         <Route path="/topic">
           <Route index element={<Topic userObj={userObj} />} />
-          <Route path=":topic_id" element={<TopicDetail userObj={userObj} />} />
+          <Route
+            path=":id"
+            element={<TopicDetail userObj={userObj} topic={topic} />}
+          />
         </Route>
         <Route path="/notification" element={<Topic />} />
         <Route path="/posts" element={<Posts />} />

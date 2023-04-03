@@ -12,7 +12,7 @@ import "../../css/besttopic.css";
 
 const BTContentBlock = styled.div`
   white-space: pre-wrap;
-`
+`;
 
 function BestTopics() {
   /*
@@ -27,6 +27,7 @@ function BestTopics() {
   => state의 값만 복사해와
   => 랜덤 정렬하고
   => 3개의 data만 besttopics에 저장되도록 함
+  => firebase랑 연결하기....! 지금은 context에서 받아오는 중
   */
   const besttopics = [...useCommunityState()];
 

@@ -57,8 +57,6 @@ const ContentsCount = styled.div`
   font-weight: lighter;
 `;
 
-const BookmarkButton = styled.div``;
-
 const TopicPreview = ({ uid, topic }) => {
   // Variable
   const title = topic.title;
@@ -79,7 +77,7 @@ const TopicPreview = ({ uid, topic }) => {
   /* 북마크 수 추가 시키기...? */
 
   return (
-    <PreviewTemplateBlock onClick={() => navigate(`${topic.topic_id}`)}>
+    <PreviewTemplateBlock onClick={() => navigate(`${topic.id}`)}>
       <PreviewImageBlock imageUrl={previewImage} />
       <PreviewContentBlock>
         <ContentTitleBlock>{title}</ContentTitleBlock>

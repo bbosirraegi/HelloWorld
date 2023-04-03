@@ -17,7 +17,7 @@ const TopicCommentTemplate = ({ comments }) => {
   return (
     <TopicCommentTemplateBlock>
       {comments.map((comment) => (
-        <CommentContents key={comment.commentId} comment={comment} />
+        <CommentContents key={comment.com_id} comment={comment} />
       ))}
     </TopicCommentTemplateBlock>
   );

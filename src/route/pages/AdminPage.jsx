@@ -1,22 +1,12 @@
-import { height, width } from "@mui/system";
 import { dbService, storageService } from "fBase";
 import {
   addDoc,
   collection,
-  deleteDoc,
-  doc,
-  getDocs,
   onSnapshot,
   orderBy,
   query,
 } from "firebase/firestore";
-import {
-  uploadString,
-  ref,
-  getStorage,
-  getDownloadURL,
-} from "firebase/storage";
-import LoadingPage from "LoadingPage";
+import { uploadString, ref, getDownloadURL } from "firebase/storage";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 } from "uuid";
@@ -161,6 +151,7 @@ const AdminPage = () => {
         title: title,
         contents: contents,
         isMarked: [],
+        comments: [],
         images: fileUrls,
       });
 
