@@ -61,9 +61,6 @@ function MainPresenter() {
     });
   }, []);
 
-  const communitys = useCommunityState();
-
-  // a.id - b.id : 첫 번째 요소의 id 값(a.id)에서 두 번째 요소의 id 값(b.id)을 뺀 결과를 반환
   // 만약 a.id가 b.id보다 작으면 음수가 되어 정렬 순서에서 a 요소가 b 요소보다 앞에 위치
   // a.id가 b.id보다 크면 양수가 되어 정렬 순서에서 a 요소가 b 요소보다 뒤에 위치
   // a.id와 b.id가 같다면 0을 반환하여 순서를 유지
