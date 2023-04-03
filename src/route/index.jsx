@@ -5,6 +5,7 @@ import { Topic, Main, Posts, SignIn, Mypage, TopicDetail } from "route/pages";
 import ModalTest from "components/Modal";
 import AdminPage from "./pages/AdminPage";
 import { useTopicContext } from "App";
+import MainDetail from "./pages/Main/MainDetail";
 
 const IndexRouter = ({ isLoggedIn, userObj, refreshUser }) => {
   const topic = useTopicContext();
@@ -22,6 +23,7 @@ const IndexRouter = ({ isLoggedIn, userObj, refreshUser }) => {
         }
       >
         <Route index element={<Main />} />
+        <Route path=":uuid" element={<MainDetail />} />
         <Route path="/topic">
           <Route index element={<Topic userObj={userObj} />} />
           <Route

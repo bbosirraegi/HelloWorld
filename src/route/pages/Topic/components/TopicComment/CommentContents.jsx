@@ -65,7 +65,7 @@ const CommentContents = ({ comment }) => {
   const id = comment.com_id;
   const comments = comment.comments;
   const heart = comment.heart;
-  const img_url = comment.img_url;
+  const img_url = comment.imgUrl;
   const isRoot = comment.isRoot;
   const reply = comment.reply;
   const userInfo = comment.userInfo;

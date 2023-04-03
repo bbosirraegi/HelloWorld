@@ -104,29 +104,35 @@ const CreateComments = ({
   /* hooks */
   const imgRef = useRef();
   const target = doc(dbService, "topics", id);
+  let result;
   /* function */
   const commentEnter = (e) => setCommentInput(e.target.value);
   const toggleInsertImage = () => setInsertImage(!insertImage);
 
   /* 이미지 업로드 input의 onChange */
   /* 참고 : https://velog.io/@hye_rin/React-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%97%85%EB%A1%9C%EB%93%9C%ED%95%98%EA%B3%A0-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0 */
-  const saveImgFile = () => {
-    const file = imgRef.current.files[0];
+  const saveImgFile = (e) => {
+    const {
+      target: { files },
+    } = e;
+    const file = files[0];
     const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setImgFile(reader.result);
+    reader.onloadend = (finishedEvent) => {
+      const {
+        currentTarget: { result },
+      } = finishedEvent;
+      setImgFile(result);
     };
+    reader.readAsDataURL(file);
   };
-
   //
   const addComment = async (e) => {
     e.preventDefault();
     if (imgFile) {
       //이미지 업로드
-      const fileRef = ref(storageService, `comments/id/${v4()}`);
+      const fileRef = ref(storageService, `comments/${v4()}`);
       const response = await uploadString(fileRef, imgFile, "data_url");
-      const result = await getDownloadURL(response.ref);
+      result = await getDownloadURL(response.ref);
       setImgFile(result);
     }
     const newComment = {
@@ -138,9 +144,10 @@ const CreateComments = ({
       comments: commentInput,
       isRoot: true,
       reply: [],
-      imgUrl: imgFile,
+      imgUrl: result,
       heart: [],
     };
+
     await updateDoc(target, { comments: [...topic.comments, newComment] });
     setCommentInput("");
   };
