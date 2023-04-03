@@ -106,7 +106,7 @@ function MainItem({ title, content, id }) {
         <Avatar imgUrl={profileImg} />
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Profile nickname={nickname} />
-          <div style={{ fontSize: "12px", color: "gray" }}>위치 , 시간</div>
+          <div style={{ fontSize: "12px", color: "gray" }}>{}</div>
         </div>
       </CommunityItemHeader>
       <div onClick={() => navigate(`${id}`)}>
