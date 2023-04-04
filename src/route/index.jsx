@@ -23,6 +23,7 @@ const IndexRouter = ({ isLoggedIn, userObj, refreshUser }) => {
         }
       >
 
+
         <Route path="/">
           <Route index element={<Main userObj={userObj} />} />
           <Route path=":uuid" element={<MainDetail userObj={userObj} />}/>
