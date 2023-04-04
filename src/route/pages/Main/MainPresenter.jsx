@@ -1,7 +1,6 @@
 import { React, useState, useEffect } from "react";
 import styled from "styled-components";
 import MainItem from "./MainItem";
-import { useCommunityState } from "../../../Context";
 import { getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import { dbService } from "fBase";
 import { addDoc, collection } from "firebase/firestore";
@@ -19,6 +18,7 @@ function MainPresenter() {
   // 넴 third도 지워줍시당
   /// 오우 async는 저기 넣어주는 겁미당
   // callback 함수 앞에! 함수 앞은 await!
+  // 넴 좋아요 오우.. 아마 그렇게 선언하면 아아 아니군여 ㅋ\ㅋㅋㅋ그렇게 해도 될 것 같슴다
   // 넴 좋아요 오우.. 아마 그렇게 선언하면 아아 아니군여 ㅋ\ㅋㅋㅋ그렇게 해도 될 것 같슴다
   //먼가 이상해지고 있는 거 같애여
   // 앗 아님미다 그렇게 하는 것이 아님미다...AboutContainer
@@ -38,8 +38,22 @@ function MainPresenter() {
   // 혹시 애니데스크이라는 것 해볼 수 있나여
   // 넵넵 컴퓨터에 Anydesk 다운받으셔야해요 근데 ㅠㅠ 다운받구 제 서버로 들어올 수 있읍니다
   // 넴 해보지요ㅎㅎ
+  // 앗 지금은 일단 order는 뺍시다 넴 좋아요 keep going
+  // topicArr는 결과를 담는 배열이랍니다
+  // 앗 똑같이 해봅씨다
+  // 저렇게 하면 일단 모든 DATA를 가져오는 것이라
+  // 오호.. 지금 그러면 모든 data 를 가져오고 있는 중인 것이군요
+  // 아? 여기서 문제가 생겼던 건가여? 음
+  // 넵 지금 상태에서는음
+  // 어휴 정신이 없게 생긴 에러군여ㅋㅋㅋ 이게 data를 불러오는 것이지요?
+  // 새로고침을 해보셨나여..? 어째서..! async awati가 사라졌는데 대체 왜...?
+  // 넵 똑같은 에러가 뜹니당 .... ㅠㅠ...ㅠㅠㅠㅠ...
+  // 혹시 애니데스크이라는 것 해볼 수 있나여
+  // 넵넵 컴퓨터에 Anydesk 다운받으셔야해요 근데 ㅠㅠ 다운받구 제 서버로 들어올 수 있읍니다
+  // 넴 해보지요ㅎㅎ
   const [communitylist, setCommunitylist] = useState([]);
   useEffect(() => {
+    // 여기서 getDocs 를 사용하면 에러 뜨고 query 사용해야 잘 동작함 .......
     // 여기서 getDocs 를 사용하면 에러 뜨고 query 사용해야 잘 동작함 .......
     // query를 사용해야 실시간성으로 불러올 수 있는 것으로 판단됨
     // getDocs 는 비동기 함수이기 때문! => async await 필요
@@ -59,6 +73,7 @@ function MainPresenter() {
       // 오!!!!!!!!
       setCommunitylist(communityArr);
     });
+  
   }, []);
 
   // 만약 a.id가 b.id보다 작으면 음수가 되어 정렬 순서에서 a 요소가 b 요소보다 앞에 위치

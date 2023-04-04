@@ -7,7 +7,6 @@ import AdminPage from "./pages/AdminPage";
 import { useTopicContext } from "App";
 import MainDetail from './pages/Main/MainDetail/MainDetail';
 import ErrorPage from "components/ErrorPage";
-import MainDetail from "./pages/Main/MainDetail";
 
 const IndexRouter = ({ isLoggedIn, userObj, refreshUser }) => {
   const topic = useTopicContext();

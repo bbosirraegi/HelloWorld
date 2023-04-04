@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 function MainDetail({children, userObj}) {
 
   const communityCollectionRef = collection(dbService, "community");
-
+  
   const params = useParams();
   // console.log(params.uuid); uuid 
   
