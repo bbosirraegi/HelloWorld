@@ -1,11 +1,10 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import MainLayout from "components/layout/MainLayout";
-import { Topic, Main, Posts, SignIn, Mypage, TopicDetail } from "route/pages";
+import { Topic, Main, Posts, SignIn, Mypage, TopicDetail, MainDetail } from "route/pages";
 import ModalTest from "components/Modal";
 import AdminPage from "./pages/AdminPage";
 import { useTopicContext } from "App";
-import MainDetail from './pages/Main/MainDetail/MainDetail';
 import ErrorPage from "components/ErrorPage";
 
 const IndexRouter = ({ isLoggedIn, userObj, refreshUser }) => {
