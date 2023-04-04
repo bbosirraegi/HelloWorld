@@ -4,5 +4,5 @@ export { default as Topic } from "./Topic";
 export { default as Mypage } from "./Mypage_modal/Mypage";
 export { default as SignIn } from "./Mypage_modal/Signin";
 export { default as TopicDetail } from "./Topic/TopicDetail";
-export { default as MainDetail } from './Main/MainDetail';
+export { default as MainDetail } from './Main/MainDetail/MainDetail';
 export { default as Posts } from "./Posts";
