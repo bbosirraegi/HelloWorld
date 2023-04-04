@@ -12,6 +12,8 @@ import { addDoc, collection } from "firebase/firestore"
 import { dbService } from "fBase";
 // uuid import
 import { v4 } from "uuid";
+import moment from "moment/moment";
+import "moment/locale/ko";
 
 // 글쓰기 헤드 부분 (제출 버튼과 글쓰기 글자) 블록 스타일링
 const CreateHeadBlock = styled.div`
@@ -141,7 +143,7 @@ function CreateList({ setCreate }) {
   const titleRef = useRef(null); //초기값 null
   const contentRef = useRef(null);
 
-  
+
   //setCreate props는 layout/Header.jsx 에서 받아옵니당
   // firestore에 추가하기 위해 async 추가
   const onClick = async(e) => {
@@ -183,7 +185,17 @@ function CreateList({ setCreate }) {
     // MainItem을 불러오는 곳은 MainPresenter 이니 그곳에서 useEffect로 비동기로 데이터 받고 보여주면 되겟군여
     // 그렇지요ㅋㅋㅋ 귯귯!!!!
     // 음 그런데 일단은 div를 따로 만들어서 그곳에서 불러오는 것을 테스트를 해봅시당
-      await addDoc(collection(dbService,"community"),{ title, content, uuid: v4(), createdAt: Date.now() })
+    
+    
+    // community data 입력하기
+    const date = moment().utc(true).format("YYYY[.]MM[.]DD");  
+    
+    await addDoc(collection(dbService,"community"),{ 
+        title, content, 
+        uuid: v4(), 
+        createdAt: Date.now(),
+        date: date, 
+      })
 
       setTitle(""); //공백처리
       setContent(""); //공백처리

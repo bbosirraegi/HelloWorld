@@ -1,7 +1,6 @@
 import { React, useState, useEffect } from "react";
 import styled from "styled-components";
 import MainItem from "./MainItem";
-import { useCommunityState } from "../../../Context";
 import { getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import { dbService } from "fBase";
 import { addDoc, collection } from "firebase/firestore";
@@ -98,6 +97,7 @@ function MainPresenter() {
           id={communitys.uuid}
           title={communitys.title}
           content={communitys.content}
+          date={communitys.date}
         />
       ))}
     </CommunityBlock>
