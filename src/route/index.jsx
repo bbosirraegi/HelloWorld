@@ -5,7 +5,6 @@ import { Topic, Main, Posts, SignIn, Mypage, TopicDetail } from "route/pages";
 import ModalTest from "components/Modal";
 import AdminPage from "./pages/AdminPage";
 import { useTopicContext } from "App";
-import ErrorPage from "components/ErrorPage";
 import MainDetail from "./pages/Main/MainDetail";
 
 const IndexRouter = ({ isLoggedIn, userObj, refreshUser }) => {
@@ -26,7 +25,7 @@ const IndexRouter = ({ isLoggedIn, userObj, refreshUser }) => {
 
         <Route path="/">
           <Route index element={<Main userObj={userObj} />} />
-          <Route path=":uuid" element={<MainDetail userObj={userObj} />}/>
+          {/* <Route path=":uuid" element={<MainDetail userObj={userObj} />}/> */}
         </Route>
         
         <Route path=":uuid" element={<MainDetail />} />
