@@ -98,7 +98,7 @@ function MainItem({ title, content, uuid, date }) {
   const navigate = useNavigate();
 
   return (
-    <CommunityItem>
+    <CommunityItem onClick={() => navigate(`${id}`)}>
       <CommunityItemHeader>
         {/* 아바타 크기(size) 를 바꾸고 싶은데... .어떻게 해줘야 할까요ㅠ */}
         <Avatar imgUrl={profileImg} />
