@@ -95,9 +95,10 @@ function MainPresenter() {
       {communitylist.map((communitys) => (
         <MainItem // community 값 보내주기
           key={communitys.uuid} // key값 필수
-          // id={community.id}
+          uuid={communitys.uuid}
           title={communitys.title}
           content={communitys.content}
+          date={communitys.date}
         />
       ))}
     </CommunityBlock>

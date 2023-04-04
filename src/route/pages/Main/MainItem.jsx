@@ -89,15 +89,13 @@ const MainBookmark = styled.div`
   font-size: 18px;
 `;
 
-function MainItem({ title, content, id }) {
+function MainItem({ title, content, uuid, date }) {
   // Test Input about Avata
   const profileImg = "https://t1.daumcdn.net/cfile/tistory/99891B485AA0B33012";
   const nickname = "사람1";
 
   // 커뮤니티 미리보기 클릭 시 화면이동
   const navigate = useNavigate();
-
-  
 
   return (
     <CommunityItem>
@@ -106,10 +104,10 @@ function MainItem({ title, content, id }) {
         <Avatar imgUrl={profileImg} />
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Profile nickname={nickname} />
-          <div style={{ fontSize: "12px", color: "gray" }}>{}</div>
+          <div style={{ fontSize: "12px", color: "gray" }}>{date}</div>
         </div>
       </CommunityItemHeader>
-      <div onClick={() => navigate(`${id}`)}>
+      <div onClick={() => navigate(`${uuid}`)}>
         <CommunityTitle>{title}</CommunityTitle>
         <CommunityContent>{content}</CommunityContent>
       </div>
